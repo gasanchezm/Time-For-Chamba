@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Time for Chamba">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Time for Chamba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#2a2a2a;
+  --accent:#c8f135; --accent2:#ff6b35; --text:#f0f0f0; --muted:#666;
+  --danger:#ff4444; --success:#44ff88; --warn:#f5c542;
+  --nav-h:82px; --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+
+/* ── WELCOME ── */
+#welcomeScreen{position:fixed;inset:0;background:var(–bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:500;padding:32px 24px;overflow-y:auto}
+#welcomeScreen.hide{animation:fadeOut .4s ease forwards}
+@keyframes fadeOut{to{opacity:0;pointer-events:none}}
+.w-logo{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(40px,13vw,76px);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,var(–accent) 0%,#9abf00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px}
+.w-sub{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–muted);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:28px}
+.w-card{width:100%;max-width:360px;background:var(–surface);border:1px solid var(–border);border-radius:16px;padding:24px 20px}
+.w-section-label{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.w-q{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:2px;color:var(–text);margin-bottom:3px}
+.w-hint{font-family:‘DM Mono’,monospace;font-size:11px;color:var(–muted);margin-bottom:14px;line-height:1.5}
+.w-input{width:100%;background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:13px 15px;color:var(–text);font-family:‘Space Grotesk’,sans-serif;font-size:17px;font-weight:500;outline:none;transition:border-color .2s}
+.w-input:focus{border-color:var(–accent)}
+.w-divider{border:none;border-top:1px solid var(–border);margin:20px 0}
+/* Language picker */
+.lang-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
+.lang-btn{padding:14px 10px;background:var(–surface2);border:2px solid var(–border);border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .15s}
+.lang-btn:active{transform:scale(.97)}
+.lang-btn.sel{border-color:var(–accent);background:rgba(200,241,53,.08)}
+.lang-flag{font-size:28px;line-height:1}
+.lang-name{font-family:‘DM Mono’,monospace;font-size:11px;letter-spacing:1px;color:var(–muted);transition:color .15s}
+.lang-btn.sel .lang-name{color:var(–accent)}
+.w-go{width:100%;padding:16px;background:var(–accent);border:none;border-radius:10px;font-family:‘Bebas Neue’,sans-serif;font-size:22px;letter-spacing:3px;color:#0a0a0a;cursor:pointer;transition:transform .1s,opacity .1s;margin-top:20px}
+.w-go:active{transform:scale(.97);opacity:.9}
+
+/* ── APP ── */
+#app{display:flex;flex-direction:column;min-height:100vh;padding-bottom:calc(var(–nav-h) + var(–safe-b))}
+.header{padding:16px 20px 0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.logo{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(32px,9vw,56px);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,var(–accent) 0%,#9abf00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn .5s ease-out}
+@keyframes logoIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+.greeting{font-family:‘DM Mono’,monospace;font-size:12px;color:var(–accent);letter-spacing:1.5px;margin-top:4px;animation:logoIn .5s .15s ease-out both}
+.byline{font-size:9px;font-family:‘DM Mono’,monospace;color:var(–muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;animation:logoIn .5s .25s ease-out both}
+
+/* ── PAGES ── */
+.page{display:none;padding:12px 12px 4px;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(–nav-h) + var(–safe-b));background:rgba(12,12,12,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(–border);display:flex;align-items:flex-start;padding-top:10px;z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px}
+.nav-icon{font-size:22px;line-height:1;transition:transform .15s}
+.nav-label{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:.5px;transition:color .15s}
+.nav-dot{width:4px;height:4px;background:var(–accent);border-radius:50%;opacity:0;transition:opacity .15s;margin-top:1px}
+.nav-item.active .nav-label{color:var(–accent)}
+.nav-item.active .nav-icon{transform:scale(1.15)}
+.nav-item.active .nav-dot{opacity:1}
+.nav-item:active .nav-icon{transform:scale(.88)}
+
+/* ── CARDS ── */
+.card{background:var(–surface);border:1px solid var(–border);border-radius:14px;padding:16px;margin-bottom:10px;position:relative;overflow:hidden}
+.card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(–accent),transparent);opacity:.4}
+.card-title{font-family:‘DM Mono’,monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.card-title span{color:var(–accent)}
+.card.orange-top::before{background:linear-gradient(90deg,var(–accent2),transparent)}
+.card.warn-top::before{background:linear-gradient(90deg,var(–warn),transparent)}
+
+/* ── CLOCK ── */
+.live-clock{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(44px,13vw,70px);letter-spacing:4px;color:var(–text);text-align:center;line-height:1;margin:6px 0}
+.live-date{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–muted);text-align:center;text-transform:uppercase;letter-spacing:2px}
+.live-badge{display:inline-flex;align-items:center;gap:5px;font-family:‘DM Mono’,monospace;font-size:9px;color:var(–success);text-transform:uppercase;letter-spacing:1px}
+.live-dot{width:5px;height:5px;background:var(–success);border-radius:50%;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── FIELDS ── */
+.field{margin-bottom:11px}
+.field label{display:block;font-family:‘DM Mono’,monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(–muted);margin-bottom:5px}
+.field input,.field textarea{width:100%;background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:12px 14px;color:var(–text);font-family:‘DM Mono’,monospace;font-size:15px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field textarea:focus{border-color:var(–accent)}
+.field textarea{resize:vertical;min-height:64px}
+.time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── STEPPER ── */
+.stepper{display:flex;align-items:center;background:var(–surface2);border:1px solid var(–border);border-radius:10px;overflow:hidden;height:52px}
+.stepper-btn{width:56px;height:100%;background:none;border:none;color:var(–text);font-size:26px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s;flex-shrink:0}
+.stepper-btn:active{background:var(–border)}
+.stepper-btn.minus{border-right:1px solid var(–border)}
+.stepper-btn.plus{border-left:1px solid var(–border)}
+.stepper-value{flex:1;text-align:center;font-family:‘Bebas Neue’,sans-serif;font-size:26px;letter-spacing:2px;color:var(–accent);user-select:none;pointer-events:none}
+.stepper-unit{font-family:‘DM Mono’,monospace;font-size:12px;color:var(–muted);margin-left:2px}
+.pause-chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.pause-chip{padding:5px 11px;background:var(–surface2);border:1px solid var(–border);border-radius:20px;font-family:‘DM Mono’,monospace;font-size:10px;color:var(–muted);cursor:pointer;transition:all .12s}
+.pause-chip:active,.pause-chip.sel{background:var(–accent);color:#0a0a0a;border-color:var(–accent)}
+
+/* ── TOGGLE SWITCH ── */
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(–border);margin-top:4px}
+.toggle-info .toggle-title{font-size:14px;font-weight:500}
+.toggle-info .toggle-sub{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–muted);margin-top:2px}
+.toggle{position:relative;width:46px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(–border);border-radius:26px;cursor:pointer;transition:background .2s}
+.toggle input:checked + .toggle-track{background:var(–accent)}
+.toggle-thumb{position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;pointer-events:none}
+.toggle input:checked ~ .toggle-thumb{transform:translateX(20px)}
+
+/* ── TICKETS SECTION ── */
+.tickets-wrap{margin-top:2px}
+.ticket-add-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:flex-end;margin-bottom:10px}
+.ticket-add-row .field{margin-bottom:0}
+.ticket-add-btn{height:44px;padding:0 14px;background:var(–accent);border:none;border-radius:10px;font-family:‘Bebas Neue’,sans-serif;font-size:16px;letter-spacing:2px;color:#0a0a0a;cursor:pointer;white-space:nowrap;transition:transform .1s,opacity .1s;align-self:flex-end}
+.ticket-add-btn:active{transform:scale(.95);opacity:.9}
+.tickets-list{display:flex;flex-direction:column;gap:6px}
+.ticket-item{display:flex;align-items:center;gap:10px;background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:10px 12px;transition:border-color .2s}
+.ticket-item.paid{opacity:.5;border-style:dashed}
+.ticket-item.paid .ticket-label{text-decoration:line-through}
+.ticket-check{width:22px;height:22px;border-radius:6px;background:none;border:2px solid var(–border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .15s}
+.ticket-check.paid{background:var(–success);border-color:var(–success);color:#0a0a0a}
+.ticket-body{flex:1;min-width:0}
+.ticket-label{font-family:‘DM Mono’,monospace;font-size:12px;color:var(–text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ticket-amount{font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:1px;color:var(–warn);flex-shrink:0}
+.ticket-item.paid .ticket-amount{color:var(–muted)}
+.ticket-del{background:none;border:none;color:var(–muted);font-size:16px;cursor:pointer;padding:2px 4px;flex-shrink:0;transition:color .15s}
+.ticket-del:hover{color:var(–danger)}
+.ticket-summary{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid var(–border);margin-top:8px}
+.ticket-summary-label{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–muted)}
+.ticket-summary-val{font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:1px;color:var(–warn)}
+.ticket-summary-val.paid-val{color:var(–muted)}
+.tickets-empty{font-family:‘DM Mono’,monospace;font-size:11px;color:var(–muted);text-align:center;padding:12px 0}
+
+/* Pending badge on entries */
+.pending-badge{display:inline-block;padding:2px 8px;background:rgba(245,197,66,.15);border:1px solid var(–warn);border-radius:20px;font-family:‘DM Mono’,monospace;font-size:10px;color:var(–warn)}
+.paid-badge{display:inline-block;padding:2px 8px;background:rgba(68,255,136,.1);border:1px solid var(–success);border-radius:20px;font-family:‘DM Mono’,monospace;font-size:10px;color:var(–success)}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:3px;cursor:pointer;transition:transform .1s,opacity .1s}
+.btn:active{transform:scale(.98);opacity:.88}
+.btn-primary{background:var(–accent);color:#0a0a0a}
+.btn-secondary{background:var(–surface2);color:var(–text);border:1px solid var(–border);font-size:14px;letter-spacing:1px}
+.btn-danger{background:var(–danger);color:#fff;font-size:14px;letter-spacing:1px}
+.btn-sm{width:auto;padding:7px 13px;font-size:11px;letter-spacing:1px;font-family:‘DM Mono’,monospace;border-radius:6px}
+
+/* ── EARNINGS ── */
+.earn-row{display:flex;align-items:flex-end;gap:3px}
+.earnings-big{font-family:‘Bebas Neue’,sans-serif;font-size:clamp(30px,9vw,50px);letter-spacing:2px;color:var(–accent);line-height:1}
+.currency-sym{font-family:‘DM Mono’,monospace;font-size:14px;color:var(–muted);align-self:flex-end;margin-bottom:3px}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(–border)}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-label{color:var(–muted);font-family:‘DM Mono’,monospace;font-size:10px}
+.breakdown-value{color:var(–text);font-family:‘DM Mono’,monospace;font-size:13px}
+.breakdown-value.accent{color:var(–accent)}
+.breakdown-value.orange{color:var(–accent2)}
+.breakdown-value.warn{color:var(–warn)}
+
+/* ── SUMMARY ── */
+.period-selector{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.period-selector::-webkit-scrollbar{display:none}
+.period-btn{flex-shrink:0;padding:7px 14px;background:var(–surface2);border:1px solid var(–border);border-radius:20px;color:var(–muted);font-family:‘DM Mono’,monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all .15s}
+.period-btn.active{background:var(–accent);color:#0a0a0a;border-color:var(–accent)}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.summary-box{background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:12px;text-align:center}
+.summary-num{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:2px;color:var(–accent);line-height:1}
+.summary-lbl{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+
+/* ── ENTRIES ── */
+.entry-card{background:var(–surface);border:1px solid var(–border);border-radius:12px;padding:13px 15px;margin-bottom:8px;cursor:pointer;transition:border-color .2s,transform .1s}
+.entry-card:active{border-color:var(–accent);transform:scale(.99)}
+.entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.entry-date{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–muted);text-transform:uppercase;letter-spacing:1px}
+.entry-earn{font-family:‘Bebas Neue’,sans-serif;font-size:22px;letter-spacing:1px;color:var(–accent)}
+.entry-desc{font-size:11px;color:var(–muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:‘DM Mono’,monospace}
+.entry-meta{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.entry-chip{font-size:10px;font-family:‘DM Mono’,monospace;color:var(–muted);background:var(–surface2);padding:2px 8px;border-radius:20px;border:1px solid var(–border)}
+
+/* ── SETTINGS ── */
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(–border)}
+.setting-row:last-child{border-bottom:none}
+.setting-name{font-size:14px;font-weight:500}
+.setting-desc{font-size:10px;color:var(–muted);font-family:‘DM Mono’,monospace;margin-top:2px}
+.setting-input{width:88px;background:var(–surface2);border:1px solid var(–border);border-radius:8px;padding:8px 10px;color:var(–accent);font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:1px;text-align:right;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+.setting-input:focus{border-color:var(–accent)}
+
+/* ── MISC ── */
+.divider{border:none;border-top:1px solid var(–border);margin:12px 0}
+.empty{text-align:center;padding:36px 20px;color:var(–muted);font-family:‘DM Mono’,monospace;font-size:11px}
+.empty-icon{font-size:34px;margin-bottom:10px;opacity:.3}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.section-title{font-family:‘DM Mono’,monospace;font-size:9px;letter-spacing:2px;color:var(–muted);text-transform:uppercase}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(–surface);border:1px solid var(–border);border-radius:20px 20px 0 0;padding:18px 18px calc(18px + var(–safe-b));width:100%;max-width:480px;max-height:85vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(–border);border-radius:2px;margin:0 auto 14px}
+.modal-title{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:2px;color:var(–accent);margin-bottom:12px}
+.modal-subtitle{font-family:‘DM Mono’,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin:12px 0 6px}
+
+/* Ticket in modal */
+.modal-ticket{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(–border)}
+.modal-ticket:last-child{border-bottom:none}
+.modal-ticket-label{font-family:‘DM Mono’,monospace;font-size:12px}
+.modal-ticket-right{display:flex;align-items:center;gap:10px}
+.modal-ticket-amt{font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:1px;color:var(–warn)}
+.modal-ticket-amt.paid{color:var(–muted)}
+.mark-paid-btn{padding:4px 10px;font-family:‘DM Mono’,monospace;font-size:10px;border:1px solid var(–success);background:rgba(68,255,136,.08);color:var(–success);border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.mark-paid-btn:active{background:var(–success);color:#0a0a0a}
+.mark-paid-btn.is-paid{border-color:var(–border);background:none;color:var(–muted)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(var(–nav-h) + 12px + var(–safe-b));left:50%;transform:translateX(-50%) translateY(80px);background:var(–accent);color:#0a0a0a;padding:10px 22px;border-radius:20px;font-family:‘DM Mono’,monospace;font-size:12px;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.error{background:var(–danger);color:#fff}
+</style>
+
+</head>
+<body>
+
+<!-- ══════════════ WELCOME ══════════════ -->
+
+<div id="welcomeScreen">
+  <div class="w-logo">Time for<br>Chamba</div>
+  <div class="w-sub">Made by Guillermo Sanchez</div>
+  <div class="w-card">
+
+```
+<!-- Step 1: Language -->
+<div id="stepLang">
+  <div class="w-section-label">Idioma / Language</div>
+  <div class="w-q" id="wLangQ">¿En qué idioma prefieres la app?</div>
+  <div class="w-hint" id="wLangHint">Podrás cambiarlo en configuración.</div>
+  <div class="lang-row">
+    <div class="lang-btn sel" id="btnEs" onclick="selectLang('es')">
+      <div class="lang-flag">🇲🇽</div>
+      <div class="lang-name">Español</div>
+    </div>
+    <div class="lang-btn" id="btnEn" onclick="selectLang('en')">
+      <div class="lang-flag">🇺🇸</div>
+      <div class="lang-name">English</div>
+    </div>
+  </div>
+  <button class="w-go" id="wLangNext" onclick="goToNameStep()">SIGUIENTE →</button>
+</div>
+
+<!-- Step 2: Name -->
+<div id="stepName" style="display:none">
+  <div class="w-q" id="wNameQ">¿Cómo te llamas?</div>
+  <div class="w-hint" id="wNameHint">Así te saludamos cada vez que abras la app.</div>
+  <input class="w-input" id="welcomeInput" type="text" placeholder="Tu nombre..." maxlength="30" autocomplete="given-name" autocapitalize="words">
+  <button class="w-go" id="wNameGo" onclick="saveName()" style="margin-top:14px">A CHAMBEAR →</button>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+
+<div id="app">
+  <div class="header">
+    <div class="logo">Time for Chamba</div>
+    <div class="greeting" id="greeting">Hola 👋</div>
+    <div class="byline">Made by Guillermo Sanchez</div>
+  </div>
+
+  <!-- REGISTRO -->
+
+  <div id="page-registro" class="page active">
+    <div class="card">
+      <div class="live-date" id="liveDate">—</div>
+      <div class="live-clock" id="liveClock">00:00:00</div>
+      <div style="text-align:center;margin-top:6px">
+        <div class="live-badge"><span class="live-dot"></span> <span data-t="live"></span></div>
+      </div>
+    </div>
+
+```
+<div class="card">
+  <div class="card-title"><span>01</span> <span data-t="shiftInfo"></span></div>
+  <div class="field">
+    <label data-t="date"></label>
+    <input type="date" id="fieldDate">
+  </div>
+  <div class="time-row">
+    <div class="field"><label data-t="entry"></label><input type="time" id="fieldStart"></div>
+    <div class="field"><label data-t="exit"></label><input type="time" id="fieldEnd"></div>
+  </div>
+
+  <div class="field">
+    <label data-t="breakTime"></label>
+    <div class="stepper">
+      <button class="stepper-btn minus" onclick="adjustBreak(-5)">−</button>
+      <div class="stepper-value" id="breakDisplay">0 <span class="stepper-unit">min</span></div>
+      <button class="stepper-btn plus" onclick="adjustBreak(5)">+</button>
+    </div>
+    <div class="pause-chips" id="pauseChips">
+      <button class="pause-chip sel" onclick="setBreak(0,this)" data-t="noBreak"></button>
+      <button class="pause-chip" onclick="setBreak(15,this)">15 min</button>
+      <button class="pause-chip" onclick="setBreak(30,this)">30 min</button>
+      <button class="pause-chip" onclick="setBreak(45,this)">45 min</button>
+      <button class="pause-chip" onclick="setBreak(60,this)">1 <span data-t="hour"></span></button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label data-t="description"></label>
+    <textarea id="fieldDesc" data-t-placeholder="descPlaceholder"></textarea>
+  </div>
+
+  <!-- TICKETS TOGGLE -->
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-title">🧾 <span data-t="ticketsLabel"></span></div>
+      <div class="toggle-sub" data-t="ticketsSub"></div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="ticketsToggle" onchange="toggleTickets(this.checked)">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <!-- TICKETS SECTION -->
+  <div class="tickets-wrap" id="ticketsSection" style="display:none;margin-top:10px">
+    <div class="ticket-add-row">
+      <div class="field" style="grid-column:1/3">
+        <label data-t="ticketDesc"></label>
+        <input type="text" id="ticketLabelInput" data-t-placeholder="ticketDescPh" maxlength="40">
+      </div>
+      <div class="field">
+        <label data-t="amount"></label>
+        <input type="number" id="ticketAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
+      </div>
+      <button class="ticket-add-btn" onclick="addTicket()" data-t="add"></button>
+    </div>
+    <div class="tickets-list" id="ticketsList">
+      <div class="tickets-empty" data-t="noTickets"></div>
+    </div>
+    <div id="ticketSummaryRow" style="display:none">
+      <div class="ticket-summary">
+        <span class="ticket-summary-label" data-t="pendingTotal"></span>
+        <span class="ticket-summary-val" id="ticketPendingTotal">$0</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px">
+    <button class="btn btn-primary" onclick="calcAndPreview()" data-t="calcSave"></button>
+  </div>
+</div>
+
+<div class="card" id="previewCard" style="display:none">
+  <div class="card-title"><span>02</span> <span data-t="shiftSummary"></span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="normalHours"></span><span class="breakdown-value accent" id="prevNormal">—</span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="extraHours"></span><span class="breakdown-value orange" id="prevExtra">—</span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="totalWorked"></span><span class="breakdown-value" id="prevTotal">—</span></div>
+  <hr class="divider">
+  <div class="breakdown-row"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="prevPayNormal">—</span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="prevPayExtra">—</span></div>
+  <div class="breakdown-row" id="prevTicketRow" style="display:none"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="prevTicketAmt">—</span></div>
+  <div class="breakdown-row">
+    <span class="breakdown-label" data-t="totalEarned"></span>
+    <div class="earn-row"><span class="currency-sym" id="prevCurrSym">$</span><span class="earnings-big" id="prevEarnings">0.00</span></div>
+  </div>
+  <hr class="divider">
+  <button class="btn btn-primary" onclick="saveEntry()" data-t="saveShift"></button>
+</div>
+```
+
+  </div>
+
+  <!-- RESÚMENES -->
+
+  <div id="page-resumen" class="page">
+    <div class="period-selector">
+      <button class="period-btn active" onclick="selectPeriod('dia',this)" data-t="today"></button>
+      <button class="period-btn" onclick="selectPeriod('semana',this)" data-t="week"></button>
+      <button class="period-btn" onclick="selectPeriod('mes',this)" data-t="month"></button>
+      <button class="period-btn" onclick="selectPeriod('todo',this)" data-t="all"></button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>↗</span> <span id="periodLabel">Hoy</span></div>
+      <div class="summary-grid">
+        <div class="summary-box"><div class="summary-num" id="sumDays">0</div><div class="summary-lbl" data-t="shifts"></div></div>
+        <div class="summary-box"><div class="summary-num" id="sumHours">0h</div><div class="summary-lbl" data-t="hours"></div></div>
+        <div class="summary-box"><div class="summary-num" id="sumExtra">0h</div><div class="summary-lbl" data-t="extras"></div></div>
+        <div class="summary-box"><div class="summary-num" id="sumEarn" style="font-size:20px">$0</div><div class="summary-lbl" data-t="earned"></div></div>
+      </div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="sumNormalPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="total"></span><span class="breakdown-value accent" id="sumTotal">$0.00</span></div>
+    </div>
+    <div id="periodEntries"></div>
+  </div>
+
+  <!-- HISTORIAL -->
+
+  <div id="page-historial" class="page">
+    <div class="section-header">
+      <div class="section-title" data-t="allRecords"></div>
+      <button class="btn btn-secondary btn-sm" onclick="if(confirm(T('confirmClear')))clearAll()" data-t="deleteAll"></button>
+    </div>
+    <div id="historyList"></div>
+  </div>
+
+  <!-- CONFIG -->
+
+  <div id="page-config" class="page">
+    <div class="card">
+      <div class="card-title"><span>⚙</span> <span data-t="rateConfig"></span></div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="currency"></div><div class="setting-desc" data-t="currencyDesc"></div></div>
+        <input type="text" class="setting-input" id="cfgCurrency" value="$" maxlength="4" style="width:58px;font-size:22px;text-align:center;">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="normalRate"></div><div class="setting-desc" data-t="normalRateDesc"></div></div>
+        <input type="number" class="setting-input" id="cfgRate" value="50" min="0" step="0.5">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="overtimeRate"></div><div class="setting-desc" data-t="overtimeRateDesc"></div></div>
+        <input type="number" class="setting-input" id="cfgOvertimeRate" value="75" min="0" step="0.5">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="threshold"></div><div class="setting-desc" data-t="thresholdDesc"></div></div>
+        <input type="number" class="setting-input" id="cfgThreshold" value="8" min="1" max="24" step="0.5">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="yourName"></div><div class="setting-desc" data-t="yourNameDesc"></div></div>
+        <input type="text" class="setting-input" id="cfgName" value="" maxlength="20" style="width:120px;font-size:13px;font-family:'Space Grotesk',sans-serif;letter-spacing:0;color:var(--text);">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="language"></div><div class="setting-desc" data-t="languageDesc"></div></div>
+        <div style="display:flex;gap:8px">
+          <button onclick="setLangAndSave('es')" id="cfgLangEs" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇲🇽</button>
+          <button onclick="setLangAndSave('en')" id="cfgLangEn" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇺🇸</button>
+        </div>
+      </div>
+      <hr class="divider">
+      <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig"></button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
+        <div><strong style="color:var(--text)">Time for Chamba</strong> v3.0</div>
+        <div data-t="aboutDesc"></div>
+        <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-registro" onclick="switchTab('registro',this)">
+    <div class="nav-icon">⏱</div><div class="nav-label" data-t="tabRecord"></div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-resumen" onclick="switchTab('resumen',this)">
+    <div class="nav-icon">📊</div><div class="nav-label" data-t="tabSummary"></div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-historial" onclick="switchTab('historial',this)">
+    <div class="nav-icon">📋</div><div class="nav-label" data-t="tabHistory"></div><div class="nav-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-config" onclick="switchTab('config',this)">
+    <div class="nav-icon">⚙️</div><div class="nav-label" data-t="tabConfig"></div><div class="nav-dot"></div>
+  </button>
+</nav>
+
+<!-- DETAIL MODAL -->
+
+<div class="modal-overlay" id="entryModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">Turno</div>
+    <div id="modalContent"></div>
+    <hr class="divider">
+    <button class="btn btn-danger" onclick="deleteCurrentEntry()" style="margin-bottom:8px" data-t="deleteShift"></button>
+    <button class="btn btn-secondary" onclick="closeModal()" data-t="close"></button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+//  i18n
+// ══════════════════════════════════════
+const STRINGS = {
+  es: {
+    live:'en vivo', shiftInfo:'Información del Turno', date:'Fecha', entry:'Entrada', exit:'Salida',
+    breakTime:'Tiempo de Pausa', noBreak:'Sin pausa', hour:'hora', description:'Descripción',
+    descPlaceholder:'¿Qué hiciste hoy?',
+    ticketsLabel:'Tickets por Entregar', ticketsSub:'Gastos pagados por la empresa',
+    ticketDesc:'Concepto', ticketDescPh:'Ej: Gasolina, Comida...', amount:'Monto', add:'+ ADD',
+    noTickets:'Sin tickets añadidos', pendingTotal:'Total pendiente',
+    calcSave:'Calcular y Guardar', shiftSummary:'Resumen del Turno',
+    normalHours:'Horas normales', extraHours:'Horas extra', totalWorked:'Total trabajado',
+    normalPay:'Pago normal', extraPay:'Pago extra', pendingTickets:'Tickets pendientes',
+    totalEarned:'TOTAL GANADO', saveShift:'GUARDAR TURNO',
+    today:'Hoy', week:'Semana', month:'Mes', all:'Todo',
+    shifts:'Turnos', hours:'Horas', extras:'Extras', earned:'Ganado', total:'Total',
+    allRecords:'Todos los registros', confirmClear:'¿Borrar todo el historial?', deleteAll:'Borrar todo',
+    rateConfig:'Tarifa y Pago', currency:'Moneda', currencyDesc:'Símbolo ej: $, €, Q',
+    normalRate:'Tarifa Normal / hora', normalRateDesc:'Primeras N horas',
+    overtimeRate:'Tarifa Extra / hora', overtimeRateDesc:'Después del umbral',
+    threshold:'Umbral horas normales', thresholdDesc:'Antes del pago extra',
+    yourName:'Tu nombre', yourNameDesc:'Para el saludo',
+    language:'Idioma', languageDesc:'Cambia el idioma de la app',
+    saveConfig:'GUARDAR CONFIG',
+    about:'Acerca de', aboutDesc:'Turnos · Ganancias · Tickets · PWA',
+    tabRecord:'Registro', tabSummary:'Resumen', tabHistory:'Historial', tabConfig:'Config',
+    deleteShift:'Eliminar Turno', close:'Cerrar',
+    saved:'¡Turno guardado! 💪', deleted:'Turno eliminado', cleared:'Historial borrado',
+    configSaved:'¡Config guardada! ✅', invalidTime:'El tiempo trabajado es inválido',
+    fillFields:'Completa fecha, entrada y salida',
+    noDesc:'Sin descripción', noRecords:'No hay registros aún.', noRecordsPeriod:'Sin registros en este periodo.',
+    markPaid:'Marcar pagado', paid:'Pagado ✓', ticketsPaidToast:'Ticket marcado como pagado ✓',
+    pendingBadge:'pendiente', paidBadge:'tickets pagados',
+    greetMorning:'Buenos días', greetAfternoon:'Buenas tardes', greetEvening:'Buenas noches',
+    wLangQ:'¿En qué idioma prefieres la app?', wLangHint:'Podrás cambiarlo en configuración.',
+    wLangNext:'SIGUIENTE →', wNameQ:'¿Cómo te llamas?',
+    wNameHint:'Así te saludamos cada vez que abras la app.', wNameGo:'A CHAMBEAR →',
+    thisWeek:'Esta Semana', thisMonth:'Este Mes', allTime:'Todo el Tiempo',
+    ticket:'Ticket', tickets:'Tickets',
+    noBreakChip:'Sin pausa',
+  },
+  en: {
+    live:'live', shiftInfo:'Shift Information', date:'Date', entry:'Clock In', exit:'Clock Out',
+    breakTime:'Break Time', noBreak:'No break', hour:'hour', description:'Description',
+    descPlaceholder:"What did you do today?",
+    ticketsLabel:'Tickets to Submit', ticketsSub:'Company-paid expenses',
+    ticketDesc:'Description', ticketDescPh:'e.g. Gas, Food...', amount:'Amount', add:'+ ADD',
+    noTickets:'No tickets added', pendingTotal:'Pending total',
+    calcSave:'Calculate & Save', shiftSummary:'Shift Summary',
+    normalHours:'Regular hours', extraHours:'Overtime hours', totalWorked:'Total worked',
+    normalPay:'Regular pay', extraPay:'Overtime pay', pendingTickets:'Pending tickets',
+    totalEarned:'TOTAL EARNED', saveShift:'SAVE SHIFT',
+    today:'Today', week:'Week', month:'Month', all:'All',
+    shifts:'Shifts', hours:'Hours', extras:'Overtime', earned:'Earned', total:'Total',
+    allRecords:'All records', confirmClear:'Delete entire history?', deleteAll:'Delete all',
+    rateConfig:'Rate & Pay', currency:'Currency', currencyDesc:'Symbol e.g. $, €, £',
+    normalRate:'Regular rate / hour', normalRateDesc:'First N hours',
+    overtimeRate:'Overtime rate / hour', overtimeRateDesc:'After threshold',
+    threshold:'Regular hours threshold', thresholdDesc:'Before overtime kicks in',
+    yourName:'Your name', yourNameDesc:'Used for greeting',
+    language:'Language', languageDesc:'Change app language',
+    saveConfig:'SAVE CONFIG',
+    about:'About', aboutDesc:'Shifts · Earnings · Tickets · PWA',
+    tabRecord:'Record', tabSummary:'Summary', tabHistory:'History', tabConfig:'Config',
+    deleteShift:'Delete Shift', close:'Close',
+    saved:'Shift saved! 💪', deleted:'Shift deleted', cleared:'History cleared',
+    configSaved:'Config saved! ✅', invalidTime:'Worked time is invalid',
+    fillFields:'Fill in date, clock in and clock out',
+    noDesc:'No description', noRecords:'No records yet.', noRecordsPeriod:'No records for this period.',
+    markPaid:'Mark as paid', paid:'Paid ✓', ticketsPaidToast:'Ticket marked as paid ✓',
+    pendingBadge:'pending', paidBadge:'tickets paid',
+    greetMorning:'Good morning', greetAfternoon:'Good afternoon', greetEvening:'Good evening',
+    wLangQ:'What language do you prefer?', wLangHint:'You can change it in settings.',
+    wLangNext:'NEXT →', wNameQ:"What's your name?",
+    wNameHint:'We\'ll greet you every time you open the app.', wNameGo:'LET\'S GO →',
+    thisWeek:'This Week', thisMonth:'This Month', allTime:'All Time',
+    ticket:'Ticket', tickets:'Tickets',
+    noBreakChip:'No break',
+  }
+};
+
+let currentLang = 'es';
+function T(key){ return (STRINGS[currentLang]||STRINGS.es)[key] || key; }
+
+function applyTranslations() {
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    el.textContent = T(key);
+  });
+  document.querySelectorAll('[data-t-placeholder]').forEach(el => {
+    el.placeholder = T(el.getAttribute('data-t-placeholder'));
+  });
+  // Update config lang buttons
+  const cfgEs = document.getElementById('cfgLangEs');
+  const cfgEn = document.getElementById('cfgLangEn');
+  if (cfgEs) cfgEs.style.borderColor = currentLang==='es' ? 'var(--accent)' : 'var(--border)';
+  if (cfgEn) cfgEn.style.borderColor = currentLang==='en' ? 'var(--accent)' : 'var(--border)';
+}
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let config = { currency:'$', rate:50, overtimeRate:75, threshold:8 };
+let entries = [];
+let previewData = null;
+let currentModalId = null;
+let currentPeriod = 'dia';
+let breakMinutes = 0;
+let selectedWelcomeLang = 'es';
+
+// Current draft tickets (not yet saved)
+let draftTickets = []; // [{id, label, amount, paid}]
+
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+function init() {
+  const sc = localStorage.getItem('tfc_config');
+  if (sc) config = {...config, ...JSON.parse(sc)};
+  const se = localStorage.getItem('tfc_entries');
+  if (se) entries = JSON.parse(se);
+
+  const storedLang = localStorage.getItem('tfc_lang');
+  if (storedLang) { currentLang = storedLang; selectedWelcomeLang = storedLang; }
+
+  applyTranslations();
+
+  const name = localStorage.getItem('tfc_name');
+  if (name) {
+    document.getElementById('welcomeScreen').style.display = 'none';
+    applyGreeting(name);
+    document.getElementById('cfgName').value = name;
+  } else {
+    updateWelcomeStrings();
+    setTimeout(() => {}, 400);
+  }
+
+  loadConfigUI();
+  setToday();
+  startClock();
+  renderHistory();
+  renderSummary('dia');
+  updateBreakDisplay();
+}
+
+// ══════════════════════════════════════
+//  WELCOME FLOW
+// ══════════════════════════════════════
+function selectLang(lang) {
+  selectedWelcomeLang = lang;
+  document.getElementById('btnEs').classList.toggle('sel', lang==='es');
+  document.getElementById('btnEn').classList.toggle('sel', lang==='en');
+  // Update just the welcome text live
+  currentLang = lang;
+  updateWelcomeStrings();
+  applyTranslations();
+}
+
+function updateWelcomeStrings() {
+  document.getElementById('wLangQ').textContent = T('wLangQ');
+  document.getElementById('wLangHint').textContent = T('wLangHint');
+  document.getElementById('wLangNext').textContent = T('wLangNext');
+}
+
+function goToNameStep() {
+  currentLang = selectedWelcomeLang;
+  localStorage.setItem('tfc_lang', currentLang);
+  applyTranslations();
+  document.getElementById('stepLang').style.display = 'none';
+  document.getElementById('stepName').style.display = 'block';
+  document.getElementById('wNameQ').textContent = T('wNameQ');
+  document.getElementById('wNameHint').textContent = T('wNameHint');
+  document.getElementById('wNameGo').textContent = T('wNameGo');
+  document.getElementById('welcomeInput').placeholder = T('yourName');
+  setTimeout(() => document.getElementById('welcomeInput').focus(), 200);
+}
+
+function saveName() {
+  const name = document.getElementById('welcomeInput').value.trim() || (currentLang==='en'?'Worker':'Chambeador');
+  localStorage.setItem('tfc_name', name);
+  localStorage.setItem('tfc_lang', currentLang);
+  applyGreeting(name);
+  document.getElementById('cfgName').value = name;
+  document.getElementById('welcomeScreen').classList.add('hide');
+  setTimeout(() => document.getElementById('welcomeScreen').style.display='none', 420);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && document.activeElement===document.getElementById('welcomeInput')) saveName();
+});
+
+function applyGreeting(name) {
+  const h = new Date().getHours();
+  const g = h<12 ? T('greetMorning') : h<19 ? T('greetAfternoon') : T('greetEvening');
+  document.getElementById('greeting').textContent = `${g}, ${name} 👋`;
+}
+
+function setLangAndSave(lang) {
+  currentLang = lang;
+  localStorage.setItem('tfc_lang', lang);
+  applyTranslations();
+  renderHistory();
+  renderSummary(currentPeriod);
+  // Re-apply greeting
+  const name = localStorage.getItem('tfc_name');
+  if (name) applyGreeting(name);
+}
+
+function loadConfigUI() {
+  document.getElementById('cfgCurrency').value = config.currency;
+  document.getElementById('cfgRate').value = config.rate;
+  document.getElementById('cfgOvertimeRate').value = config.overtimeRate;
+  document.getElementById('cfgThreshold').value = config.threshold;
+}
+
+function setToday() {
+  document.getElementById('fieldDate').value = new Date().toISOString().split('T')[0];
+}
+
+// ══════════════════════════════════════
+//  CLOCK
+// ══════════════════════════════════════
+function startClock() {
+  const pad = v => String(v).padStart(2,'0');
+  const days_es   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const days_en   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months_es = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const months_en = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function tick() {
+    const n = new Date();
+    document.getElementById('liveClock').textContent = `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
+    const D = currentLang==='en' ? days_en : days_es;
+    const M = currentLang==='en' ? months_en : months_es;
+    document.getElementById('liveDate').textContent = `${D[n.getDay()]} ${n.getDate()} ${M[n.getMonth()]} ${n.getFullYear()}`;
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+// ══════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════
+function switchTab(tab, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  (btn||document.getElementById('nav-'+tab)).classList.add('active');
+  if (tab==='historial') renderHistory();
+  if (tab==='resumen') renderSummary(currentPeriod);
+}
+
+// ══════════════════════════════════════
+//  PAUSE STEPPER
+// ══════════════════════════════════════
+function adjustBreak(delta) {
+  breakMinutes = Math.max(0, Math.min(breakMinutes+delta, 480));
+  updateBreakDisplay(); updateChipSel();
+}
+function setBreak(val, chipEl) {
+  breakMinutes = val; updateBreakDisplay(); updateChipSel(chipEl);
+}
+function updateBreakDisplay() {
+  const el = document.getElementById('breakDisplay');
+  if (breakMinutes===0) { el.innerHTML = `0 <span class="stepper-unit">min</span>`; return; }
+  if (breakMinutes<60) { el.innerHTML = `${breakMinutes} <span class="stepper-unit">min</span>`; return; }
+  const h=Math.floor(breakMinutes/60), m=breakMinutes%60;
+  el.innerHTML = m>0 ? `${h}h <span class="stepper-unit">${m}m</span>` : `${h} <span class="stepper-unit">h</span>`;
+}
+function updateChipSel(activeEl) {
+  document.querySelectorAll('.pause-chip').forEach(c=>c.classList.remove('sel'));
+  if (activeEl) { activeEl.classList.add('sel'); return; }
+  // try to re-highlight by value match
+  const chips = document.querySelectorAll('.pause-chip');
+  const vals = [0,15,30,45,60];
+  chips.forEach((c,i) => { if (vals[i]===breakMinutes) c.classList.add('sel'); });
+}
+
+// ══════════════════════════════════════
+//  TICKETS
+// ══════════════════════════════════════
+function toggleTickets(on) {
+  document.getElementById('ticketsSection').style.display = on ? 'block' : 'none';
+  if (!on) { draftTickets = []; renderDraftTickets(); }
+}
+
+function addTicket() {
+  const label = document.getElementById('ticketLabelInput').value.trim();
+  const amt   = parseFloat(document.getElementById('ticketAmtInput').value) || 0;
+  if (!label && amt<=0) { showToast(T('fillFields'), true); return; }
+  draftTickets.push({ id: Date.now()+Math.random(), label: label || T('ticket'), amount: amt, paid: false });
+  document.getElementById('ticketLabelInput').value = '';
+  document.getElementById('ticketAmtInput').value = '';
+  renderDraftTickets();
+}
+
+function renderDraftTickets() {
+  const list = document.getElementById('ticketsList');
+  const summRow = document.getElementById('ticketSummaryRow');
+  if (!draftTickets.length) {
+    list.innerHTML = `<div class="tickets-empty">${T('noTickets')}</div>`;
+    summRow.style.display = 'none';
+    return;
+  }
+  list.innerHTML = draftTickets.map((t,i) => `
+    <div class="ticket-item ${t.paid?'paid':''}">
+      <button class="ticket-check ${t.paid?'paid':''}" onclick="toggleDraftPaid(${i})">${t.paid?'✓':''}</button>
+      <div class="ticket-body">
+        <div class="ticket-label">${escHtml(t.label)}</div>
+      </div>
+      <div class="ticket-amount">${config.currency}${t.amount.toFixed(2)}</div>
+      <button class="ticket-del" onclick="removeDraftTicket(${i})">✕</button>
+    </div>`).join('');
+  const pending = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
+  document.getElementById('ticketPendingTotal').textContent = `${config.currency}${pending.toFixed(2)}`;
+  summRow.style.display = draftTickets.length ? 'block' : 'none';
+}
+
+function toggleDraftPaid(i) {
+  draftTickets[i].paid = !draftTickets[i].paid;
+  renderDraftTickets();
+}
+function removeDraftTicket(i) {
+  draftTickets.splice(i,1);
+  renderDraftTickets();
+}
+
+// ══════════════════════════════════════
+//  CALC
+// ══════════════════════════════════════
+function calcAndPreview() {
+  const date  = document.getElementById('fieldDate').value;
+  const start = document.getElementById('fieldStart').value;
+  const end   = document.getElementById('fieldEnd').value;
+  const desc  = document.getElementById('fieldDesc').value.trim();
+  if (!date||!start||!end) { showToast(T('fillFields'),true); return; }
+  const s = new Date(`${date}T${start}`);
+  let   e = new Date(`${date}T${end}`);
+  if (e<=s) e.setDate(e.getDate()+1);
+  const totalMin = (e-s)/60000 - breakMinutes;
+  if (totalMin<=0) { showToast(T('invalidTime'),true); return; }
+  const totalHours  = totalMin/60;
+  const normalHours = Math.min(totalHours, config.threshold);
+  const extraHours  = Math.max(0, totalHours-config.threshold);
+  const normalPay   = normalHours * config.rate;
+  const extraPay    = extraHours  * config.overtimeRate;
+  const pendingTicketAmt = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
+  const totalPay    = normalPay + extraPay + pendingTicketAmt;
+
+  previewData = { date, start, end, breakMin:breakMinutes, desc, totalHours, normalHours, extraHours, normalPay, extraPay, totalPay, tickets:[...draftTickets], id:Date.now() };
+
+  const fmt  = v => `${config.currency}${v.toFixed(2)}`;
+  const fmtH = h => h<.01?'0m':h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
+
+  document.getElementById('prevNormal').textContent    = fmtH(normalHours);
+  document.getElementById('prevExtra').textContent     = extraHours>0?fmtH(extraHours):'—';
+  document.getElementById('prevTotal').textContent     = fmtH(totalHours);
+  document.getElementById('prevPayNormal').textContent = fmt(normalPay);
+  document.getElementById('prevPayExtra').textContent  = extraHours>0?fmt(extraPay):'—';
+  document.getElementById('prevEarnings').textContent  = totalPay.toFixed(2);
+  document.getElementById('prevCurrSym').textContent   = config.currency;
+
+  const ticketRow = document.getElementById('prevTicketRow');
+  if (pendingTicketAmt>0) {
+    ticketRow.style.display='flex';
+    document.getElementById('prevTicketAmt').textContent = fmt(pendingTicketAmt);
+  } else { ticketRow.style.display='none'; }
+
+  document.getElementById('previewCard').style.display='block';
+  document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function saveEntry() {
+  if (!previewData) return;
+  entries.unshift(previewData);
+  localStorage.setItem('tfc_entries', JSON.stringify(entries));
+  showToast(T('saved'));
+  document.getElementById('previewCard').style.display='none';
+  document.getElementById('fieldStart').value='';
+  document.getElementById('fieldEnd').value='';
+  document.getElementById('fieldDesc').value='';
+  document.getElementById('ticketsToggle').checked=false;
+  toggleTickets(false);
+  draftTickets=[];
+  setBreak(0); setToday(); previewData=null;
+  renderHistory(); renderSummary(currentPeriod);
+}
+
+// ══════════════════════════════════════
+//  HISTORY
+// ══════════════════════════════════════
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (!entries.length) { list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div>${T('noRecords')}</div>`; return; }
+  const fmtH = h => h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
+  list.innerHTML = entries.map(e => {
+    const pendingTickets = (e.tickets||[]).filter(t=>!t.paid);
+    const pendingAmt = pendingTickets.reduce((s,t)=>s+t.amount,0);
+    const ticketBadge = pendingAmt>0
+      ? `<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)} ${T('pendingBadge')}</span>`
+      : (e.tickets&&e.tickets.length ? `<span class="paid-badge">✓ ${T('paidBadge')}</span>` : '');
+    return `<div class="entry-card" onclick="openModal('${e.id}')">
+      <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
+      <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
+      <div class="entry-meta">
+        <span class="entry-chip">⏱ ${fmtH(e.totalHours)}</span>
+        <span class="entry-chip">▶ ${e.start}</span>
+        <span class="entry-chip">■ ${e.end}</span>
+        ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2);border-color:var(--accent2)">+${fmtH(e.extraHours)}</span>`:''}
+        ${ticketBadge}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function formatDate(ds) {
+  const d = new Date(ds+'T12:00:00');
+  const D_es=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const D_en=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const M_es=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const M_en=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const D=currentLang==='en'?D_en:D_es;
+  const M=currentLang==='en'?M_en:M_es;
+  return `${D[d.getDay()]} ${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+// ══════════════════════════════════════
+//  MODAL
+// ══════════════════════════════════════
+function openModal(id) {
+  currentModalId = parseInt(id);
+  const e = entries.find(x=>x.id===currentModalId); if (!e) return;
+  const fmtH = h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
+  const fmt  = v=>`${config.currency}${v.toFixed(2)}`;
+
+  let ticketsHtml='';
+  if (e.tickets && e.tickets.length) {
+    const items = e.tickets.map((t,i) => `
+      <div class="modal-ticket">
+        <span class="modal-ticket-label">${escHtml(t.label)}</span>
+        <div class="modal-ticket-right">
+          <span class="modal-ticket-amt ${t.paid?'paid':''}">${config.currency}${t.amount.toFixed(2)}</span>
+          <button class="mark-paid-btn ${t.paid?'is-paid':''}" onclick="toggleModalTicketPaid('${e.id}',${i})">
+            ${t.paid?T('paid'):T('markPaid')}
+          </button>
+        </div>
+      </div>`).join('');
+    ticketsHtml=`<div class="modal-subtitle">🧾 ${T('ticketsLabel')}</div>${items}`;
+  }
+
+  document.getElementById('modalTitle').textContent = formatDate(e.date);
+  document.getElementById('modalContent').innerHTML = `
+    <div class="breakdown-row"><span class="breakdown-label">${T('entry')}</span><span class="breakdown-value">${e.start}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('exit')}</span><span class="breakdown-value">${e.end}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('breakTime')}</span><span class="breakdown-value">${e.breakMin} min</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('totalWorked')}</span><span class="breakdown-value accent">${fmtH(e.totalHours)}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('normalHours')}</span><span class="breakdown-value">${fmtH(e.normalHours)}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('extraHours')}</span><span class="breakdown-value orange">${e.extraHours>0?fmtH(e.extraHours):'—'}</span></div>
+    <hr class="divider">
+    <div class="breakdown-row"><span class="breakdown-label">${T('normalPay')}</span><span class="breakdown-value">${fmt(e.normalPay)}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('extraPay')}</span><span class="breakdown-value orange">${e.extraHours>0?fmt(e.extraPay):'—'}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('totalEarned')}</span><span class="breakdown-value accent" style="font-size:20px;font-family:'Bebas Neue',sans-serif">${fmt(e.totalPay)}</span></div>
+    ${e.desc?`<hr class="divider"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.6">${escHtml(e.desc)}</div>`:''}
+    ${ticketsHtml}
+  `;
+  document.getElementById('entryModal').classList.add('open');
+}
+
+function toggleModalTicketPaid(entryId, ticketIdx) {
+  const e = entries.find(x=>x.id===parseInt(entryId)); if (!e||!e.tickets) return;
+  e.tickets[ticketIdx].paid = !e.tickets[ticketIdx].paid;
+  // Recalculate totalPay: base pay + pending tickets only
+  const pendingAmt = e.tickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
+  e.totalPay = e.normalPay + e.extraPay + pendingAmt;
+  localStorage.setItem('tfc_entries', JSON.stringify(entries));
+  showToast(T('ticketsPaidToast'));
+  openModal(entryId); // re-render modal
+  renderHistory();
+  renderSummary(currentPeriod);
+}
+
+function closeModal() { document.getElementById('entryModal').classList.remove('open'); currentModalId=null; }
+
+function deleteCurrentEntry() {
+  if (!currentModalId||!confirm(T('deleteShift')+'?')) return;
+  entries = entries.filter(e=>e.id!==currentModalId);
+  localStorage.setItem('tfc_entries', JSON.stringify(entries));
+  closeModal(); renderHistory(); renderSummary(currentPeriod);
+  showToast(T('deleted'));
+}
+
+function clearAll() {
+  entries=[]; localStorage.setItem('tfc_entries', JSON.stringify(entries));
+  renderHistory(); renderSummary(currentPeriod); showToast(T('cleared'));
+}
+
+// ══════════════════════════════════════
+//  SUMMARY
+// ══════════════════════════════════════
+function selectPeriod(p, btn) {
+  currentPeriod=p;
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSummary(p);
+}
+
+function renderSummary(period) {
+  const now = new Date();
+  let filtered, label;
+  if (period==='dia') {
+    const t=now.toISOString().split('T')[0];
+    filtered=entries.filter(e=>e.date===t); label=T('today');
+  } else if (period==='semana') {
+    const sw=new Date(now); sw.setDate(now.getDate()-now.getDay()); sw.setHours(0,0,0,0);
+    filtered=entries.filter(e=>new Date(e.date+'T12:00:00')>=sw); label=T('thisWeek');
+  } else if (period==='mes') {
+    filtered=entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}); label=T('thisMonth');
+  } else { filtered=[...entries]; label=T('allTime'); }
+
+  document.getElementById('periodLabel').textContent=label;
+  const fmtH = h=>h<.01?'0h':(h>=1?`${Math.floor(h)}h`:`${Math.round(h*60)}m`);
+  const th=filtered.reduce((s,e)=>s+e.totalHours,0);
+  const eh=filtered.reduce((s,e)=>s+e.extraHours,0);
+  const np=filtered.reduce((s,e)=>s+e.normalPay,0);
+  const ep=filtered.reduce((s,e)=>s+e.extraPay,0);
+  const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
+  const tp=filtered.reduce((s,e)=>s+e.totalPay,0);
+
+  document.getElementById('sumDays').textContent    = filtered.length;
+  document.getElementById('sumHours').textContent   = fmtH(th);
+  document.getElementById('sumExtra').textContent   = fmtH(eh);
+  document.getElementById('sumEarn').textContent    = `${config.currency}${Math.round(tp)}`;
+  document.getElementById('sumNormalPay').textContent    = `${config.currency}${np.toFixed(2)}`;
+  document.getElementById('sumExtraPay').textContent     = `${config.currency}${ep.toFixed(2)}`;
+  document.getElementById('sumPendingTickets').textContent= `${config.currency}${pt.toFixed(2)}`;
+  document.getElementById('sumTotal').textContent        = `${config.currency}${tp.toFixed(2)}`;
+
+  const ct=document.getElementById('periodEntries');
+  if (!filtered.length){ct.innerHTML=`<div class="empty"><div class="empty-icon">📊</div>${T('noRecordsPeriod')}</div>`;return;}
+  const fmtHh=h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
+  ct.innerHTML=filtered.slice(0,10).map(e=>{
+    const pendingAmt=(e.tickets||[]).filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
+    return `<div class="entry-card" onclick="openModal('${e.id}')">
+      <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
+      <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
+      <div class="entry-meta">
+        <span class="entry-chip">⏱ ${fmtHh(e.totalHours)}</span>
+        ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2)">+${fmtHh(e.extraHours)}</span>`:''}
+        ${pendingAmt>0?`<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════
+function saveConfig() {
+  config.currency     = document.getElementById('cfgCurrency').value||'$';
+  config.rate         = parseFloat(document.getElementById('cfgRate').value)||50;
+  config.overtimeRate = parseFloat(document.getElementById('cfgOvertimeRate').value)||75;
+  config.threshold    = parseFloat(document.getElementById('cfgThreshold').value)||8;
+  localStorage.setItem('tfc_config', JSON.stringify(config));
+  const newName = document.getElementById('cfgName').value.trim();
+  if (newName) { localStorage.setItem('tfc_name', newName); applyGreeting(newName); }
+  showToast(T('configSaved'));
+  renderHistory(); renderSummary(currentPeriod);
+}
+
+// ══════════════════════════════════════
+//  TOAST & UTILS
+// ══════════════════════════════════════
+function showToast(msg, error=false) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(error?' error':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════
+init();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+
+</body>
+</html>
