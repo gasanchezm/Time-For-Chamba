@@ -1,6 +1,6 @@
 {
   "name": "Time for Chamba",
-  "short_name": "Chamba",
+  "short_name": "Time for Chamba",
   "description": "Registra tus horas trabajadas y calcula tus ganancias",
   "start_url": "./index.html",
   "display": "standalone",
