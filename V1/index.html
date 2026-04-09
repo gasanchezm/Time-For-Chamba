@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,11 +19,10 @@
   --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#2a2a2a;
   --accent:#c8f135; --accent2:#ff6b35; --text:#f0f0f0; --muted:#666;
   --danger:#ff4444; --success:#44ff88; --warn:#f5c542;
-  --nav-h:64px; --safe-b:env(safe-area-inset-bottom,0px);
+  --nav-h:82px; --safe-b:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
-@supports (height: 100dvh) { html,body { height:100dvh; } }
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
 
 /* ── WELCOME ── */
@@ -51,7 +50,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .w-go:active{transform:scale(.97);opacity:.9}
 
 /* ── APP ── */
-#app{display:flex;flex-direction:column;min-height:100%;min-height:100dvh;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 8px)}
+#app{display:flex;flex-direction:column;min-height:100vh;padding-bottom:calc(var(--nav-h) + var(--safe-b))}
 .header{padding:16px 20px 0;display:flex;flex-direction:column;align-items:center;text-align:center}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,9vw,56px);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,var(--accent) 0%,#9abf00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn .5s ease-out}
 @keyframes logoIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
@@ -64,7 +63,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── BOTTOM NAV ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(12,12,12,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:10px;padding-bottom:var(--safe-b);padding-bottom:env(safe-area-inset-bottom,0px);height:calc(var(--nav-h) + var(--safe-b));height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));z-index:100}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-b));background:rgba(12,12,12,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:10px;z-index:100}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px}
 .nav-icon{font-size:22px;line-height:1;transition:transform .15s}
 .nav-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;transition:color .15s}
@@ -392,16 +391,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <button class="period-btn active" onclick="selectPeriod('dia',this)" data-t="today"></button>
       <button class="period-btn" onclick="selectPeriod('semana',this)" data-t="week"></button>
       <button class="period-btn" onclick="selectPeriod('mes',this)" data-t="month"></button>
-      <button class="period-btn period-btn-mes-ant" onclick="selectPeriod('mes_anterior',this)" id="btnMesAnterior"></button>
       <button class="period-btn" onclick="selectPeriod('todo',this)" data-t="all"></button>
-    </div>
-    <!-- Month picker (shown when 'mes_anterior' or custom month selected) -->
-    <div id="monthPickerWrap" style="display:none;margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <button onclick="shiftMonthPicker(-1)" style="width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-        <div id="monthPickerLabel" style="flex:1;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text)"></div>
-        <button onclick="shiftMonthPicker(1)" id="monthPickerNext" style="width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-      </div>
     </div>
     <div class="card">
       <div class="card-title"><span>↗</span> <span id="periodLabel">Hoy</span></div>
@@ -549,7 +539,6 @@ const STRINGS = {
     thisWeek:'Esta Semana', thisMonth:'Este Mes', allTime:'Todo el Tiempo',
     ticket:'Ticket', tickets:'Tickets',
     noBreakChip:'Sin pausa',
-    prevMonth:'Mes Anterior', chooseMonth:'Elegir Mes',
   },
   en: {
     live:'live', shiftInfo:'Shift Information', date:'Date', entry:'Clock In', exit:'Clock Out',
@@ -588,7 +577,6 @@ const STRINGS = {
     thisWeek:'This Week', thisMonth:'This Month', allTime:'All Time',
     ticket:'Ticket', tickets:'Tickets',
     noBreakChip:'No break',
-    prevMonth:'Prev Month', chooseMonth:'Pick Month',
   }
 };
 
@@ -603,13 +591,6 @@ function applyTranslations() {
   document.querySelectorAll('[data-t-placeholder]').forEach(el => {
     el.placeholder = T(el.getAttribute('data-t-placeholder'));
   });
-  // Update "mes anterior" button label
-  const btnMesAnt = document.getElementById('btnMesAnterior');
-  if (btnMesAnt) btnMesAnt.textContent = T('prevMonth');
-  // Update month picker label if visible
-  if (document.getElementById('monthPickerWrap') && document.getElementById('monthPickerWrap').style.display !== 'none') {
-    updateMonthPickerLabel();
-  }
   // Update config lang buttons
   const cfgEs = document.getElementById('cfgLangEs');
   const cfgEn = document.getElementById('cfgLangEn');
@@ -1015,39 +996,10 @@ function clearAll() {
 // ══════════════════════════════════════
 //  SUMMARY
 // ══════════════════════════════════════
-let pickerYear = new Date().getFullYear();
-let pickerMonth = new Date().getMonth() - 1; // default: last month
-// Normalize
-if (pickerMonth < 0) { pickerMonth = 11; pickerYear -= 1; }
-
-function updateMonthPickerLabel() {
-  const months_es = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const months_en = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const M = currentLang==='en' ? months_en : months_es;
-  document.getElementById('monthPickerLabel').textContent = `${M[pickerMonth]} ${pickerYear}`;
-  // Disable next button if we're at current month or beyond
-  const now = new Date();
-  const isCurrentOrFuture = (pickerYear > now.getFullYear()) || (pickerYear === now.getFullYear() && pickerMonth >= now.getMonth());
-  document.getElementById('monthPickerNext').style.opacity = isCurrentOrFuture ? '0.3' : '1';
-  document.getElementById('monthPickerNext').disabled = isCurrentOrFuture;
-}
-
-function shiftMonthPicker(delta) {
-  pickerMonth += delta;
-  if (pickerMonth > 11) { pickerMonth = 0; pickerYear += 1; }
-  if (pickerMonth < 0)  { pickerMonth = 11; pickerYear -= 1; }
-  updateMonthPickerLabel();
-  renderSummary('mes_anterior');
-}
-
 function selectPeriod(p, btn) {
   currentPeriod=p;
   document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  // Show/hide month picker
-  const showPicker = (p === 'mes_anterior');
-  document.getElementById('monthPickerWrap').style.display = showPicker ? 'block' : 'none';
-  if (showPicker) updateMonthPickerLabel();
   renderSummary(p);
 }
 
@@ -1062,12 +1014,6 @@ function renderSummary(period) {
     filtered=entries.filter(e=>new Date(e.date+'T12:00:00')>=sw); label=T('thisWeek');
   } else if (period==='mes') {
     filtered=entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}); label=T('thisMonth');
-  } else if (period==='mes_anterior') {
-    const months_es = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-    const months_en = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const M = currentLang==='en' ? months_en : months_es;
-    label = `${M[pickerMonth]} ${pickerYear}`;
-    filtered=entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===pickerMonth&&d.getFullYear()===pickerYear;});
   } else { filtered=[...entries]; label=T('allTime'); }
 
   document.getElementById('periodLabel').textContent=label;
