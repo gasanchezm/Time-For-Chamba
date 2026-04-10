@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -17,7 +18,7 @@
 :root {
   --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#2a2a2a;
   --accent:#c8f135; --accent2:#ff6b35; --text:#f0f0f0; --muted:#666;
-  --danger:#ff4444; --success:#44ff88; --warn:#f5c542; --festivo:#b57bee;
+  --danger:#ff4444; --success:#44ff88; --warn:#f5c542;
   --nav-h:64px; --safe-b:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -38,6 +39,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .w-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:500;outline:none;transition:border-color .2s}
 .w-input:focus{border-color:var(--accent)}
 .w-divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+/* Language picker */
 .lang-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0}
 .lang-btn{padding:14px 10px;background:var(--surface2);border:2px solid var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .15s}
 .lang-btn:active{transform:scale(.97)}
@@ -79,7 +81,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .card-title span{color:var(--accent)}
 .card.orange-top::before{background:linear-gradient(90deg,var(--accent2),transparent)}
 .card.warn-top::before{background:linear-gradient(90deg,var(--warn),transparent)}
-.card.festivo-top::before{background:linear-gradient(90deg,var(--festivo),transparent)}
 
 /* ── CLOCK ── */
 .live-clock{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,13vw,70px);letter-spacing:4px;color:var(--text);text-align:center;line-height:1;margin:6px 0}
@@ -91,8 +92,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ── FIELDS ── */
 .field{margin-bottom:11px}
 .field label{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.field input,.field textarea,.field select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:15px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+.field input,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:15px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
 .field textarea{resize:vertical;min-height:64px}
 .time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
@@ -119,12 +120,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .toggle-thumb{position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;pointer-events:none}
 .toggle input:checked ~ .toggle-thumb{transform:translateX(20px)}
 
-/* Festivo toggle variant */
-.toggle.festivo-toggle input:checked + .toggle-track{background:var(--festivo)}
-
-/* ── FESTIVO BADGE ── */
-.festivo-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:rgba(181,123,238,.15);border:1px solid var(--festivo);border-radius:20px;font-family:'DM Mono',monospace;font-size:10px;color:var(--festivo)}
-
 /* ── TICKETS SECTION ── */
 .tickets-wrap{margin-top:2px}
 .ticket-add-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:flex-end;margin-bottom:10px}
@@ -132,10 +127,9 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ticket-add-btn{height:44px;padding:0 14px;background:var(--accent);border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#0a0a0a;cursor:pointer;white-space:nowrap;transition:transform .1s,opacity .1s;align-self:flex-end}
 .ticket-add-btn:active{transform:scale(.95);opacity:.9}
 .tickets-list{display:flex;flex-direction:column;gap:6px}
-.ticket-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:border-color .2s}
+.ticket-item{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:border-color .2s}
 .ticket-item.paid{opacity:.5;border-style:dashed}
 .ticket-item.paid .ticket-label{text-decoration:line-through}
-.ticket-main{display:flex;align-items:center;gap:10px}
 .ticket-check{width:22px;height:22px;border-radius:6px;background:none;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .15s}
 .ticket-check.paid{background:var(--success);border-color:var(--success);color:#0a0a0a}
 .ticket-body{flex:1;min-width:0}
@@ -144,16 +138,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .ticket-item.paid .ticket-amount{color:var(--muted)}
 .ticket-del{background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:2px 4px;flex-shrink:0;transition:color .15s}
 .ticket-del:hover{color:var(--danger)}
-/* Ticket photos */
-.ticket-photos{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
-.ticket-photo-thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;flex-shrink:0;cursor:pointer}
-.ticket-photo-thumb img{width:100%;height:100%;object-fit:cover}
-.ticket-photo-del{position:absolute;top:2px;right:2px;width:18px;height:18px;background:rgba(255,68,68,.85);border:none;border-radius:50%;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.ticket-photo-add{width:64px;height:64px;border-radius:8px;background:var(--surface);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;flex-shrink:0;color:var(--muted);transition:border-color .15s}
-.ticket-photo-add:active{border-color:var(--accent)}
 .ticket-summary{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid var(--border);margin-top:8px}
 .ticket-summary-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
 .ticket-summary-val{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--warn)}
+.ticket-summary-val.paid-val{color:var(--muted)}
 .tickets-empty{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:center;padding:12px 0}
 
 /* Pending badge on entries */
@@ -167,7 +155,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);font-size:14px;letter-spacing:1px}
 .btn-danger{background:var(--danger);color:#fff;font-size:14px;letter-spacing:1px}
 .btn-sm{width:auto;padding:7px 13px;font-size:11px;letter-spacing:1px;font-family:'DM Mono',monospace;border-radius:6px}
-.btn-pdf{background:var(--surface2);border:1px solid var(--accent);color:var(--accent);font-size:14px;letter-spacing:2px;display:flex;align-items:center;justify-content:center;gap:8px}
 
 /* ── EARNINGS ── */
 .earn-row{display:flex;align-items:flex-end;gap:3px}
@@ -180,7 +167,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .breakdown-value.accent{color:var(--accent)}
 .breakdown-value.orange{color:var(--accent2)}
 .breakdown-value.warn{color:var(--warn)}
-.breakdown-value.festivo{color:var(--festivo)}
 
 /* ── SUMMARY ── */
 .period-selector{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
@@ -195,7 +181,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ── ENTRIES ── */
 .entry-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:8px;cursor:pointer;transition:border-color .2s,transform .1s}
 .entry-card:active{border-color:var(--accent);transform:scale(.99)}
-.entry-card.festivo-entry{border-left:2px solid var(--festivo)}
 .entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .entry-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 .entry-earn{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--accent)}
@@ -210,10 +195,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .setting-desc{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px}
 .setting-input{width:88px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;text-align:right;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s}
 .setting-input:focus{border-color:var(--accent)}
-.setting-select{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer}
-
-/* Km stepper inline */
-.km-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
 
 /* ── MISC ── */
 .divider{border:none;border-top:1px solid var(--border);margin:12px 0}
@@ -225,22 +206,15 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:300;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:18px 18px calc(18px + var(--safe-b));width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.34,1.56,.64,1)}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:18px 18px calc(18px + var(--safe-b));width:100%;max-width:480px;max-height:85vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.34,1.56,.64,1)}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px}
 .modal-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--accent);margin-bottom:12px}
 .modal-subtitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
 
-/* Photo viewer modal */
-#photoViewerModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:400;align-items:center;justify-content:center}
-#photoViewerModal.open{display:flex}
-#photoViewerImg{max-width:94vw;max-height:90vh;border-radius:10px;object-fit:contain}
-.photo-viewer-close{position:absolute;top:16px;right:20px;font-size:28px;color:#fff;cursor:pointer;background:none;border:none}
-
 /* Ticket in modal */
-.modal-ticket{padding:10px 0;border-bottom:1px solid var(--border)}
+.modal-ticket{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
 .modal-ticket:last-child{border-bottom:none}
-.modal-ticket-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .modal-ticket-label{font-family:'DM Mono',monospace;font-size:12px}
 .modal-ticket-right{display:flex;align-items:center;gap:10px}
 .modal-ticket-amt{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--warn)}
@@ -248,42 +222,56 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .mark-paid-btn{padding:4px 10px;font-family:'DM Mono',monospace;font-size:10px;border:1px solid var(--success);background:rgba(68,255,136,.08);color:var(--success);border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
 .mark-paid-btn:active{background:var(--success);color:#0a0a0a}
 .mark-paid-btn.is-paid{border-color:var(--border);background:none;color:var(--muted)}
-.modal-ticket-photos{display:flex;gap:6px;flex-wrap:wrap}
-.modal-ticket-photos img{width:72px;height:72px;border-radius:8px;object-fit:cover;cursor:pointer}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:calc(var(--nav-h) + 12px + var(--safe-b));left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#0a0a0a;padding:10px 22px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.error{background:var(--danger);color:#fff}
 </style>
+
 </head>
 <body>
 
 <!-- ══════════════ WELCOME ══════════════ -->
+
 <div id="welcomeScreen">
   <div class="w-logo">Time for<br>Chamba</div>
   <div class="w-sub">Made by Guillermo Sanchez</div>
   <div class="w-card">
-    <div id="stepLang">
-      <div class="w-section-label">Idioma / Language</div>
-      <div class="w-q" id="wLangQ">¿En qué idioma prefieres la app?</div>
-      <div class="w-hint" id="wLangHint">Podrás cambiarlo en configuración.</div>
-      <div class="lang-row">
-        <div class="lang-btn sel" id="btnEs" onclick="selectLang('es')"><div class="lang-flag">🇲🇽</div><div class="lang-name">Español</div></div>
-        <div class="lang-btn" id="btnEn" onclick="selectLang('en')"><div class="lang-flag">🇺🇸</div><div class="lang-name">English</div></div>
-      </div>
-      <button class="w-go" id="wLangNext" onclick="goToNameStep()">SIGUIENTE →</button>
+
+```
+<!-- Step 1: Language -->
+<div id="stepLang">
+  <div class="w-section-label">Idioma / Language</div>
+  <div class="w-q" id="wLangQ">¿En qué idioma prefieres la app?</div>
+  <div class="w-hint" id="wLangHint">Podrás cambiarlo en configuración.</div>
+  <div class="lang-row">
+    <div class="lang-btn sel" id="btnEs" onclick="selectLang('es')">
+      <div class="lang-flag">🇲🇽</div>
+      <div class="lang-name">Español</div>
     </div>
-    <div id="stepName" style="display:none">
-      <div class="w-q" id="wNameQ">¿Cómo te llamas?</div>
-      <div class="w-hint" id="wNameHint">Así te saludamos cada vez que abras la app.</div>
-      <input class="w-input" id="welcomeInput" type="text" placeholder="Tu nombre..." maxlength="30" autocomplete="given-name" autocapitalize="words">
-      <button class="w-go" id="wNameGo" onclick="saveName()" style="margin-top:14px">A CHAMBEAR →</button>
+    <div class="lang-btn" id="btnEn" onclick="selectLang('en')">
+      <div class="lang-flag">🇺🇸</div>
+      <div class="lang-name">English</div>
     </div>
+  </div>
+  <button class="w-go" id="wLangNext" onclick="goToNameStep()">SIGUIENTE →</button>
+</div>
+
+<!-- Step 2: Name -->
+<div id="stepName" style="display:none">
+  <div class="w-q" id="wNameQ">¿Cómo te llamas?</div>
+  <div class="w-hint" id="wNameHint">Así te saludamos cada vez que abras la app.</div>
+  <input class="w-input" id="welcomeInput" type="text" placeholder="Tu nombre..." maxlength="30" autocomplete="given-name" autocapitalize="words">
+  <button class="w-go" id="wNameGo" onclick="saveName()" style="margin-top:14px">A CHAMBEAR →</button>
+</div>
+```
+
   </div>
 </div>
 
 <!-- ══════════════ APP ══════════════ -->
+
 <div id="app">
   <div class="header">
     <div class="logo">Time for Chamba</div>
@@ -292,6 +280,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
 
   <!-- REGISTRO -->
+
   <div id="page-registro" class="page active">
     <div class="card">
       <div class="live-date" id="liveDate">—</div>
@@ -301,139 +290,103 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
     </div>
 
-    <div class="card" id="shiftCard">
-      <div class="card-title"><span>01</span> <span data-t="shiftInfo"></span></div>
-      <div class="field">
-        <label data-t="date"></label>
-        <input type="date" id="fieldDate">
-      </div>
-      <div class="time-row">
-        <div class="field"><label data-t="entry"></label><input type="time" id="fieldStart"></div>
-        <div class="field"><label data-t="exit"></label><input type="time" id="fieldEnd"></div>
-      </div>
+```
+<div class="card">
+  <div class="card-title"><span>01</span> <span data-t="shiftInfo"></span></div>
+  <div class="field">
+    <label data-t="date"></label>
+    <input type="date" id="fieldDate">
+  </div>
+  <div class="time-row">
+    <div class="field"><label data-t="entry"></label><input type="time" id="fieldStart"></div>
+    <div class="field"><label data-t="exit"></label><input type="time" id="fieldEnd"></div>
+  </div>
 
-      <div class="field">
-        <label data-t="breakTime"></label>
-        <div class="stepper">
-          <button class="stepper-btn minus" onclick="adjustBreak(-5)">−</button>
-          <div class="stepper-value" id="breakDisplay">0 <span class="stepper-unit">min</span></div>
-          <button class="stepper-btn plus" onclick="adjustBreak(5)">+</button>
-        </div>
-        <div class="pause-chips" id="pauseChips">
-          <button class="pause-chip sel" onclick="setBreak(0,this)" data-t="noBreak"></button>
-          <button class="pause-chip" onclick="setBreak(15,this)">15 min</button>
-          <button class="pause-chip" onclick="setBreak(30,this)">30 min</button>
-          <button class="pause-chip" onclick="setBreak(45,this)">45 min</button>
-          <button class="pause-chip" onclick="setBreak(60,this)">1 <span data-t="hour"></span></button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label data-t="description"></label>
-        <textarea id="fieldDesc" data-t-placeholder="descPlaceholder"></textarea>
-      </div>
-
-      <!-- FESTIVO TOGGLE -->
-      <div class="toggle-row">
-        <div class="toggle-info">
-          <div class="toggle-title">🎉 <span data-t="festivoLabel"></span></div>
-          <div class="toggle-sub" data-t="festivoSub"></div>
-        </div>
-        <label class="toggle festivo-toggle">
-          <input type="checkbox" id="festivoToggle" onchange="onFestivoChange()">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-
-      <!-- KM TOGGLE -->
-      <div class="toggle-row" id="kmToggleRow" style="display:none">
-        <div class="toggle-info">
-          <div class="toggle-title">🚗 <span data-t="kmLabel"></span></div>
-          <div class="toggle-sub" data-t="kmSub"></div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="kmToggle" onchange="toggleKm(this.checked)">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-
-      <!-- KM SECTION -->
-      <div id="kmSection" style="display:none;margin-top:8px">
-        <div class="field">
-          <label data-t="kmCount"></label>
-          <div class="stepper">
-            <button class="stepper-btn minus" onclick="adjustKm(-1)">−</button>
-            <div class="stepper-value" id="kmDisplay">0 <span class="stepper-unit">km</span></div>
-            <button class="stepper-btn plus" onclick="adjustKm(1)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- TICKETS TOGGLE -->
-      <div class="toggle-row">
-        <div class="toggle-info">
-          <div class="toggle-title">🧾 <span data-t="ticketsLabel"></span></div>
-          <div class="toggle-sub" data-t="ticketsSub"></div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="ticketsToggle" onchange="toggleTickets(this.checked)">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-
-      <!-- TICKETS SECTION -->
-      <div class="tickets-wrap" id="ticketsSection" style="display:none;margin-top:10px">
-        <div class="ticket-add-row">
-          <div class="field" style="grid-column:1/3">
-            <label data-t="ticketDesc"></label>
-            <input type="text" id="ticketLabelInput" data-t-placeholder="ticketDescPh" maxlength="40">
-          </div>
-          <div class="field">
-            <label data-t="amount"></label>
-            <input type="number" id="ticketAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
-          </div>
-          <button class="ticket-add-btn" onclick="addTicket()" data-t="add"></button>
-        </div>
-        <div class="tickets-list" id="ticketsList">
-          <div class="tickets-empty" data-t="noTickets"></div>
-        </div>
-        <div id="ticketSummaryRow" style="display:none">
-          <div class="ticket-summary">
-            <span class="ticket-summary-label" data-t="pendingTotal"></span>
-            <span class="ticket-summary-val" id="ticketPendingTotal">$0</span>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:12px">
-        <button class="btn btn-primary" onclick="calcAndPreview()" data-t="calcSave"></button>
-      </div>
+  <div class="field">
+    <label data-t="breakTime"></label>
+    <div class="stepper">
+      <button class="stepper-btn minus" onclick="adjustBreak(-5)">−</button>
+      <div class="stepper-value" id="breakDisplay">0 <span class="stepper-unit">min</span></div>
+      <button class="stepper-btn plus" onclick="adjustBreak(5)">+</button>
     </div>
-
-    <div class="card" id="previewCard" style="display:none">
-      <div class="card-title"><span>02</span> <span data-t="shiftSummary"></span></div>
-      <div id="festivoBadgePreview" style="display:none;margin-bottom:10px"><span class="festivo-chip">🎉 <span data-t="festivoDay"></span></span></div>
-      <div class="breakdown-row"><span class="breakdown-label" data-t="normalHours"></span><span class="breakdown-value accent" id="prevNormal">—</span></div>
-      <div class="breakdown-row" id="prevExtraRow"><span class="breakdown-label" data-t="extraHours"></span><span class="breakdown-value orange" id="prevExtra">—</span></div>
-      <div class="breakdown-row"><span class="breakdown-label" data-t="totalWorked"></span><span class="breakdown-value" id="prevTotal">—</span></div>
-      <hr class="divider">
-      <div class="breakdown-row" id="prevPayNormalRow"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="prevPayNormal">—</span></div>
-      <div class="breakdown-row" id="prevPayExtraRow"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="prevPayExtra">—</span></div>
-      <div class="breakdown-row" id="prevPayKmRow" style="display:none"><span class="breakdown-label" id="prevKmLabel">—</span><span class="breakdown-value" style="color:var(--muted)" id="prevPayKm">—</span></div>
-      <div class="breakdown-row" id="prevTicketRow" style="display:none"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="prevTicketAmt">—</span></div>
-      <div class="breakdown-row">
-        <span class="breakdown-label" data-t="totalEarned"></span>
-        <div class="earn-row"><span class="currency-sym" id="prevCurrSym">$</span><span class="earnings-big" id="prevEarnings">0.00</span></div>
-      </div>
-      <hr class="divider">
-      <button class="btn btn-primary" onclick="saveEntry()" data-t="saveShift"></button>
+    <div class="pause-chips" id="pauseChips">
+      <button class="pause-chip sel" onclick="setBreak(0,this)" data-t="noBreak"></button>
+      <button class="pause-chip" onclick="setBreak(15,this)">15 min</button>
+      <button class="pause-chip" onclick="setBreak(30,this)">30 min</button>
+      <button class="pause-chip" onclick="setBreak(45,this)">45 min</button>
+      <button class="pause-chip" onclick="setBreak(60,this)">1 <span data-t="hour"></span></button>
     </div>
   </div>
 
+  <div class="field">
+    <label data-t="description"></label>
+    <textarea id="fieldDesc" data-t-placeholder="descPlaceholder"></textarea>
+  </div>
+
+  <!-- TICKETS TOGGLE -->
+  <div class="toggle-row">
+    <div class="toggle-info">
+      <div class="toggle-title">🧾 <span data-t="ticketsLabel"></span></div>
+      <div class="toggle-sub" data-t="ticketsSub"></div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="ticketsToggle" onchange="toggleTickets(this.checked)">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <!-- TICKETS SECTION -->
+  <div class="tickets-wrap" id="ticketsSection" style="display:none;margin-top:10px">
+    <div class="ticket-add-row">
+      <div class="field" style="grid-column:1/3">
+        <label data-t="ticketDesc"></label>
+        <input type="text" id="ticketLabelInput" data-t-placeholder="ticketDescPh" maxlength="40">
+      </div>
+      <div class="field">
+        <label data-t="amount"></label>
+        <input type="number" id="ticketAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
+      </div>
+      <button class="ticket-add-btn" onclick="addTicket()" data-t="add"></button>
+    </div>
+    <div class="tickets-list" id="ticketsList">
+      <div class="tickets-empty" data-t="noTickets"></div>
+    </div>
+    <div id="ticketSummaryRow" style="display:none">
+      <div class="ticket-summary">
+        <span class="ticket-summary-label" data-t="pendingTotal"></span>
+        <span class="ticket-summary-val" id="ticketPendingTotal">$0</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px">
+    <button class="btn btn-primary" onclick="calcAndPreview()" data-t="calcSave"></button>
+  </div>
+</div>
+
+<div class="card" id="previewCard" style="display:none">
+  <div class="card-title"><span>02</span> <span data-t="shiftSummary"></span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="normalHours"></span><span class="breakdown-value accent" id="prevNormal">—</span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="extraHours"></span><span class="breakdown-value orange" id="prevExtra">—</span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="totalWorked"></span><span class="breakdown-value" id="prevTotal">—</span></div>
+  <hr class="divider">
+  <div class="breakdown-row"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="prevPayNormal">—</span></div>
+  <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="prevPayExtra">—</span></div>
+  <div class="breakdown-row" id="prevTicketRow" style="display:none"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="prevTicketAmt">—</span></div>
+  <div class="breakdown-row">
+    <span class="breakdown-label" data-t="totalEarned"></span>
+    <div class="earn-row"><span class="currency-sym" id="prevCurrSym">$</span><span class="earnings-big" id="prevEarnings">0.00</span></div>
+  </div>
+  <hr class="divider">
+  <button class="btn btn-primary" onclick="saveEntry()" data-t="saveShift"></button>
+</div>
+```
+
+  </div>
+
   <!-- RESÚMENES -->
+
   <div id="page-resumen" class="page">
     <div class="period-selector">
       <button class="period-btn active" onclick="selectPeriod('dia',this)" data-t="today"></button>
@@ -442,6 +395,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <button class="period-btn period-btn-mes-ant" onclick="selectPeriod('mes_anterior',this)" id="btnMesAnterior"></button>
       <button class="period-btn" onclick="selectPeriod('todo',this)" data-t="all"></button>
     </div>
+    <!-- Month picker (shown when 'mes_anterior' or custom month selected) -->
     <div id="monthPickerWrap" style="display:none;margin-bottom:12px">
       <div style="display:flex;align-items:center;gap:8px">
         <button onclick="shiftMonthPicker(-1)" style="width:34px;height:34px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
@@ -459,19 +413,14 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="sumNormalPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
-      <div class="breakdown-row"><span class="breakdown-label" data-t="festivoPay"></span><span class="breakdown-value festivo" id="sumFestivoPay">$0.00</span></div>
-      <div class="breakdown-row"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="total"></span><span class="breakdown-value accent" id="sumTotal">$0.00</span></div>
     </div>
-    <!-- PDF Export Button -->
-    <button class="btn btn-pdf" onclick="exportPDF()" id="pdfExportBtn" style="margin-bottom:10px">
-      <span>📄</span><span data-t="exportPDF"></span>
-    </button>
     <div id="periodEntries"></div>
   </div>
 
   <!-- HISTORIAL -->
+
   <div id="page-historial" class="page">
     <div class="section-header">
       <div class="section-title" data-t="allRecords"></div>
@@ -481,6 +430,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
 
   <!-- CONFIG -->
+
   <div id="page-config" class="page">
     <div class="card">
       <div class="card-title"><span>⚙</span> <span data-t="rateConfig"></span></div>
@@ -500,73 +450,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div><div class="setting-name" data-t="threshold"></div><div class="setting-desc" data-t="thresholdDesc"></div></div>
         <input type="number" class="setting-input" id="cfgThreshold" value="8" min="1" max="24" step="0.5">
       </div>
-
-      <!-- FESTIVO RATES -->
-      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--festivo);margin-bottom:8px">🎉 <span data-t="festivoRates"></span></div>
-        <div class="setting-row" style="border-top:none;padding-top:0">
-          <div><div class="setting-name" data-t="festivoNormalRate"></div><div class="setting-desc" data-t="festivoNormalRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgFestivoRate" value="75" min="0" step="0.5">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="festivoOvertimeRate"></div><div class="setting-desc" data-t="festivoOvertimeRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgFestivoOvertimeRate" value="100" min="0" step="0.5">
-        </div>
-      </div>
-
-      <!-- KM CONFIG -->
-      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">🚗 <span data-t="kmConfig"></span></div>
-        <div class="setting-row" style="border-top:none;padding-top:0">
-          <div><div class="setting-name" data-t="kmEnabled"></div><div class="setting-desc" data-t="kmEnabledDesc"></div></div>
-          <label class="toggle">
-            <input type="checkbox" id="cfgKmEnabled" onchange="onKmEnabledChange()">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-        <div class="setting-row" id="cfgKmRateRow" style="display:none">
-          <div><div class="setting-name" data-t="kmRate"></div><div class="setting-desc" data-t="kmRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgKmRate" value="0.20" min="0" step="0.01">
-        </div>
-      </div>
-
-      <!-- DIA LIBRE -->
-      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">🏖 <span data-t="diaLibreConfig"></span></div>
-        <div class="setting-row" style="border-top:none;padding-top:0">
-          <div><div class="setting-name" data-t="diaLibreEnabled"></div><div class="setting-desc" data-t="diaLibreEnabledDesc"></div></div>
-          <label class="toggle">
-            <input type="checkbox" id="cfgDiaLibreEnabled" onchange="onDiaLibreChange()">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-        <div class="setting-row" id="cfgDiaLibreRow" style="display:none">
-          <div><div class="setting-name" data-t="diaLibreDia"></div></div>
-          <select class="setting-select" id="cfgDiaLibre">
-            <option value="1" data-t-opt="monday"></option>
-            <option value="2" data-t-opt="tuesday"></option>
-            <option value="3" data-t-opt="wednesday"></option>
-            <option value="4" data-t-opt="thursday"></option>
-            <option value="5" data-t-opt="friday"></option>
-            <option value="6" data-t-opt="saturday"></option>
-          </select>
-        </div>
-      </div>
-
-      <!-- ONLY EXTRAS CONFIG -->
-      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
-        <div class="setting-row" style="border-top:none;padding-top:0">
-          <div><div class="setting-name" data-t="onlyExtrasLabel"></div><div class="setting-desc" data-t="onlyExtrasDesc"></div></div>
-          <label class="toggle">
-            <input type="checkbox" id="cfgOnlyExtras">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-      </div>
-
       <div class="setting-row">
         <div><div class="setting-name" data-t="yourName"></div><div class="setting-desc" data-t="yourNameDesc"></div></div>
         <input type="text" class="setting-input" id="cfgName" value="" maxlength="20" style="width:120px;font-size:13px;font-family:'Space Grotesk',sans-serif;letter-spacing:0;color:var(--text);">
@@ -596,7 +479,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> v4.0</div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> v3.0</div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -605,6 +488,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </div>
 
 <!-- BOTTOM NAV -->
+
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-registro" onclick="switchTab('registro',this)">
     <div class="nav-icon">⏱</div><div class="nav-label" data-t="tabRecord"></div><div class="nav-dot"></div>
@@ -621,6 +505,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </nav>
 
 <!-- DETAIL MODAL -->
+
 <div class="modal-overlay" id="entryModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -631,15 +516,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <button class="btn btn-secondary" onclick="closeModal()" data-t="close"></button>
   </div>
 </div>
-
-<!-- PHOTO VIEWER -->
-<div id="photoViewerModal" onclick="closePhotoViewer()">
-  <button class="photo-viewer-close" onclick="closePhotoViewer()">✕</button>
-  <img id="photoViewerImg" src="" alt="foto">
-</div>
-
-<!-- Hidden file input for photos -->
-<input type="file" id="photoFileInput" accept="image/*" capture="environment" style="display:none" onchange="onPhotoSelected(event)">
 
 <div class="toast" id="toast"></div>
 
@@ -652,18 +528,6 @@ const STRINGS = {
     live:'en vivo', shiftInfo:'Información del Turno', date:'Fecha', entry:'Entrada', exit:'Salida',
     breakTime:'Tiempo de Pausa', noBreak:'Sin pausa', hour:'hora', description:'Descripción',
     descPlaceholder:'¿Qué hiciste hoy?',
-    festivoLabel:'Día Festivo / Domingo', festivoSub:'Tarifa especial por festivo o domingo', festivoDay:'Festivo / Domingo', festivoRates:'Tarifas Festivo / Domingo',
-    festivoNormalRate:'Tarifa festivo / hora', festivoNormalRateDesc:'Primeras N horas en festivo',
-    festivoOvertimeRate:'Extra festivo / hora', festivoOvertimeRateDesc:'Horas extra en festivo',
-    festivoPay:'Pago festivo', festivoNormalHours:'Horas normales (festivo)', festivoExtraHours:'Horas extra (festivo)',
-    kmLabel:'Kilómetros', kmSub:'Añadir kilómetros recorridos al día', kmCount:'Kilómetros recorridos',
-    kmConfig:'Kilómetros', kmEnabled:'Registrar kilómetros', kmEnabledDesc:'Activar control de km por día',
-    kmRate:'Tarifa por km', kmRateDesc:'Precio pagado por kilómetro',
-    kmPay:'Pago km', kmLine:'Kilómetros',
-    diaLibreConfig:'Día Libre', diaLibreEnabled:'Tengo día libre', diaLibreEnabledDesc:'Excluye un día de la semana',
-    diaLibreDia:'Día libre',
-    monday:'Lunes', tuesday:'Martes', wednesday:'Miércoles', thursday:'Jueves', friday:'Viernes', saturday:'Sábado',
-    onlyExtrasLabel:'Solo horas extras', onlyExtrasDesc:'Contabiliza únicamente horas extra en resúmenes',
     ticketsLabel:'Tickets por Entregar', ticketsSub:'Gastos pagados por la empresa',
     ticketDesc:'Concepto', ticketDescPh:'Ej: Gasolina, Comida...', amount:'Monto', add:'+ ADD',
     noTickets:'Sin tickets añadidos', pendingTotal:'Total pendiente',
@@ -681,7 +545,7 @@ const STRINGS = {
     yourName:'Tu nombre', yourNameDesc:'Para el saludo',
     language:'Idioma', languageDesc:'Cambia el idioma de la app',
     saveConfig:'GUARDAR CONFIG',
-    about:'Acerca de', aboutDesc:'Turnos · Ganancias · Tickets · Festivos · Km · PWA',
+    about:'Acerca de', aboutDesc:'Turnos · Ganancias · Tickets · PWA',
     tabRecord:'Registro', tabSummary:'Resumen', tabHistory:'Historial', tabConfig:'Config',
     deleteShift:'Eliminar Turno', close:'Cerrar',
     saved:'¡Turno guardado! 💪', deleted:'Turno eliminado', cleared:'Historial borrado',
@@ -698,7 +562,7 @@ const STRINGS = {
     ticket:'Ticket', tickets:'Tickets',
     noBreakChip:'Sin pausa',
     prevMonth:'Mes Anterior', chooseMonth:'Elegir Mes',
-    notifTitle:'Recordatorio diario', notifDesc:'Lun–Sáb a las 8:00 PM si no registraste horas',
+    notifTitle:'Recordatorio diario', notifDesc:'Lun–Vie a las 8:00 PM si no registraste horas',
     notifOn:'🔔 Activo', notifOff:'🔕 Desactivado', notifDenied:'Bloqueado por el sistema',
     notifAsk:'Activa para recibir recordatorios',
     notifMsgTitle:'¡Hora de chambear! 💪',
@@ -706,26 +570,11 @@ const STRINGS = {
     notifMsgBody1:'¡{name}, aún puedes registrar tu turno de hoy! Tu cartera te lo agradecerá. 🤑',
     notifMsgBody2:'Hey {name} 👋 Solo un recordatorio para apuntar tus horas de hoy antes de que se te olvide.',
     notifMsgBody3:'¡{name}! El día casi termina y tus horas siguen sin registrarse. ¡Venga, son 30 segundos! ⏱',
-    addPhoto:'+ Foto', exportPDF:'Exportar PDF del periodo',
-    pdfTitle:'Resumen de Turnos', pdfGenerating:'Generando PDF...',
-    addTicketPhoto:'Añadir foto al ticket',
   },
   en: {
     live:'live', shiftInfo:'Shift Information', date:'Date', entry:'Clock In', exit:'Clock Out',
     breakTime:'Break Time', noBreak:'No break', hour:'hour', description:'Description',
     descPlaceholder:"What did you do today?",
-    festivoLabel:'Holiday / Sunday', festivoSub:'Special rate for holidays and Sundays', festivoDay:'Holiday / Sunday', festivoRates:'Holiday / Sunday Rates',
-    festivoNormalRate:'Holiday rate / hour', festivoNormalRateDesc:'First N hours on holiday',
-    festivoOvertimeRate:'Holiday overtime / hour', festivoOvertimeRateDesc:'Extra hours on holiday',
-    festivoPay:'Holiday pay', festivoNormalHours:'Regular hours (holiday)', festivoExtraHours:'Overtime (holiday)',
-    kmLabel:'Kilometers', kmSub:'Add kilometers driven today', kmCount:'Kilometers driven',
-    kmConfig:'Kilometers', kmEnabled:'Track kilometers', kmEnabledDesc:'Enable km tracking per day',
-    kmRate:'Rate per km', kmRateDesc:'Pay per kilometer',
-    kmPay:'Km pay', kmLine:'Kilometers',
-    diaLibreConfig:'Day Off', diaLibreEnabled:'I have a day off', diaLibreEnabledDesc:'Exclude one weekday',
-    diaLibreDia:'Day off',
-    monday:'Monday', tuesday:'Tuesday', wednesday:'Wednesday', thursday:'Thursday', friday:'Friday', saturday:'Saturday',
-    onlyExtrasLabel:'Only overtime', onlyExtrasDesc:'Count only overtime hours in summaries',
     ticketsLabel:'Tickets to Submit', ticketsSub:'Company-paid expenses',
     ticketDesc:'Description', ticketDescPh:'e.g. Gas, Food...', amount:'Amount', add:'+ ADD',
     noTickets:'No tickets added', pendingTotal:'Pending total',
@@ -743,7 +592,7 @@ const STRINGS = {
     yourName:'Your name', yourNameDesc:'Used for greeting',
     language:'Language', languageDesc:'Change app language',
     saveConfig:'SAVE CONFIG',
-    about:'About', aboutDesc:'Shifts · Earnings · Tickets · Holidays · Km · PWA',
+    about:'About', aboutDesc:'Shifts · Earnings · Tickets · PWA',
     tabRecord:'Record', tabSummary:'Summary', tabHistory:'History', tabConfig:'Config',
     deleteShift:'Delete Shift', close:'Close',
     saved:'Shift saved! 💪', deleted:'Shift deleted', cleared:'History cleared',
@@ -755,12 +604,12 @@ const STRINGS = {
     greetMorning:'Good morning', greetAfternoon:'Good afternoon', greetEvening:'Good evening',
     wLangQ:'What language do you prefer?', wLangHint:'You can change it in settings.',
     wLangNext:'NEXT →', wNameQ:"What's your name?",
-    wNameHint:"We'll greet you every time you open the app.", wNameGo:"LET'S GO →",
+    wNameHint:'We\'ll greet you every time you open the app.', wNameGo:'LET\'S GO →',
     thisWeek:'This Week', thisMonth:'This Month', allTime:'All Time',
     ticket:'Ticket', tickets:'Tickets',
     noBreakChip:'No break',
     prevMonth:'Prev Month', chooseMonth:'Pick Month',
-    notifTitle:'Daily reminder', notifDesc:'Mon–Sat at 8:00 PM if you forgot to log hours',
+    notifTitle:'Daily reminder', notifDesc:'Mon–Fri at 8:00 PM if you forgot to log hours',
     notifOn:'🔔 Active', notifOff:'🔕 Disabled', notifDenied:'Blocked by system',
     notifAsk:'Enable to receive reminders',
     notifMsgTitle:"Time to log your hours! 💪",
@@ -768,9 +617,6 @@ const STRINGS = {
     notifMsgBody1:"{name}, you can still log today's shift! Your wallet will thank you. 🤑",
     notifMsgBody2:"Hey {name} 👋 Just a quick nudge to log your hours before the day slips away.",
     notifMsgBody3:"{name}! The day's almost over and your hours are still unlogged. It only takes 30 seconds! ⏱",
-    addPhoto:'+ Photo', exportPDF:'Export period PDF',
-    pdfTitle:'Shift Summary', pdfGenerating:'Generating PDF...',
-    addTicketPhoto:'Add photo to ticket',
   }
 };
 
@@ -778,12 +624,21 @@ let currentLang = 'es';
 function T(key){ return (STRINGS[currentLang]||STRINGS.es)[key] || key; }
 
 function applyTranslations() {
-  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = T(el.getAttribute('data-t')); });
-  document.querySelectorAll('[data-t-placeholder]').forEach(el => { el.placeholder = T(el.getAttribute('data-t-placeholder')); });
-  document.querySelectorAll('[data-t-opt]').forEach(el => { el.textContent = T(el.getAttribute('data-t-opt')); });
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    el.textContent = T(key);
+  });
+  document.querySelectorAll('[data-t-placeholder]').forEach(el => {
+    el.placeholder = T(el.getAttribute('data-t-placeholder'));
+  });
+  // Update "mes anterior" button label
   const btnMesAnt = document.getElementById('btnMesAnterior');
   if (btnMesAnt) btnMesAnt.textContent = T('prevMonth');
-  if (document.getElementById('monthPickerWrap')?.style.display !== 'none') updateMonthPickerLabel();
+  // Update month picker label if visible
+  if (document.getElementById('monthPickerWrap') && document.getElementById('monthPickerWrap').style.display !== 'none') {
+    updateMonthPickerLabel();
+  }
+  // Update config lang buttons
   const cfgEs = document.getElementById('cfgLangEs');
   const cfgEn = document.getElementById('cfgLangEn');
   if (cfgEs) cfgEs.style.borderColor = currentLang==='es' ? 'var(--accent)' : 'var(--border)';
@@ -793,22 +648,16 @@ function applyTranslations() {
 // ══════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════
-let config = {
-  currency:'$', rate:50, overtimeRate:75, threshold:8,
-  festivoRate:75, festivoOvertimeRate:100,
-  kmEnabled:false, kmRate:0.20,
-  diaLibreEnabled:false, diaLibre:6,
-  onlyExtras:false
-};
+let config = { currency:'$', rate:50, overtimeRate:75, threshold:8 };
 let entries = [];
 let previewData = null;
 let currentModalId = null;
 let currentPeriod = 'dia';
 let breakMinutes = 0;
 let selectedWelcomeLang = 'es';
-let draftTickets = [];
-let draftKm = 0;
-let _ticketPhotoTarget = null; // which ticket index we're adding a photo to
+
+// Current draft tickets (not yet saved)
+let draftTickets = []; // [{id, label, amount, paid}]
 
 // ══════════════════════════════════════
 //  INIT
@@ -818,9 +667,12 @@ function init() {
   if (sc) config = {...config, ...JSON.parse(sc)};
   const se = localStorage.getItem('tfc_entries');
   if (se) entries = JSON.parse(se);
+
   const storedLang = localStorage.getItem('tfc_lang');
   if (storedLang) { currentLang = storedLang; selectedWelcomeLang = storedLang; }
+
   applyTranslations();
+
   const name = localStorage.getItem('tfc_name');
   if (name) {
     document.getElementById('welcomeScreen').style.display = 'none';
@@ -828,16 +680,15 @@ function init() {
     document.getElementById('cfgName').value = name;
   } else {
     updateWelcomeStrings();
+    setTimeout(() => {}, 400);
   }
+
   loadConfigUI();
   setToday();
   startClock();
   renderHistory();
   renderSummary('dia');
   updateBreakDisplay();
-  updateKmDisplay();
-  // Show km toggle if enabled
-  if (config.kmEnabled) document.getElementById('kmToggleRow').style.display = 'flex';
 }
 
 // ══════════════════════════════════════
@@ -847,13 +698,18 @@ function selectLang(lang) {
   selectedWelcomeLang = lang;
   document.getElementById('btnEs').classList.toggle('sel', lang==='es');
   document.getElementById('btnEn').classList.toggle('sel', lang==='en');
-  currentLang = lang; updateWelcomeStrings(); applyTranslations();
+  // Update just the welcome text live
+  currentLang = lang;
+  updateWelcomeStrings();
+  applyTranslations();
 }
+
 function updateWelcomeStrings() {
   document.getElementById('wLangQ').textContent = T('wLangQ');
   document.getElementById('wLangHint').textContent = T('wLangHint');
   document.getElementById('wLangNext').textContent = T('wLangNext');
 }
+
 function goToNameStep() {
   currentLang = selectedWelcomeLang;
   localStorage.setItem('tfc_lang', currentLang);
@@ -866,6 +722,7 @@ function goToNameStep() {
   document.getElementById('welcomeInput').placeholder = T('yourName');
   setTimeout(() => document.getElementById('welcomeInput').focus(), 200);
 }
+
 function saveName() {
   const name = document.getElementById('welcomeInput').value.trim() || (currentLang==='en'?'Worker':'Chambeador');
   localStorage.setItem('tfc_name', name);
@@ -875,19 +732,24 @@ function saveName() {
   document.getElementById('welcomeScreen').classList.add('hide');
   setTimeout(() => document.getElementById('welcomeScreen').style.display='none', 420);
 }
+
 document.addEventListener('keydown', e => {
   if (e.key==='Enter' && document.activeElement===document.getElementById('welcomeInput')) saveName();
 });
+
 function applyGreeting(name) {
   const h = new Date().getHours();
   const g = h<12 ? T('greetMorning') : h<19 ? T('greetAfternoon') : T('greetEvening');
   document.getElementById('greeting').textContent = `${g}, ${name} 👋`;
 }
+
 function setLangAndSave(lang) {
   currentLang = lang;
   localStorage.setItem('tfc_lang', lang);
   applyTranslations();
-  renderHistory(); renderSummary(currentPeriod);
+  renderHistory();
+  renderSummary(currentPeriod);
+  // Re-apply greeting
   const name = localStorage.getItem('tfc_name');
   if (name) applyGreeting(name);
 }
@@ -897,16 +759,6 @@ function loadConfigUI() {
   document.getElementById('cfgRate').value = config.rate;
   document.getElementById('cfgOvertimeRate').value = config.overtimeRate;
   document.getElementById('cfgThreshold').value = config.threshold;
-  document.getElementById('cfgFestivoRate').value = config.festivoRate;
-  document.getElementById('cfgFestivoOvertimeRate').value = config.festivoOvertimeRate;
-  document.getElementById('cfgKmEnabled').checked = config.kmEnabled;
-  document.getElementById('cfgKmRate').value = config.kmRate;
-  document.getElementById('cfgKmRateRow').style.display = config.kmEnabled ? 'flex' : 'none';
-  document.getElementById('cfgDiaLibreEnabled').checked = config.diaLibreEnabled;
-  document.getElementById('cfgDiaLibreRow').style.display = config.diaLibreEnabled ? 'flex' : 'none';
-  document.getElementById('cfgDiaLibre').value = config.diaLibre;
-  document.getElementById('cfgOnlyExtras').checked = config.onlyExtras;
-  document.getElementById('cfgName').value = localStorage.getItem('tfc_name') || '';
 }
 
 function setToday() {
@@ -918,10 +770,10 @@ function setToday() {
 // ══════════════════════════════════════
 function startClock() {
   const pad = v => String(v).padStart(2,'0');
-  const days_es=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  const days_en=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months_es=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const months_en=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const days_es   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const days_en   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months_es = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const months_en = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   function tick() {
     const n = new Date();
     document.getElementById('liveClock').textContent = `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
@@ -942,72 +794,50 @@ function switchTab(tab, btn) {
   (btn||document.getElementById('nav-'+tab)).classList.add('active');
   if (tab==='historial') renderHistory();
   if (tab==='resumen') renderSummary(currentPeriod);
-  if (tab==='config') { loadConfigUI(); notifUpdateStatus(); }
+  if (tab==='config') notifUpdateStatus();
 }
 
 // ══════════════════════════════════════
 //  PAUSE STEPPER
 // ══════════════════════════════════════
-function adjustBreak(delta) { breakMinutes=Math.max(0,Math.min(breakMinutes+delta,480)); updateBreakDisplay(); updateChipSel(); }
-function setBreak(val, chipEl) { breakMinutes=val; updateBreakDisplay(); updateChipSel(chipEl); }
+function adjustBreak(delta) {
+  breakMinutes = Math.max(0, Math.min(breakMinutes+delta, 480));
+  updateBreakDisplay(); updateChipSel();
+}
+function setBreak(val, chipEl) {
+  breakMinutes = val; updateBreakDisplay(); updateChipSel(chipEl);
+}
 function updateBreakDisplay() {
   const el = document.getElementById('breakDisplay');
-  if (breakMinutes===0) { el.innerHTML=`0 <span class="stepper-unit">min</span>`; return; }
-  if (breakMinutes<60) { el.innerHTML=`${breakMinutes} <span class="stepper-unit">min</span>`; return; }
+  if (breakMinutes===0) { el.innerHTML = `0 <span class="stepper-unit">min</span>`; return; }
+  if (breakMinutes<60) { el.innerHTML = `${breakMinutes} <span class="stepper-unit">min</span>`; return; }
   const h=Math.floor(breakMinutes/60), m=breakMinutes%60;
   el.innerHTML = m>0 ? `${h}h <span class="stepper-unit">${m}m</span>` : `${h} <span class="stepper-unit">h</span>`;
 }
 function updateChipSel(activeEl) {
   document.querySelectorAll('.pause-chip').forEach(c=>c.classList.remove('sel'));
   if (activeEl) { activeEl.classList.add('sel'); return; }
-  const chips=document.querySelectorAll('.pause-chip'); const vals=[0,15,30,45,60];
-  chips.forEach((c,i)=>{ if(vals[i]===breakMinutes) c.classList.add('sel'); });
+  // try to re-highlight by value match
+  const chips = document.querySelectorAll('.pause-chip');
+  const vals = [0,15,30,45,60];
+  chips.forEach((c,i) => { if (vals[i]===breakMinutes) c.classList.add('sel'); });
 }
 
 // ══════════════════════════════════════
-//  FESTIVO
-// ══════════════════════════════════════
-function onFestivoChange() {
-  const isOn = document.getElementById('festivoToggle').checked;
-  const card = document.getElementById('shiftCard');
-  if (isOn) { card.classList.add('festivo-top'); } else { card.classList.remove('festivo-top'); }
-}
-
-// ══════════════════════════════════════
-//  KM
-// ══════════════════════════════════════
-function adjustKm(delta) { draftKm=Math.max(0, draftKm+delta); updateKmDisplay(); }
-function updateKmDisplay() {
-  document.getElementById('kmDisplay').innerHTML = `${draftKm} <span class="stepper-unit">km</span>`;
-}
-function toggleKm(on) {
-  document.getElementById('kmSection').style.display = on ? 'block' : 'none';
-  if (!on) { draftKm = 0; updateKmDisplay(); }
-}
-function onKmEnabledChange() {
-  const en = document.getElementById('cfgKmEnabled').checked;
-  document.getElementById('cfgKmRateRow').style.display = en ? 'flex' : 'none';
-}
-function onDiaLibreChange() {
-  const en = document.getElementById('cfgDiaLibreEnabled').checked;
-  document.getElementById('cfgDiaLibreRow').style.display = en ? 'flex' : 'none';
-}
-
-// ══════════════════════════════════════
-//  TICKETS + PHOTOS
+//  TICKETS
 // ══════════════════════════════════════
 function toggleTickets(on) {
   document.getElementById('ticketsSection').style.display = on ? 'block' : 'none';
-  if (!on) { draftTickets=[]; renderDraftTickets(); }
+  if (!on) { draftTickets = []; renderDraftTickets(); }
 }
 
 function addTicket() {
   const label = document.getElementById('ticketLabelInput').value.trim();
-  const amt = parseFloat(document.getElementById('ticketAmtInput').value) || 0;
+  const amt   = parseFloat(document.getElementById('ticketAmtInput').value) || 0;
   if (!label && amt<=0) { showToast(T('fillFields'), true); return; }
-  draftTickets.push({ id: Date.now()+Math.random(), label: label||T('ticket'), amount: amt, paid:false, photos:[] });
-  document.getElementById('ticketLabelInput').value='';
-  document.getElementById('ticketAmtInput').value='';
+  draftTickets.push({ id: Date.now()+Math.random(), label: label || T('ticket'), amount: amt, paid: false });
+  document.getElementById('ticketLabelInput').value = '';
+  document.getElementById('ticketAmtInput').value = '';
   renderDraftTickets();
 }
 
@@ -1015,65 +845,31 @@ function renderDraftTickets() {
   const list = document.getElementById('ticketsList');
   const summRow = document.getElementById('ticketSummaryRow');
   if (!draftTickets.length) {
-    list.innerHTML=`<div class="tickets-empty">${T('noTickets')}</div>`;
-    summRow.style.display='none'; return;
+    list.innerHTML = `<div class="tickets-empty">${T('noTickets')}</div>`;
+    summRow.style.display = 'none';
+    return;
   }
-  list.innerHTML = draftTickets.map((t,i) => {
-    const photosHtml = `<div class="ticket-photos">
-      ${(t.photos||[]).map((p,pi)=>`<div class="ticket-photo-thumb" onclick="openPhotoViewer('${p}')"><img src="${p}" alt="foto"><button class="ticket-photo-del" onclick="event.stopPropagation();removeDraftPhoto(${i},${pi})">✕</button></div>`).join('')}
-      <div class="ticket-photo-add" onclick="triggerPhotoUpload(${i})" title="${T('addTicketPhoto')}">📷</div>
-    </div>`;
-    return `<div class="ticket-item ${t.paid?'paid':''}">
-      <div class="ticket-main">
-        <button class="ticket-check ${t.paid?'paid':''}" onclick="toggleDraftPaid(${i})">${t.paid?'✓':''}</button>
-        <div class="ticket-body"><div class="ticket-label">${escHtml(t.label)}</div></div>
-        <div class="ticket-amount">${config.currency}${t.amount.toFixed(2)}</div>
-        <button class="ticket-del" onclick="removeDraftTicket(${i})">✕</button>
+  list.innerHTML = draftTickets.map((t,i) => `
+    <div class="ticket-item ${t.paid?'paid':''}">
+      <button class="ticket-check ${t.paid?'paid':''}" onclick="toggleDraftPaid(${i})">${t.paid?'✓':''}</button>
+      <div class="ticket-body">
+        <div class="ticket-label">${escHtml(t.label)}</div>
       </div>
-      ${photosHtml}
-    </div>`;
-  }).join('');
+      <div class="ticket-amount">${config.currency}${t.amount.toFixed(2)}</div>
+      <button class="ticket-del" onclick="removeDraftTicket(${i})">✕</button>
+    </div>`).join('');
   const pending = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-  document.getElementById('ticketPendingTotal').textContent=`${config.currency}${pending.toFixed(2)}`;
-  summRow.style.display='block';
+  document.getElementById('ticketPendingTotal').textContent = `${config.currency}${pending.toFixed(2)}`;
+  summRow.style.display = draftTickets.length ? 'block' : 'none';
 }
 
-function toggleDraftPaid(i) { draftTickets[i].paid=!draftTickets[i].paid; renderDraftTickets(); }
-function removeDraftTicket(i) { draftTickets.splice(i,1); renderDraftTickets(); }
-
-function triggerPhotoUpload(ticketIdx) {
-  _ticketPhotoTarget = ticketIdx;
-  document.getElementById('photoFileInput').value='';
-  document.getElementById('photoFileInput').click();
-}
-
-function onPhotoSelected(event) {
-  const file = event.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const dataUrl = e.target.result;
-    if (_ticketPhotoTarget !== null && draftTickets[_ticketPhotoTarget]) {
-      if (!draftTickets[_ticketPhotoTarget].photos) draftTickets[_ticketPhotoTarget].photos=[];
-      draftTickets[_ticketPhotoTarget].photos.push(dataUrl);
-      renderDraftTickets();
-    }
-    _ticketPhotoTarget = null;
-  };
-  reader.readAsDataURL(file);
-}
-
-function removeDraftPhoto(ticketIdx, photoIdx) {
-  draftTickets[ticketIdx].photos.splice(photoIdx,1);
+function toggleDraftPaid(i) {
+  draftTickets[i].paid = !draftTickets[i].paid;
   renderDraftTickets();
 }
-
-function openPhotoViewer(src) {
-  document.getElementById('photoViewerImg').src = src;
-  document.getElementById('photoViewerModal').classList.add('open');
-}
-function closePhotoViewer() {
-  document.getElementById('photoViewerModal').classList.remove('open');
-  document.getElementById('photoViewerImg').src='';
+function removeDraftTicket(i) {
+  draftTickets.splice(i,1);
+  renderDraftTickets();
 }
 
 // ══════════════════════════════════════
@@ -1084,69 +880,38 @@ function calcAndPreview() {
   const start = document.getElementById('fieldStart').value;
   const end   = document.getElementById('fieldEnd').value;
   const desc  = document.getElementById('fieldDesc').value.trim();
-  const isFestivo = document.getElementById('festivoToggle').checked;
-  const kmOn = document.getElementById('kmToggle').checked;
-
   if (!date||!start||!end) { showToast(T('fillFields'),true); return; }
   const s = new Date(`${date}T${start}`);
   let   e = new Date(`${date}T${end}`);
   if (e<=s) e.setDate(e.getDate()+1);
   const totalMin = (e-s)/60000 - breakMinutes;
   if (totalMin<=0) { showToast(T('invalidTime'),true); return; }
-
   const totalHours  = totalMin/60;
   const normalHours = Math.min(totalHours, config.threshold);
   const extraHours  = Math.max(0, totalHours-config.threshold);
-
-  // Pick rates based on festivo
-  const rateNormal  = isFestivo ? config.festivoRate : config.rate;
-  const rateExtra   = isFestivo ? config.festivoOvertimeRate : config.overtimeRate;
-
-  const normalPay   = normalHours * rateNormal;
-  const extraPay    = extraHours  * rateExtra;
-
-  // Km
-  const kmCount   = kmOn ? draftKm : 0;
-  const kmPay     = kmCount * config.kmRate;
-
+  const normalPay   = normalHours * config.rate;
+  const extraPay    = extraHours  * config.overtimeRate;
   const pendingTicketAmt = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-  const totalPay  = normalPay + extraPay + kmPay + pendingTicketAmt;
+  const totalPay    = normalPay + extraPay + pendingTicketAmt;
 
-  previewData = { date, start, end, breakMin:breakMinutes, desc, totalHours, normalHours, extraHours,
-    normalPay, extraPay, totalPay, tickets:[...draftTickets], id:Date.now(),
-    isFestivo, kmCount, kmPay };
+  previewData = { date, start, end, breakMin:breakMinutes, desc, totalHours, normalHours, extraHours, normalPay, extraPay, totalPay, tickets:[...draftTickets], id:Date.now() };
 
   const fmt  = v => `${config.currency}${v.toFixed(2)}`;
   const fmtH = h => h<.01?'0m':h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
 
-  // Preview badge
-  document.getElementById('festivoBadgePreview').style.display = isFestivo ? 'block' : 'none';
-
   document.getElementById('prevNormal').textContent    = fmtH(normalHours);
   document.getElementById('prevExtra').textContent     = extraHours>0?fmtH(extraHours):'—';
   document.getElementById('prevTotal').textContent     = fmtH(totalHours);
-
-  // Hide/show normal pay depending on onlyExtras
-  document.getElementById('prevPayNormalRow').style.display = config.onlyExtras ? 'none' : 'flex';
   document.getElementById('prevPayNormal').textContent = fmt(normalPay);
   document.getElementById('prevPayExtra').textContent  = extraHours>0?fmt(extraPay):'—';
   document.getElementById('prevEarnings').textContent  = totalPay.toFixed(2);
   document.getElementById('prevCurrSym').textContent   = config.currency;
 
-  // Km row
-  if (kmCount>0) {
-    document.getElementById('prevPayKmRow').style.display='flex';
-    document.getElementById('prevKmLabel').textContent = `${T('kmLine')}: ${kmCount} km`;
-    document.getElementById('prevPayKm').textContent = fmt(kmPay);
-  } else {
-    document.getElementById('prevPayKmRow').style.display='none';
-  }
-
-  // Tickets row
+  const ticketRow = document.getElementById('prevTicketRow');
   if (pendingTicketAmt>0) {
-    document.getElementById('prevTicketRow').style.display='flex';
+    ticketRow.style.display='flex';
     document.getElementById('prevTicketAmt').textContent = fmt(pendingTicketAmt);
-  } else { document.getElementById('prevTicketRow').style.display='none'; }
+  } else { ticketRow.style.display='none'; }
 
   document.getElementById('previewCard').style.display='block';
   document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
@@ -1162,11 +927,8 @@ function saveEntry() {
   document.getElementById('fieldEnd').value='';
   document.getElementById('fieldDesc').value='';
   document.getElementById('ticketsToggle').checked=false;
-  document.getElementById('festivoToggle').checked=false;
-  document.getElementById('kmToggle').checked=false;
-  document.getElementById('shiftCard').classList.remove('festivo-top');
-  toggleTickets(false); toggleKm(false);
-  draftTickets=[]; draftKm=0; updateKmDisplay();
+  toggleTickets(false);
+  draftTickets=[];
   setBreak(0); setToday(); previewData=null;
   renderHistory(); renderSummary(currentPeriod);
 }
@@ -1177,14 +939,14 @@ function saveEntry() {
 function renderHistory() {
   const list = document.getElementById('historyList');
   if (!entries.length) { list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div>${T('noRecords')}</div>`; return; }
-  const fmtH = h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
+  const fmtH = h => h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
   list.innerHTML = entries.map(e => {
     const pendingTickets = (e.tickets||[]).filter(t=>!t.paid);
     const pendingAmt = pendingTickets.reduce((s,t)=>s+t.amount,0);
-    const ticketBadge = pendingAmt>0 ? `<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)} ${T('pendingBadge')}</span>` : (e.tickets&&e.tickets.length?`<span class="paid-badge">✓ ${T('paidBadge')}</span>`:'');
-    const festivoBadge = e.isFestivo ? `<span class="festivo-chip">🎉</span>` : '';
-    const kmBadge = e.kmCount>0 ? `<span class="entry-chip">🚗 ${e.kmCount}km</span>` : '';
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':''}" onclick="openModal('${e.id}')">
+    const ticketBadge = pendingAmt>0
+      ? `<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)} ${T('pendingBadge')}</span>`
+      : (e.tickets&&e.tickets.length ? `<span class="paid-badge">✓ ${T('paidBadge')}</span>` : '');
+    return `<div class="entry-card" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
@@ -1192,7 +954,7 @@ function renderHistory() {
         <span class="entry-chip">▶ ${e.start}</span>
         <span class="entry-chip">■ ${e.end}</span>
         ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2);border-color:var(--accent2)">+${fmtH(e.extraHours)}</span>`:''}
-        ${kmBadge}${festivoBadge}${ticketBadge}
+        ${ticketBadge}
       </div>
     </div>`;
   }).join('');
@@ -1200,10 +962,12 @@ function renderHistory() {
 
 function formatDate(ds) {
   const d = new Date(ds+'T12:00:00');
-  const D_es=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']; const D_en=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const D_es=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const D_en=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const M_es=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const M_en=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const D=currentLang==='en'?D_en:D_es; const M=currentLang==='en'?M_en:M_es;
+  const D=currentLang==='en'?D_en:D_es;
+  const M=currentLang==='en'?M_en:M_es;
   return `${D[d.getDay()]} ${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
 }
 
@@ -1218,28 +982,21 @@ function openModal(id) {
 
   let ticketsHtml='';
   if (e.tickets && e.tickets.length) {
-    const items = e.tickets.map((t,i) => {
-      const photosHtml = t.photos&&t.photos.length ? `<div class="modal-ticket-photos">${t.photos.map(p=>`<img src="${p}" onclick="openPhotoViewer('${p}')" alt="foto">`).join('')}</div>` : '';
-      return `<div class="modal-ticket">
-        <div class="modal-ticket-header">
-          <span class="modal-ticket-label">${escHtml(t.label)}</span>
-          <div class="modal-ticket-right">
-            <span class="modal-ticket-amt ${t.paid?'paid':''}">${config.currency}${t.amount.toFixed(2)}</span>
-            <button class="mark-paid-btn ${t.paid?'is-paid':''}" onclick="toggleModalTicketPaid('${e.id}',${i})">${t.paid?T('paid'):T('markPaid')}</button>
-          </div>
+    const items = e.tickets.map((t,i) => `
+      <div class="modal-ticket">
+        <span class="modal-ticket-label">${escHtml(t.label)}</span>
+        <div class="modal-ticket-right">
+          <span class="modal-ticket-amt ${t.paid?'paid':''}">${config.currency}${t.amount.toFixed(2)}</span>
+          <button class="mark-paid-btn ${t.paid?'is-paid':''}" onclick="toggleModalTicketPaid('${e.id}',${i})">
+            ${t.paid?T('paid'):T('markPaid')}
+          </button>
         </div>
-        ${photosHtml}
-      </div>`;
-    }).join('');
+      </div>`).join('');
     ticketsHtml=`<div class="modal-subtitle">🧾 ${T('ticketsLabel')}</div>${items}`;
   }
 
-  const festivoLine = e.isFestivo ? `<div class="breakdown-row"><span class="breakdown-label">${T('festivoDay')}</span><span class="breakdown-value festivo">🎉 Sí</span></div>` : '';
-  const kmLine = e.kmCount>0 ? `<div class="breakdown-row"><span class="breakdown-label">${T('kmLine')}</span><span class="breakdown-value">${e.kmCount} km — ${fmt(e.kmPay||0)}</span></div>` : '';
-
   document.getElementById('modalTitle').textContent = formatDate(e.date);
   document.getElementById('modalContent').innerHTML = `
-    ${festivoLine}
     <div class="breakdown-row"><span class="breakdown-label">${T('entry')}</span><span class="breakdown-value">${e.start}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('exit')}</span><span class="breakdown-value">${e.end}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('breakTime')}</span><span class="breakdown-value">${e.breakMin} min</span></div>
@@ -1249,7 +1006,6 @@ function openModal(id) {
     <hr class="divider">
     <div class="breakdown-row"><span class="breakdown-label">${T('normalPay')}</span><span class="breakdown-value">${fmt(e.normalPay)}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('extraPay')}</span><span class="breakdown-value orange">${e.extraHours>0?fmt(e.extraPay):'—'}</span></div>
-    ${kmLine}
     <div class="breakdown-row"><span class="breakdown-label">${T('totalEarned')}</span><span class="breakdown-value accent" style="font-size:20px;font-family:'Bebas Neue',sans-serif">${fmt(e.totalPay)}</span></div>
     ${e.desc?`<hr class="divider"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.6">${escHtml(e.desc)}</div>`:''}
     ${ticketsHtml}
@@ -1260,20 +1016,26 @@ function openModal(id) {
 function toggleModalTicketPaid(entryId, ticketIdx) {
   const e = entries.find(x=>x.id===parseInt(entryId)); if (!e||!e.tickets) return;
   e.tickets[ticketIdx].paid = !e.tickets[ticketIdx].paid;
+  // Recalculate totalPay: base pay + pending tickets only
   const pendingAmt = e.tickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-  e.totalPay = e.normalPay + e.extraPay + (e.kmPay||0) + pendingAmt;
+  e.totalPay = e.normalPay + e.extraPay + pendingAmt;
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
   showToast(T('ticketsPaidToast'));
-  openModal(entryId); renderHistory(); renderSummary(currentPeriod);
+  openModal(entryId); // re-render modal
+  renderHistory();
+  renderSummary(currentPeriod);
 }
 
 function closeModal() { document.getElementById('entryModal').classList.remove('open'); currentModalId=null; }
+
 function deleteCurrentEntry() {
   if (!currentModalId||!confirm(T('deleteShift')+'?')) return;
-  entries=entries.filter(e=>e.id!==currentModalId);
+  entries = entries.filter(e=>e.id!==currentModalId);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
-  closeModal(); renderHistory(); renderSummary(currentPeriod); showToast(T('deleted'));
+  closeModal(); renderHistory(); renderSummary(currentPeriod);
+  showToast(T('deleted'));
 }
+
 function clearAll() {
   entries=[]; localStorage.setItem('tfc_entries', JSON.stringify(entries));
   renderHistory(); renderSummary(currentPeriod); showToast(T('cleared'));
@@ -1283,96 +1045,89 @@ function clearAll() {
 //  SUMMARY
 // ══════════════════════════════════════
 let pickerYear = new Date().getFullYear();
-let pickerMonth = new Date().getMonth()-1;
-if (pickerMonth<0) { pickerMonth=11; pickerYear-=1; }
+let pickerMonth = new Date().getMonth() - 1; // default: last month
+// Normalize
+if (pickerMonth < 0) { pickerMonth = 11; pickerYear -= 1; }
 
 function updateMonthPickerLabel() {
-  const months_es=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const months_en=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const M=currentLang==='en'?months_en:months_es;
-  document.getElementById('monthPickerLabel').textContent=`${M[pickerMonth]} ${pickerYear}`;
-  const now=new Date();
-  const isFuture=(pickerYear>now.getFullYear())||(pickerYear===now.getFullYear()&&pickerMonth>=now.getMonth());
-  document.getElementById('monthPickerNext').style.opacity=isFuture?'0.3':'1';
-  document.getElementById('monthPickerNext').disabled=isFuture;
+  const months_es = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const months_en = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const M = currentLang==='en' ? months_en : months_es;
+  document.getElementById('monthPickerLabel').textContent = `${M[pickerMonth]} ${pickerYear}`;
+  // Disable next button if we're at current month or beyond
+  const now = new Date();
+  const isCurrentOrFuture = (pickerYear > now.getFullYear()) || (pickerYear === now.getFullYear() && pickerMonth >= now.getMonth());
+  document.getElementById('monthPickerNext').style.opacity = isCurrentOrFuture ? '0.3' : '1';
+  document.getElementById('monthPickerNext').disabled = isCurrentOrFuture;
 }
 
 function shiftMonthPicker(delta) {
-  pickerMonth+=delta;
-  if (pickerMonth>11) { pickerMonth=0; pickerYear+=1; }
-  if (pickerMonth<0)  { pickerMonth=11; pickerYear-=1; }
-  updateMonthPickerLabel(); renderSummary('mes_anterior');
+  pickerMonth += delta;
+  if (pickerMonth > 11) { pickerMonth = 0; pickerYear += 1; }
+  if (pickerMonth < 0)  { pickerMonth = 11; pickerYear -= 1; }
+  updateMonthPickerLabel();
+  renderSummary('mes_anterior');
 }
 
 function selectPeriod(p, btn) {
   currentPeriod=p;
   document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  const showPicker=(p==='mes_anterior');
-  document.getElementById('monthPickerWrap').style.display=showPicker?'block':'none';
+  // Show/hide month picker
+  const showPicker = (p === 'mes_anterior');
+  document.getElementById('monthPickerWrap').style.display = showPicker ? 'block' : 'none';
   if (showPicker) updateMonthPickerLabel();
   renderSummary(p);
 }
 
-function filterEntries(period) {
-  const now=new Date();
-  if (period==='dia') { const t=now.toISOString().split('T')[0]; return entries.filter(e=>e.date===t); }
-  if (period==='semana') { const sw=new Date(now); sw.setDate(now.getDate()-now.getDay()); sw.setHours(0,0,0,0); return entries.filter(e=>new Date(e.date+'T12:00:00')>=sw); }
-  if (period==='mes') { return entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}); }
-  if (period==='mes_anterior') { return entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===pickerMonth&&d.getFullYear()===pickerYear;}); }
-  return [...entries];
-}
-
 function renderSummary(period) {
-  const now=new Date();
-  const months_es=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const months_en=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const M=currentLang==='en'?months_en:months_es;
-
-  let filtered=filterEntries(period), label;
-  if (period==='dia') label=T('today');
-  else if (period==='semana') label=T('thisWeek');
-  else if (period==='mes') label=T('thisMonth');
-  else if (period==='mes_anterior') label=`${M[pickerMonth]} ${pickerYear}`;
-  else label=T('allTime');
+  const now = new Date();
+  let filtered, label;
+  if (period==='dia') {
+    const t=now.toISOString().split('T')[0];
+    filtered=entries.filter(e=>e.date===t); label=T('today');
+  } else if (period==='semana') {
+    const sw=new Date(now); sw.setDate(now.getDate()-now.getDay()); sw.setHours(0,0,0,0);
+    filtered=entries.filter(e=>new Date(e.date+'T12:00:00')>=sw); label=T('thisWeek');
+  } else if (period==='mes') {
+    filtered=entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}); label=T('thisMonth');
+  } else if (period==='mes_anterior') {
+    const months_es = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const months_en = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const M = currentLang==='en' ? months_en : months_es;
+    label = `${M[pickerMonth]} ${pickerYear}`;
+    filtered=entries.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===pickerMonth&&d.getFullYear()===pickerYear;});
+  } else { filtered=[...entries]; label=T('allTime'); }
 
   document.getElementById('periodLabel').textContent=label;
-  const fmtH=h=>h<.01?'0h':(h>=1?`${Math.floor(h)}h`:`${Math.round(h*60)}m`);
-
-  // Apply onlyExtras filter
-  const calcH = config.onlyExtras ? filtered.reduce((s,e)=>s+e.extraHours,0) : filtered.reduce((s,e)=>s+e.totalHours,0);
+  const fmtH = h=>h<.01?'0h':(h>=1?`${Math.floor(h)}h`:`${Math.round(h*60)}m`);
+  const th=filtered.reduce((s,e)=>s+e.totalHours,0);
   const eh=filtered.reduce((s,e)=>s+e.extraHours,0);
-  const np=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.normalPay),0);
-  const ep=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.extraPay),0);
-  const fp=filtered.reduce((s,e)=>s+(e.isFestivo?(e.normalPay+e.extraPay):0),0);
-  const kp=filtered.reduce((s,e)=>s+(e.kmPay||0),0);
+  const np=filtered.reduce((s,e)=>s+e.normalPay,0);
+  const ep=filtered.reduce((s,e)=>s+e.extraPay,0);
   const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
   const tp=filtered.reduce((s,e)=>s+e.totalPay,0);
 
-  document.getElementById('sumDays').textContent=filtered.length;
-  document.getElementById('sumHours').textContent=fmtH(calcH);
-  document.getElementById('sumExtra').textContent=fmtH(eh);
-  document.getElementById('sumEarn').textContent=`${config.currency}${Math.round(tp)}`;
-  document.getElementById('sumNormalPay').textContent=`${config.currency}${np.toFixed(2)}`;
-  document.getElementById('sumExtraPay').textContent=`${config.currency}${ep.toFixed(2)}`;
-  document.getElementById('sumFestivoPay').textContent=`${config.currency}${fp.toFixed(2)}`;
-  document.getElementById('sumKmPay').textContent=`${config.currency}${kp.toFixed(2)}`;
-  document.getElementById('sumPendingTickets').textContent=`${config.currency}${pt.toFixed(2)}`;
-  document.getElementById('sumTotal').textContent=`${config.currency}${tp.toFixed(2)}`;
+  document.getElementById('sumDays').textContent    = filtered.length;
+  document.getElementById('sumHours').textContent   = fmtH(th);
+  document.getElementById('sumExtra').textContent   = fmtH(eh);
+  document.getElementById('sumEarn').textContent    = `${config.currency}${Math.round(tp)}`;
+  document.getElementById('sumNormalPay').textContent    = `${config.currency}${np.toFixed(2)}`;
+  document.getElementById('sumExtraPay').textContent     = `${config.currency}${ep.toFixed(2)}`;
+  document.getElementById('sumPendingTickets').textContent= `${config.currency}${pt.toFixed(2)}`;
+  document.getElementById('sumTotal').textContent        = `${config.currency}${tp.toFixed(2)}`;
 
   const ct=document.getElementById('periodEntries');
   if (!filtered.length){ct.innerHTML=`<div class="empty"><div class="empty-icon">📊</div>${T('noRecordsPeriod')}</div>`;return;}
   const fmtHh=h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
-  ct.innerHTML=filtered.slice(0,15).map(e=>{
+  ct.innerHTML=filtered.slice(0,10).map(e=>{
     const pendingAmt=(e.tickets||[]).filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':''}" onclick="openModal('${e.id}')">
+    return `<div class="entry-card" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
         <span class="entry-chip">⏱ ${fmtHh(e.totalHours)}</span>
         ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2)">+${fmtHh(e.extraHours)}</span>`:''}
-        ${e.isFestivo?`<span class="festivo-chip">🎉</span>`:''}
-        ${e.kmCount>0?`<span class="entry-chip">🚗 ${e.kmCount}km</span>`:''}
         ${pendingAmt>0?`<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)}</span>`:''}
       </div>
     </div>`;
@@ -1380,237 +1135,14 @@ function renderSummary(period) {
 }
 
 // ══════════════════════════════════════
-//  PDF EXPORT
-// ══════════════════════════════════════
-async function exportPDF() {
-  showToast(T('pdfGenerating'));
-  // Load jsPDF dynamically
-  if (!window.jspdf) {
-    await new Promise((res,rej)=>{
-      const s=document.createElement('script');
-      s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      s.onload=res; s.onerror=rej;
-      document.head.appendChild(s);
-    });
-  }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-  const W=210, H=297;
-  const accent=[200,241,53]; const dark=[10,10,10]; const surface=[17,17,17];
-  const muted=[100,100,100]; const white=[240,240,240]; const warn=[245,197,66];
-  const festivo=[181,123,238]; const orange=[255,107,53];
-
-  const now=new Date();
-  const filtered=filterEntries(currentPeriod);
-  const months_es=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const months_en=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const M=currentLang==='en'?months_en:months_es;
-
-  let periodLabel='';
-  if (currentPeriod==='dia') periodLabel=T('today')+' — '+now.toLocaleDateString();
-  else if (currentPeriod==='semana') periodLabel=T('thisWeek');
-  else if (currentPeriod==='mes') periodLabel=`${M[now.getMonth()]} ${now.getFullYear()}`;
-  else if (currentPeriod==='mes_anterior') periodLabel=`${M[pickerMonth]} ${pickerYear}`;
-  else periodLabel=T('allTime');
-
-  const userName=localStorage.getItem('tfc_name')||'—';
-
-  // ─── BACKGROUND ───
-  doc.setFillColor(...dark);
-  doc.rect(0,0,W,H,'F');
-
-  // ─── HEADER BLOCK ───
-  doc.setFillColor(...accent);
-  doc.rect(0,0,W,42,'F');
-
-  // Logo text
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(28);
-  doc.setTextColor(...dark);
-  doc.text('TIME FOR CHAMBA', 14, 18);
-
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(9);
-  doc.text('Made by Guillermo Sanchez', 14, 25);
-
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(11);
-  doc.text(periodLabel.toUpperCase(), 14, 35);
-
-  // Date generated top right
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(8);
-  doc.setTextColor(...dark);
-  const genDate=now.toLocaleDateString()+'  '+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  doc.text(genDate, W-14, 35, {align:'right'});
-
-  // ─── WORKER CHIP ───
-  doc.setFillColor(26,26,26);
-  doc.roundedRect(14,48,W-28,14,3,3,'F');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(9);
-  doc.setTextColor(...accent);
-  doc.text('TRABAJADOR', 20, 56);
-  doc.setFont('helvetica','normal');
-  doc.setTextColor(...white);
-  doc.text(userName, 60, 56);
-
-  // ─── SUMMARY BOXES ───
-  const totH=filtered.reduce((s,e)=>s+e.totalHours,0);
-  const totEx=filtered.reduce((s,e)=>s+e.extraHours,0);
-  const totPay=filtered.reduce((s,e)=>s+e.totalPay,0);
-  const totKm=filtered.reduce((s,e)=>s+(e.kmCount||0),0);
-
-  const fmtHpdf=h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
-  const fmt2=v=>`${config.currency}${v.toFixed(2)}`;
-
-  const boxes=[
-    {label:T('shifts'), val:String(filtered.length), color:accent},
-    {label:T('hours'),  val:fmtHpdf(totH), color:accent},
-    {label:T('extras'), val:fmtHpdf(totEx), color:orange},
-    {label:T('earned'), val:`${config.currency}${Math.round(totPay)}`, color:accent},
-  ];
-  const bw=(W-28)/4-3;
-  boxes.forEach((b,i)=>{
-    const bx=14+(bw+4)*i;
-    doc.setFillColor(26,26,26);
-    doc.roundedRect(bx,68,bw,22,2,2,'F');
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(14);
-    doc.setTextColor(...b.color);
-    doc.text(b.val, bx+bw/2, 79, {align:'center'});
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(7);
-    doc.setTextColor(...muted);
-    doc.text(b.label.toUpperCase(), bx+bw/2, 85, {align:'center'});
-  });
-
-  // ─── BREAKDOWN ───
-  const np=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.normalPay),0);
-  const ep=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.extraPay),0);
-  const fp=filtered.reduce((s,e)=>s+(e.isFestivo?e.normalPay+e.extraPay:0),0);
-  const kp=filtered.reduce((s,e)=>s+(e.kmPay||0),0);
-  const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
-
-  let cy=100;
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(...accent);
-  doc.text('DESGLOSE / BREAKDOWN', 14, cy); cy+=7;
-
-  const rows=[
-    {label:T('normalPay'), val:fmt2(np), col:white},
-    {label:T('extraPay'),  val:fmt2(ep), col:orange},
-    {label:T('festivoPay'),val:fmt2(fp), col:festivo},
-    {label:T('kmPay')+'  ('+totKm+' km)', val:fmt2(kp), col:muted},
-    {label:T('pendingTickets'), val:fmt2(pt), col:warn},
-    {label:T('total'),     val:fmt2(totPay), col:accent},
-  ];
-  rows.forEach((r,i)=>{
-    if (i===rows.length-1) {
-      doc.setFillColor(30,30,30);
-      doc.rect(14,cy-4,W-28,9,'F');
-    }
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(8);
-    doc.setTextColor(...muted);
-    doc.text(r.label, 18, cy);
-    doc.setFont('helvetica','bold');
-    doc.setTextColor(...r.col);
-    doc.text(r.val, W-16, cy, {align:'right'});
-    if (i<rows.length-1) {
-      doc.setDrawColor(42,42,42);
-      doc.line(14,cy+2,W-14,cy+2);
-    }
-    cy+=9;
-  });
-
-  // ─── ENTRIES TABLE ───
-  cy+=4;
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(...accent);
-  doc.text('TURNOS / SHIFTS', 14, cy); cy+=3;
-
-  // Header
-  doc.setFillColor(26,26,26);
-  doc.rect(14,cy,W-28,8,'F');
-  doc.setFontSize(7);
-  doc.setTextColor(...muted);
-  doc.text('FECHA', 18, cy+5.5);
-  doc.text('ENTRADA', 55, cy+5.5);
-  doc.text('SALIDA', 76, cy+5.5);
-  doc.text('HORAS', 97, cy+5.5);
-  doc.text('EXTRAS', 116, cy+5.5);
-  doc.text('TIPO', 135, cy+5.5);
-  doc.text('KM', 150, cy+5.5);
-  doc.text('TOTAL', W-16, cy+5.5, {align:'right'});
-  cy+=10;
-
-  doc.setFont('helvetica','normal');
-  filtered.slice(0,25).forEach((e,idx)=>{
-    if (cy>H-30) {
-      doc.addPage();
-      doc.setFillColor(...dark);
-      doc.rect(0,0,W,H,'F');
-      cy=14;
-    }
-    if (idx%2===0) {
-      doc.setFillColor(17,17,17);
-      doc.rect(14,cy-4,W-28,7.5,'F');
-    }
-    const dayType=e.isFestivo?'🎉':'-';
-    doc.setFontSize(7);
-    doc.setTextColor(...white);
-    doc.text(formatDate(e.date), 18, cy);
-    doc.text(e.start, 55, cy);
-    doc.text(e.end, 76, cy);
-    doc.text(fmtHpdf(e.totalHours), 97, cy);
-    doc.setTextColor(...orange);
-    doc.text(e.extraHours>0?fmtHpdf(e.extraHours):'—', 116, cy);
-    doc.setTextColor(e.isFestivo?festivo[0]:muted[0], e.isFestivo?festivo[1]:muted[1], e.isFestivo?festivo[2]:muted[2]);
-    doc.text(e.isFestivo?'FEST':'-', 135, cy);
-    doc.setTextColor(...muted);
-    doc.text(e.kmCount>0?String(e.kmCount):'—', 150, cy);
-    doc.setFont('helvetica','bold');
-    doc.setTextColor(...accent);
-    doc.text(fmt2(e.totalPay), W-16, cy, {align:'right'});
-    doc.setFont('helvetica','normal');
-    cy+=8;
-  });
-
-  // Footer
-  doc.setFontSize(7);
-  doc.setTextColor(...muted);
-  doc.text('Time for Chamba · Made by Guillermo Sanchez', W/2, H-8, {align:'center'});
-
-  // Save
-  const filename=`chamba_${periodLabel.replace(/\s/g,'_')}_${now.getFullYear()}.pdf`;
-  doc.save(filename);
-}
-
-// ══════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════
 function saveConfig() {
-  config.currency         = document.getElementById('cfgCurrency').value||'$';
-  config.rate             = parseFloat(document.getElementById('cfgRate').value)||50;
-  config.overtimeRate     = parseFloat(document.getElementById('cfgOvertimeRate').value)||75;
-  config.threshold        = parseFloat(document.getElementById('cfgThreshold').value)||8;
-  config.festivoRate      = parseFloat(document.getElementById('cfgFestivoRate').value)||75;
-  config.festivoOvertimeRate = parseFloat(document.getElementById('cfgFestivoOvertimeRate').value)||100;
-  config.kmEnabled        = document.getElementById('cfgKmEnabled').checked;
-  config.kmRate           = parseFloat(document.getElementById('cfgKmRate').value)||0.20;
-  config.diaLibreEnabled  = document.getElementById('cfgDiaLibreEnabled').checked;
-  config.diaLibre         = parseInt(document.getElementById('cfgDiaLibre').value)||6;
-  config.onlyExtras       = document.getElementById('cfgOnlyExtras').checked;
+  config.currency     = document.getElementById('cfgCurrency').value||'$';
+  config.rate         = parseFloat(document.getElementById('cfgRate').value)||50;
+  config.overtimeRate = parseFloat(document.getElementById('cfgOvertimeRate').value)||75;
+  config.threshold    = parseFloat(document.getElementById('cfgThreshold').value)||8;
   localStorage.setItem('tfc_config', JSON.stringify(config));
-
-  // Show/hide km toggle on registro page
-  document.getElementById('kmToggleRow').style.display = config.kmEnabled ? 'flex' : 'none';
-  if (!config.kmEnabled) { document.getElementById('kmToggle').checked=false; toggleKm(false); }
-
   const newName = document.getElementById('cfgName').value.trim();
   if (newName) { localStorage.setItem('tfc_name', newName); applyGreeting(newName); }
   showToast(T('configSaved'));
@@ -1626,82 +1158,130 @@ function showToast(msg, error=false) {
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
 }
+
 function escHtml(str) {
   if (!str) return '';
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // ══════════════════════════════════════
-//  NOTIFICATIONS  (Lun–Sáb)
+//  NOTIFICATIONS
 // ══════════════════════════════════════
 let _notifTimer = null;
 
 function notifUpdateStatus() {
-  const el=document.getElementById('notifStatus');
-  const toggle=document.getElementById('notifToggle');
-  if (!el||!toggle) return;
-  const enabled=localStorage.getItem('tfc_notif')==='1';
-  const perm='Notification' in window ? Notification.permission : 'denied';
-  if (perm==='denied') { el.textContent=T('notifDenied'); el.style.color='var(--danger)'; toggle.checked=false; toggle.disabled=true; }
-  else if (enabled&&perm==='granted') { el.textContent=T('notifOn'); el.style.color='var(--success)'; toggle.checked=true; toggle.disabled=false; }
-  else { el.textContent=enabled?T('notifAsk'):T('notifOff'); el.style.color='var(--muted)'; toggle.checked=false; toggle.disabled=false; }
+  const el = document.getElementById('notifStatus');
+  const toggle = document.getElementById('notifToggle');
+  if (!el || !toggle) return;
+  const enabled = localStorage.getItem('tfc_notif') === '1';
+  const perm = 'Notification' in window ? Notification.permission : 'denied';
+  if (perm === 'denied') {
+    el.textContent = T('notifDenied');
+    el.style.color = 'var(--danger)';
+    toggle.checked = false;
+    toggle.disabled = true;
+  } else if (enabled && perm === 'granted') {
+    el.textContent = T('notifOn');
+    el.style.color = 'var(--success)';
+    toggle.checked = true;
+    toggle.disabled = false;
+  } else {
+    el.textContent = enabled ? T('notifAsk') : T('notifOff');
+    el.style.color = 'var(--muted)';
+    toggle.checked = false;
+    toggle.disabled = false;
+  }
 }
 
 async function toggleNotifications(on) {
-  if (!on) { localStorage.setItem('tfc_notif','0'); clearTimeout(_notifTimer); _notifTimer=null; notifUpdateStatus(); showToast(T('notifOff')); return; }
-  if (!('Notification' in window)) { showToast('Tu navegador no soporta notificaciones',true); document.getElementById('notifToggle').checked=false; return; }
-  const perm=await Notification.requestPermission();
-  if (perm==='granted') { localStorage.setItem('tfc_notif','1'); notifScheduleDaily(); showToast(T('notifOn')); }
-  else { localStorage.setItem('tfc_notif','0'); document.getElementById('notifToggle').checked=false; showToast(T('notifDenied'),true); }
+  if (!on) {
+    localStorage.setItem('tfc_notif', '0');
+    clearTimeout(_notifTimer);
+    _notifTimer = null;
+    notifUpdateStatus();
+    showToast(T('notifOff'));
+    return;
+  }
+  if (!('Notification' in window)) {
+    showToast('Tu navegador no soporta notificaciones', true);
+    document.getElementById('notifToggle').checked = false;
+    return;
+  }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    localStorage.setItem('tfc_notif', '1');
+    notifScheduleDaily();
+    showToast(T('notifOn'));
+  } else {
+    localStorage.setItem('tfc_notif', '0');
+    document.getElementById('notifToggle').checked = false;
+    showToast(T('notifDenied'), true);
+  }
   notifUpdateStatus();
 }
 
-function todayHasEntry() { const t=new Date().toISOString().split('T')[0]; return entries.some(e=>e.date===t); }
+function todayHasEntry() {
+  const today = new Date().toISOString().split('T')[0];
+  return entries.some(e => e.date === today);
+}
 
-function isWorkday() {
-  const d=new Date().getDay(); // 0=Sun
-  // Lun–Sáb (1–6), excluyendo día libre si está configurado
-  if (d===0) return false; // Sunday never (unless festivo logged separately)
-  if (d<1||d>6) return false;
-  if (config.diaLibreEnabled && d===config.diaLibre) return false;
-  return true;
+function isWeekday() {
+  const d = new Date().getDay(); // 0=Sun, 6=Sat
+  return d >= 1 && d <= 5;
 }
 
 function msUntil8pm() {
-  const now=new Date(); const target=new Date(now); target.setHours(20,0,0,0);
-  let diff=target-now; if (diff<=0) diff+=24*60*60*1000; return diff;
+  const now = new Date();
+  const target = new Date(now);
+  target.setHours(20, 0, 0, 0);
+  let diff = target - now;
+  if (diff <= 0) diff += 24 * 60 * 60 * 1000; // next day if already past 8pm
+  return diff;
 }
 
 function notifFire() {
-  const enabled=localStorage.getItem('tfc_notif')==='1';
-  const perm='Notification' in window ? Notification.permission : 'denied';
-  if (!enabled||perm!=='granted') return;
-  if (!isWorkday()) { notifScheduleDaily(); return; }
-  if (todayHasEntry()) { notifScheduleDaily(); return; }
-  const name=localStorage.getItem('tfc_name')||(currentLang==='en'?'Worker':'Chambeador');
-  const bodies=[T('notifMsgBody0'),T('notifMsgBody1'),T('notifMsgBody2'),T('notifMsgBody3')];
-  const body=bodies[Math.floor(Math.random()*bodies.length)].replace('{name}',name);
-  const title=T('notifMsgTitle');
+  const enabled = localStorage.getItem('tfc_notif') === '1';
+  const perm = 'Notification' in window ? Notification.permission : 'denied';
+  if (!enabled || perm !== 'granted') return;
+  if (!isWeekday()) { notifScheduleDaily(); return; } // skip weekend, reschedule for tomorrow
+  if (todayHasEntry()) { notifScheduleDaily(); return; } // already logged, no reminder needed
+
+  const name = localStorage.getItem('tfc_name') || (currentLang === 'en' ? 'Worker' : 'Chambeador');
+  const bodies = [T('notifMsgBody0'), T('notifMsgBody1'), T('notifMsgBody2'), T('notifMsgBody3')];
+  const body = bodies[Math.floor(Math.random() * bodies.length)].replace('{name}', name);
+  const title = T('notifMsgTitle');
+
+  // Fire via SW so it works even when app is in background
   if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({type:'SHOW_REMINDER',title,body});
+    navigator.serviceWorker.controller.postMessage({ type: 'SHOW_REMINDER', title, body });
   } else {
-    new Notification(title,{body,icon:'./icon-192.png',tag:'chamba-reminder'});
+    // Fallback: direct Notification API (only works when app is open)
+    new Notification(title, { body, icon: './icon-192.png', tag: 'chamba-reminder' });
   }
-  notifScheduleDaily();
+  notifScheduleDaily(); // schedule next day
 }
 
-function notifScheduleDaily() { clearTimeout(_notifTimer); _notifTimer=setTimeout(notifFire,msUntil8pm()); }
+function notifScheduleDaily() {
+  clearTimeout(_notifTimer);
+  const ms = msUntil8pm();
+  _notifTimer = setTimeout(notifFire, ms);
+}
 
 function notifInit() {
   notifUpdateStatus();
-  const enabled=localStorage.getItem('tfc_notif')==='1';
-  const perm='Notification' in window ? Notification.permission : 'denied';
-  if (enabled&&perm==='granted') notifScheduleDaily();
+  const enabled = localStorage.getItem('tfc_notif') === '1';
+  const perm = 'Notification' in window ? Notification.permission : 'denied';
+  if (enabled && perm === 'granted') {
+    notifScheduleDaily();
+  }
 }
 
 // ══════════════════════════════════════
 init();
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(()=>{ notifInit(); }).catch(()=>{ notifInit(); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(() => {
+  notifInit();
+}).catch(()=>{ notifInit(); });
 </script>
+
 </body>
 </html>
