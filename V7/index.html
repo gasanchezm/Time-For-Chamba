@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a0a0a" id="metaThemeColor">
+<meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Time for Chamba">
@@ -20,20 +20,6 @@
   --danger:#ff4444; --success:#44ff88; --warn:#f5c542; --festivo:#b57bee;
   --nav-h:64px; --safe-b:env(safe-area-inset-bottom,0px);
 }
-
-/* ── THEME: MIDNIGHT (default) ── */
-[data-theme="midnight"]{--bg:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--surface3:#222;--border:#2a2a2a;--border2:#333;--accent:#c8f135;--accent-dim:rgba(200,241,53,.11);--accent-text:#0a0a0a;--nav-bg:rgba(10,10,10,.96);--logo-grad:linear-gradient(135deg,#c8f135 0%,#9abf00 100%)}
-/* ── THEME: OCEAN ── */
-[data-theme="ocean"]{--bg:#020d1a;--surface:#081828;--surface2:#0d2135;--surface3:#112840;--border:#1a3550;--border2:#1e3d5c;--accent:#00d4ff;--accent-dim:rgba(0,212,255,.11);--accent-text:#020d1a;--accent2:#ff6b6b;--warn:#ffd166;--festivo:#c77dff;--nav-bg:rgba(2,13,26,.96);--logo-grad:linear-gradient(135deg,#00d4ff 0%,#0077b6 100%)}
-/* ── THEME: EMBER ── */
-[data-theme="ember"]{--bg:#0d0905;--surface:#1a1108;--surface2:#241810;--surface3:#2e2018;--border:#3d2d1a;--border2:#4a3520;--accent:#ff8c42;--accent-dim:rgba(255,140,66,.11);--accent-text:#0d0905;--accent2:#ffd23f;--warn:#ffd23f;--festivo:#c77dff;--nav-bg:rgba(13,9,5,.96);--logo-grad:linear-gradient(135deg,#ff8c42 0%,#e63946 100%)}
-/* ── THEME: FROST ── */
-[data-theme="frost"]{--bg:#f0f4f8;--surface:#fff;--surface2:#e8edf3;--surface3:#dde4ed;--border:#d0d8e4;--border2:#c0cadb;--accent:#2563eb;--accent-dim:rgba(37,99,235,.1);--accent-text:#fff;--accent2:#f97316;--text:#111827;--text2:#374151;--muted:#9ca3af;--danger:#ef4444;--success:#10b981;--warn:#f59e0b;--festivo:#8b5cf6;--nav-bg:rgba(240,244,248,.97);--logo-grad:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%)}
-/* ── THEME: NEON ── */
-[data-theme="neon"]{--bg:#07000f;--surface:#0e0018;--surface2:#160025;--surface3:#1e0033;--border:#3d006b;--border2:#4a007f;--accent:#bf00ff;--accent-dim:rgba(191,0,255,.11);--accent-text:#07000f;--accent2:#00ffcc;--warn:#ffef00;--festivo:#ff0066;--success:#00ffcc;--nav-bg:rgba(7,0,15,.96);--logo-grad:linear-gradient(135deg,#bf00ff 0%,#ff0066 100%)}
-/* ── THEME: SLATE ── */
-[data-theme="slate"]{--bg:#0f172a;--surface:#1e293b;--surface2:#263348;--surface3:#2e3c55;--border:#334155;--border2:#3d4f6b;--accent:#38bdf8;--accent-dim:rgba(56,189,248,.11);--accent-text:#0f172a;--accent2:#fb923c;--warn:#fbbf24;--festivo:#a78bfa;--nav-bg:rgba(15,23,42,.97);--logo-grad:linear-gradient(135deg,#38bdf8 0%,#818cf8 100%)}
-
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
 @supports (height: 100dvh) { html,body { height:100dvh; } }
@@ -43,7 +29,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #welcomeScreen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:500;padding:32px 24px;overflow-y:auto}
 #welcomeScreen.hide{animation:fadeOut .4s ease forwards}
 @keyframes fadeOut{to{opacity:0;pointer-events:none}}
-.w-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,13vw,76px);letter-spacing:4px;line-height:1;background:var(--logo-grad,linear-gradient(135deg,var(--accent) 0%,#9abf00 100%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px}
+.w-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,13vw,76px);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,var(--accent) 0%,#9abf00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:4px}
 .w-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;text-align:center;margin-bottom:28px}
 .w-card{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 20px}
 .w-section-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
@@ -65,7 +51,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ── APP ── */
 #app{display:flex;flex-direction:column;min-height:100%;min-height:100dvh;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 8px)}
 .header{padding:16px 20px 0;display:flex;flex-direction:column;align-items:center;text-align:center}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,9vw,56px);letter-spacing:4px;line-height:1;background:var(--logo-grad,linear-gradient(135deg,var(--accent) 0%,#9abf00 100%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn .5s ease-out}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,9vw,56px);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,var(--accent) 0%,#9abf00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn .5s ease-out}
 @keyframes logoIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 .greeting{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:1.5px;margin-top:4px;animation:logoIn .5s .15s ease-out both}
 .byline{font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;animation:logoIn .5s .25s ease-out both}
@@ -76,7 +62,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── BOTTOM NAV ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav-bg,rgba(12,12,12,.96));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:10px;padding-bottom:var(--safe-b);padding-bottom:env(safe-area-inset-bottom,0px);height:calc(var(--nav-h) + var(--safe-b));height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));z-index:100}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(12,12,12,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:10px;padding-bottom:var(--safe-b);padding-bottom:env(safe-area-inset-bottom,0px);height:calc(var(--nav-h) + var(--safe-b));height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));z-index:100}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px}
 .nav-icon{font-size:22px;line-height:1;transition:transform .15s}
 .nav-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;transition:color .15s}
@@ -267,22 +253,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .modal-ticket-photos img{width:72px;height:72px;border-radius:8px;object-fit:cover;cursor:pointer}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:calc(var(--nav-h) + 12px + var(--safe-b));left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 22px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+.toast{position:fixed;bottom:calc(var(--nav-h) + 12px + var(--safe-b));left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent);color:#0a0a0a;padding:10px 22px;border-radius:20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;z-index:200;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast.error{background:var(--danger);color:#fff;border-color:var(--danger)}
-.toast.success{background:var(--accent);color:var(--accent-text,#0a0a0a);border-color:var(--accent)}
-
-/* ── THEMES GRID ── */
-.theme-swatch{border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .15s;position:relative}
-.theme-swatch.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-dim,rgba(200,241,53,.2))}
-.theme-swatch-inner{height:52px;display:flex;flex-direction:column;justify-content:flex-end;padding:6px 8px}
-.theme-swatch-dot{width:9px;height:9px;border-radius:50%;margin-bottom:3px}
-.theme-swatch-name{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:rgba(200,200,200,.7)}
-.theme-swatch .active-tick{position:absolute;top:4px;right:4px;width:15px;height:15px;background:var(--accent);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:9px;color:var(--accent-text,#0a0a0a)}
-.theme-swatch.active .active-tick{display:flex}
+.toast.error{background:var(--danger);color:#fff}
 </style>
 </head>
-<body data-theme="midnight">
+<body>
 
 <!-- ══════════════ WELCOME ══════════════ -->
 <div id="welcomeScreen">
@@ -294,7 +270,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="w-q" id="wLangQ">¿En qué idioma prefieres la app?</div>
       <div class="w-hint" id="wLangHint">Podrás cambiarlo en configuración.</div>
       <div class="lang-row">
-        <div class="lang-btn sel" id="btnEs" onclick="selectLang('es')"><div class="lang-flag">🇪🇸</div><div class="lang-name">Español</div></div>
+        <div class="lang-btn sel" id="btnEs" onclick="selectLang('es')"><div class="lang-flag">🇲🇽</div><div class="lang-name">Español</div></div>
         <div class="lang-btn" id="btnEn" onclick="selectLang('en')"><div class="lang-flag">🇺🇸</div><div class="lang-name">English</div></div>
       </div>
       <button class="w-go" id="wLangNext" onclick="goToNameStep()">SIGUIENTE →</button>
@@ -612,7 +588,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="setting-row">
         <div><div class="setting-name" data-t="language"></div><div class="setting-desc" data-t="languageDesc"></div></div>
         <div style="display:flex;gap:8px">
-          <button onclick="setLangAndSave('es')" id="cfgLangEs" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇪🇸</button>
+          <button onclick="setLangAndSave('es')" id="cfgLangEs" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇲🇽</button>
           <button onclick="setLangAndSave('en')" id="cfgLangEn" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇺🇸</button>
         </div>
       </div>
@@ -631,16 +607,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <hr class="divider">
       <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig"></button>
     </div>
-
-    <!-- TEMAS -->
-    <div class="card">
-      <div class="card-title"><span>🎨</span> <span data-t="themeTitle"></span></div>
-      <div id="themesGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
-    </div>
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> v5.0</div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> v4.0</div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -691,44 +661,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ══════════════════════════════════════
 //  i18n
 // ══════════════════════════════════════
-
-// ══════════════════════════════════════
-//  THEMES
-// ══════════════════════════════════════
-const THEMES_DEF = {
-  midnight:{ name:'Midnight', bg:'#0a0a0a', accent:'#c8f135', surface:'#111' },
-  ocean:   { name:'Ocean',    bg:'#020d1a', accent:'#00d4ff', surface:'#081828' },
-  ember:   { name:'Ember',    bg:'#0d0905', accent:'#ff8c42', surface:'#1a1108' },
-  frost:   { name:'Frost',    bg:'#f0f4f8', accent:'#2563eb', surface:'#ffffff' },
-  neon:    { name:'Neon',     bg:'#07000f', accent:'#bf00ff', surface:'#0e0018' },
-  slate:   { name:'Slate',    bg:'#0f172a', accent:'#38bdf8', surface:'#1e293b' },
-};
-let currentTheme = 'midnight';
-
-function applyTheme(t) {
-  currentTheme = t;
-  document.body.setAttribute('data-theme', t);
-  const meta = document.getElementById('metaThemeColor');
-  if (meta) meta.setAttribute('content', THEMES_DEF[t].bg);
-  localStorage.setItem('tfc_theme', t);
-  renderThemesGrid();
-}
-
-function renderThemesGrid() {
-  const grid = document.getElementById('themesGrid');
-  if (!grid) return;
-  grid.innerHTML = Object.entries(THEMES_DEF).map(([id, th]) => {
-    const textColor = id === 'frost' ? '#374151' : '#aaa';
-    return `<div class="theme-swatch ${id===currentTheme?'active':''}" onclick="applyTheme('${id}')" style="background:${th.surface}">
-      <div class="theme-swatch-inner">
-        <div class="theme-swatch-dot" style="background:${th.accent}"></div>
-        <div class="theme-swatch-name" style="color:${textColor}">${th.name}</div>
-      </div>
-      <div class="active-tick">✓</div>
-    </div>`;
-  }).join('');
-}
-
 const STRINGS = {
   es: {
     live:'en vivo', shiftInfo:'Información del Turno', date:'Fecha', entry:'Entrada', exit:'Salida',
@@ -767,7 +699,7 @@ const STRINGS = {
     yourName:'Tu nombre', yourNameDesc:'Para el saludo',
     language:'Idioma', languageDesc:'Cambia el idioma de la app',
     saveConfig:'GUARDAR CONFIG',
-    themeTitle:'Tema visual', preferences:'Preferencias', about:'Acerca de', aboutDesc:'Turnos · Ganancias · Tickets · Festivos · Km · PWA',
+    about:'Acerca de', aboutDesc:'Turnos · Ganancias · Tickets · Festivos · Km · PWA',
     tabRecord:'Registro', tabSummary:'Resumen', tabHistory:'Historial', tabConfig:'Config',
     deleteShift:'Eliminar Turno', close:'Cerrar',
     saved:'¡Turno guardado! 💪', deleted:'Turno eliminado', cleared:'Historial borrado',
@@ -833,7 +765,7 @@ const STRINGS = {
     yourName:'Your name', yourNameDesc:'Used for greeting',
     language:'Language', languageDesc:'Change app language',
     saveConfig:'SAVE CONFIG',
-    themeTitle:'Visual theme', preferences:'Preferences', about:'About', aboutDesc:'Shifts · Earnings · Tickets · Holidays · Km · PWA',
+    about:'About', aboutDesc:'Shifts · Earnings · Tickets · Holidays · Km · PWA',
     tabRecord:'Record', tabSummary:'Summary', tabHistory:'History', tabConfig:'Config',
     deleteShift:'Delete Shift', close:'Close',
     saved:'Shift saved! 💪', deleted:'Shift deleted', cleared:'History cleared',
@@ -904,9 +836,6 @@ let _ticketPhotoTarget = null; // which ticket index we're adding a photo to
 //  INIT
 // ══════════════════════════════════════
 function init() {
-  // Theme
-  applyTheme(localStorage.getItem('tfc_theme') || 'midnight');
-  renderThemesGrid();
   const sc = localStorage.getItem('tfc_config');
   if (sc) config = {...config, ...JSON.parse(sc)};
   const se = localStorage.getItem('tfc_entries');
@@ -1002,7 +931,6 @@ function loadConfigUI() {
   document.getElementById('cfgDiaLibreOvertimeRate').value = config.diaLibreOvertimeRate;
   document.getElementById('cfgOnlyExtras').checked = config.onlyExtras;
   document.getElementById('cfgName').value = localStorage.getItem('tfc_name') || '';
-  renderThemesGrid();
 }
 
 function setToday() {
@@ -1183,12 +1111,12 @@ function calcAndPreview() {
   const isFestivo = document.getElementById('festivoToggle').checked;
   const kmOn = document.getElementById('kmToggle').checked;
 
-  if (!date||!start||!end) { showToast(T('fillFields'),'error'); return; }
+  if (!date||!start||!end) { showToast(T('fillFields'),true); return; }
   const s = new Date(`${date}T${start}`);
   let   e = new Date(`${date}T${end}`);
   if (e<=s) e.setDate(e.getDate()+1);
   const totalMin = (e-s)/60000 - breakMinutes;
-  if (totalMin<=0) { showToast(T('invalidTime'),'error'); return; }
+  if (totalMin<=0) { showToast(T('invalidTime'),true); return; }
 
   const totalHours  = totalMin/60;
   const normalHours = Math.min(totalHours, config.threshold);
@@ -1266,7 +1194,7 @@ function saveEntry() {
   if (!previewData) return;
   entries.unshift(previewData);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
-  showToast(T('saved'),'success');
+  showToast(T('saved'));
   document.getElementById('previewCard').style.display='none';
   document.getElementById('fieldStart').value='';
   document.getElementById('fieldEnd').value='';
@@ -1375,7 +1303,7 @@ function toggleModalTicketPaid(entryId, ticketIdx) {
   const pendingAmt = e.tickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
   e.totalPay = e.normalPay + e.extraPay + (e.kmPay||0) + pendingAmt;
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
-  showToast(T('ticketsPaidToast'),'success');
+  showToast(T('ticketsPaidToast'));
   openModal(entryId); renderHistory(); renderSummary(currentPeriod);
 }
 
@@ -1733,16 +1661,16 @@ function saveConfig() {
 
   const newName = document.getElementById('cfgName').value.trim();
   if (newName) { localStorage.setItem('tfc_name', newName); applyGreeting(newName); }
-  showToast(T('configSaved'),'success');
+  showToast(T('configSaved'));
   renderHistory(); renderSummary(currentPeriod);
 }
 
 // ══════════════════════════════════════
 //  TOAST & UTILS
 // ══════════════════════════════════════
-function showToast(msg, type='') {
+function showToast(msg, error=false) {
   const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast'+(type?' '+type:'');
+  t.textContent=msg; t.className='toast'+(error?' error':'');
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
 }
@@ -1771,8 +1699,8 @@ async function toggleNotifications(on) {
   if (!on) { localStorage.setItem('tfc_notif','0'); clearTimeout(_notifTimer); _notifTimer=null; notifUpdateStatus(); showToast(T('notifOff')); return; }
   if (!('Notification' in window)) { showToast('Tu navegador no soporta notificaciones',true); document.getElementById('notifToggle').checked=false; return; }
   const perm=await Notification.requestPermission();
-  if (perm==='granted') { localStorage.setItem('tfc_notif','1'); notifScheduleDaily(); showToast(T('notifOn'),'success'); }
-  else { localStorage.setItem('tfc_notif','0'); document.getElementById('notifToggle').checked=false; showToast(T('notifDenied'),'error'); }
+  if (perm==='granted') { localStorage.setItem('tfc_notif','1'); notifScheduleDaily(); showToast(T('notifOn')); }
+  else { localStorage.setItem('tfc_notif','0'); document.getElementById('notifToggle').checked=false; showToast(T('notifDenied'),true); }
   notifUpdateStatus();
 }
 
