@@ -196,7 +196,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .entry-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:8px;cursor:pointer;transition:border-color .2s,transform .1s}
 .entry-card:active{border-color:var(--accent);transform:scale(.99)}
 .entry-card.festivo-entry{border-left:2px solid var(--festivo)}
-.entry-card.diaLibre-entry{border-left:2px solid var(--warn)}
 .entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .entry-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 .entry-earn{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--accent)}
@@ -417,7 +416,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card" id="previewCard" style="display:none">
       <div class="card-title"><span>02</span> <span data-t="shiftSummary"></span></div>
       <div id="festivoBadgePreview" style="display:none;margin-bottom:10px"><span class="festivo-chip">🎉 <span data-t="festivoDay"></span></span></div>
-      <div id="diaLibreBadgePreview" style="display:none;margin-bottom:10px"><span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖 <span data-t="diaLibreDay"></span></span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="normalHours"></span><span class="breakdown-value accent" id="prevNormal">—</span></div>
       <div class="breakdown-row" id="prevExtraRow"><span class="breakdown-label" data-t="extraHours"></span><span class="breakdown-value orange" id="prevExtra">—</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="totalWorked"></span><span class="breakdown-value" id="prevTotal">—</span></div>
@@ -462,7 +460,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="breakdown-row"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="sumNormalPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="festivoPay"></span><span class="breakdown-value festivo" id="sumFestivoPay">$0.00</span></div>
-      <div class="breakdown-row"><span class="breakdown-label" data-t="diaLibrePay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDiaLibrePay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="total"></span><span class="breakdown-value accent" id="sumTotal">$0.00</span></div>
@@ -545,27 +542,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
             <div class="toggle-thumb"></div>
           </label>
         </div>
-        <div id="cfgDiaLibreDetails" style="display:none">
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="diaLibreDia"></div></div>
-            <select class="setting-select" id="cfgDiaLibre">
-              <option value="1" data-t-opt="monday"></option>
-              <option value="2" data-t-opt="tuesday"></option>
-              <option value="3" data-t-opt="wednesday"></option>
-              <option value="4" data-t-opt="thursday"></option>
-              <option value="5" data-t-opt="friday"></option>
-              <option value="6" data-t-opt="saturday"></option>
-            </select>
-          </div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--warn);margin:8px 0 4px">💰 <span data-t="diaLibreRates"></span></div>
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="diaLibreNormalRate"></div><div class="setting-desc" data-t="diaLibreNormalRateDesc"></div></div>
-            <input type="number" class="setting-input" id="cfgDiaLibreRate" value="60" min="0" step="0.5">
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="diaLibreOvertimeRate"></div><div class="setting-desc" data-t="diaLibreOvertimeRateDesc"></div></div>
-            <input type="number" class="setting-input" id="cfgDiaLibreOvertimeRate" value="90" min="0" step="0.5">
-          </div>
+        <div class="setting-row" id="cfgDiaLibreRow" style="display:none">
+          <div><div class="setting-name" data-t="diaLibreDia"></div></div>
+          <select class="setting-select" id="cfgDiaLibre">
+            <option value="1" data-t-opt="monday"></option>
+            <option value="2" data-t-opt="tuesday"></option>
+            <option value="3" data-t-opt="wednesday"></option>
+            <option value="4" data-t-opt="thursday"></option>
+            <option value="5" data-t-opt="friday"></option>
+            <option value="6" data-t-opt="saturday"></option>
+          </select>
         </div>
       </div>
 
@@ -676,10 +662,6 @@ const STRINGS = {
     kmPay:'Pago km', kmLine:'Kilómetros',
     diaLibreConfig:'Día Libre', diaLibreEnabled:'Tengo día libre', diaLibreEnabledDesc:'Excluye un día de la semana',
     diaLibreDia:'Día libre',
-    diaLibreNormalRate:'Tarifa día libre / hora', diaLibreNormalRateDesc:'Primeras N horas en día libre',
-    diaLibreOvertimeRate:'Extra día libre / hora', diaLibreOvertimeRateDesc:'Horas extra en día libre',
-    diaLibreRates:'Tarifas Día Libre',
-    diaLibrePay:'Pago día libre', diaLibreDay:'Día Libre',
     monday:'Lunes', tuesday:'Martes', wednesday:'Miércoles', thursday:'Jueves', friday:'Viernes', saturday:'Sábado',
     onlyExtrasLabel:'Solo horas extras', onlyExtrasDesc:'Contabiliza únicamente horas extra en resúmenes',
     ticketsLabel:'Tickets por Entregar', ticketsSub:'Gastos pagados por la empresa',
@@ -742,10 +724,6 @@ const STRINGS = {
     kmPay:'Km pay', kmLine:'Kilometers',
     diaLibreConfig:'Day Off', diaLibreEnabled:'I have a day off', diaLibreEnabledDesc:'Exclude one weekday',
     diaLibreDia:'Day off',
-    diaLibreNormalRate:'Day off rate / hour', diaLibreNormalRateDesc:'First N hours on day off',
-    diaLibreOvertimeRate:'Day off overtime / hour', diaLibreOvertimeRateDesc:'Extra hours on day off',
-    diaLibreRates:'Day Off Rates',
-    diaLibrePay:'Day off pay', diaLibreDay:'Day Off',
     monday:'Monday', tuesday:'Tuesday', wednesday:'Wednesday', thursday:'Thursday', friday:'Friday', saturday:'Saturday',
     onlyExtrasLabel:'Only overtime', onlyExtrasDesc:'Count only overtime hours in summaries',
     ticketsLabel:'Tickets to Submit', ticketsSub:'Company-paid expenses',
@@ -819,7 +797,7 @@ let config = {
   currency:'$', rate:50, overtimeRate:75, threshold:8,
   festivoRate:75, festivoOvertimeRate:100,
   kmEnabled:false, kmRate:0.20,
-  diaLibreEnabled:false, diaLibre:6, diaLibreRate:60, diaLibreOvertimeRate:90,
+  diaLibreEnabled:false, diaLibre:6,
   onlyExtras:false
 };
 let entries = [];
@@ -925,10 +903,8 @@ function loadConfigUI() {
   document.getElementById('cfgKmRate').value = config.kmRate;
   document.getElementById('cfgKmRateRow').style.display = config.kmEnabled ? 'flex' : 'none';
   document.getElementById('cfgDiaLibreEnabled').checked = config.diaLibreEnabled;
-  document.getElementById('cfgDiaLibreDetails').style.display = config.diaLibreEnabled ? 'block' : 'none';
+  document.getElementById('cfgDiaLibreRow').style.display = config.diaLibreEnabled ? 'flex' : 'none';
   document.getElementById('cfgDiaLibre').value = config.diaLibre;
-  document.getElementById('cfgDiaLibreRate').value = config.diaLibreRate;
-  document.getElementById('cfgDiaLibreOvertimeRate').value = config.diaLibreOvertimeRate;
   document.getElementById('cfgOnlyExtras').checked = config.onlyExtras;
   document.getElementById('cfgName').value = localStorage.getItem('tfc_name') || '';
 }
@@ -1014,7 +990,7 @@ function onKmEnabledChange() {
 }
 function onDiaLibreChange() {
   const en = document.getElementById('cfgDiaLibreEnabled').checked;
-  document.getElementById('cfgDiaLibreDetails').style.display = en ? 'block' : 'none';
+  document.getElementById('cfgDiaLibreRow').style.display = en ? 'flex' : 'none';
 }
 
 // ══════════════════════════════════════
@@ -1122,22 +1098,9 @@ function calcAndPreview() {
   const normalHours = Math.min(totalHours, config.threshold);
   const extraHours  = Math.max(0, totalHours-config.threshold);
 
-  // Detect if selected date is the configured día libre
-  const selectedDow = new Date(date+'T12:00:00').getDay(); // 0=Sun
-  const isDiaLibre = config.diaLibreEnabled && selectedDow === config.diaLibre;
-
-  // Pick rates: festivo > dia libre > normal (festivo takes priority if both toggled)
-  let rateNormal, rateExtra;
-  if (isFestivo) {
-    rateNormal = config.festivoRate;
-    rateExtra  = config.festivoOvertimeRate;
-  } else if (isDiaLibre) {
-    rateNormal = config.diaLibreRate;
-    rateExtra  = config.diaLibreOvertimeRate;
-  } else {
-    rateNormal = config.rate;
-    rateExtra  = config.overtimeRate;
-  }
+  // Pick rates based on festivo
+  const rateNormal  = isFestivo ? config.festivoRate : config.rate;
+  const rateExtra   = isFestivo ? config.festivoOvertimeRate : config.overtimeRate;
 
   const normalPay   = normalHours * rateNormal;
   const extraPay    = extraHours  * rateExtra;
@@ -1151,14 +1114,13 @@ function calcAndPreview() {
 
   previewData = { date, start, end, breakMin:breakMinutes, desc, totalHours, normalHours, extraHours,
     normalPay, extraPay, totalPay, tickets:[...draftTickets], id:Date.now(),
-    isFestivo, isDiaLibre, kmCount, kmPay };
+    isFestivo, kmCount, kmPay };
 
   const fmt  = v => `${config.currency}${v.toFixed(2)}`;
   const fmtH = h => h<.01?'0m':h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
 
-  // Preview badges
+  // Preview badge
   document.getElementById('festivoBadgePreview').style.display = isFestivo ? 'block' : 'none';
-  document.getElementById('diaLibreBadgePreview').style.display = (!isFestivo && isDiaLibre) ? 'block' : 'none';
 
   document.getElementById('prevNormal').textContent    = fmtH(normalHours);
   document.getElementById('prevExtra').textContent     = extraHours>0?fmtH(extraHours):'—';
@@ -1221,9 +1183,8 @@ function renderHistory() {
     const pendingAmt = pendingTickets.reduce((s,t)=>s+t.amount,0);
     const ticketBadge = pendingAmt>0 ? `<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)} ${T('pendingBadge')}</span>` : (e.tickets&&e.tickets.length?`<span class="paid-badge">✓ ${T('paidBadge')}</span>`:'');
     const festivoBadge = e.isFestivo ? `<span class="festivo-chip">🎉</span>` : '';
-    const diaLibreBadge = (!e.isFestivo && e.isDiaLibre) ? `<span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖</span>` : '';
     const kmBadge = e.kmCount>0 ? `<span class="entry-chip">🚗 ${e.kmCount}km</span>` : '';
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" onclick="openModal('${e.id}')">
+    return `<div class="entry-card ${e.isFestivo?'festivo-entry':''}" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
@@ -1231,7 +1192,7 @@ function renderHistory() {
         <span class="entry-chip">▶ ${e.start}</span>
         <span class="entry-chip">■ ${e.end}</span>
         ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2);border-color:var(--accent2)">+${fmtH(e.extraHours)}</span>`:''}
-        ${kmBadge}${festivoBadge}${diaLibreBadge}${ticketBadge}
+        ${kmBadge}${festivoBadge}${ticketBadge}
       </div>
     </div>`;
   }).join('');
@@ -1274,12 +1235,11 @@ function openModal(id) {
   }
 
   const festivoLine = e.isFestivo ? `<div class="breakdown-row"><span class="breakdown-label">${T('festivoDay')}</span><span class="breakdown-value festivo">🎉 Sí</span></div>` : '';
-  const diaLibreLine = (!e.isFestivo && e.isDiaLibre) ? `<div class="breakdown-row"><span class="breakdown-label">${T('diaLibreDay')}</span><span class="breakdown-value" style="color:var(--warn)">🏖 Sí</span></div>` : '';
   const kmLine = e.kmCount>0 ? `<div class="breakdown-row"><span class="breakdown-label">${T('kmLine')}</span><span class="breakdown-value">${e.kmCount} km — ${fmt(e.kmPay||0)}</span></div>` : '';
 
   document.getElementById('modalTitle').textContent = formatDate(e.date);
   document.getElementById('modalContent').innerHTML = `
-    ${festivoLine}${diaLibreLine}
+    ${festivoLine}
     <div class="breakdown-row"><span class="breakdown-label">${T('entry')}</span><span class="breakdown-value">${e.start}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('exit')}</span><span class="breakdown-value">${e.end}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('breakTime')}</span><span class="breakdown-value">${e.breakMin} min</span></div>
@@ -1382,10 +1342,9 @@ function renderSummary(period) {
   // Apply onlyExtras filter
   const calcH = config.onlyExtras ? filtered.reduce((s,e)=>s+e.extraHours,0) : filtered.reduce((s,e)=>s+e.totalHours,0);
   const eh=filtered.reduce((s,e)=>s+e.extraHours,0);
-  const np=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.normalPay:0),0);
-  const ep=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.extraPay:0),0);
-  const fp=filtered.reduce((s,e)=>s+(e.isFestivo?e.normalPay+e.extraPay:0),0);
-  const dp=filtered.reduce((s,e)=>s+(e.isDiaLibre&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
+  const np=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.normalPay),0);
+  const ep=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.extraPay),0);
+  const fp=filtered.reduce((s,e)=>s+(e.isFestivo?(e.normalPay+e.extraPay):0),0);
   const kp=filtered.reduce((s,e)=>s+(e.kmPay||0),0);
   const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
   const tp=filtered.reduce((s,e)=>s+e.totalPay,0);
@@ -1397,7 +1356,6 @@ function renderSummary(period) {
   document.getElementById('sumNormalPay').textContent=`${config.currency}${np.toFixed(2)}`;
   document.getElementById('sumExtraPay').textContent=`${config.currency}${ep.toFixed(2)}`;
   document.getElementById('sumFestivoPay').textContent=`${config.currency}${fp.toFixed(2)}`;
-  document.getElementById('sumDiaLibrePay').textContent=`${config.currency}${dp.toFixed(2)}`;
   document.getElementById('sumKmPay').textContent=`${config.currency}${kp.toFixed(2)}`;
   document.getElementById('sumPendingTickets').textContent=`${config.currency}${pt.toFixed(2)}`;
   document.getElementById('sumTotal').textContent=`${config.currency}${tp.toFixed(2)}`;
@@ -1407,14 +1365,13 @@ function renderSummary(period) {
   const fmtHh=h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
   ct.innerHTML=filtered.slice(0,15).map(e=>{
     const pendingAmt=(e.tickets||[]).filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" onclick="openModal('${e.id}')">
+    return `<div class="entry-card ${e.isFestivo?'festivo-entry':''}" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
         <span class="entry-chip">⏱ ${fmtHh(e.totalHours)}</span>
         ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2)">+${fmtHh(e.extraHours)}</span>`:''}
         ${e.isFestivo?`<span class="festivo-chip">🎉</span>`:''}
-        ${(!e.isFestivo&&e.isDiaLibre)?`<span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖</span>`:''}
         ${e.kmCount>0?`<span class="entry-chip">🚗 ${e.kmCount}km</span>`:''}
         ${pendingAmt>0?`<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)}</span>`:''}
       </div>
@@ -1530,10 +1487,9 @@ async function exportPDF() {
   });
 
   // ─── BREAKDOWN ───
-  const np=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.normalPay:0),0);
-  const ep=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.extraPay:0),0);
+  const np=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.normalPay),0);
+  const ep=filtered.reduce((s,e)=>s+(e.isFestivo?0:e.extraPay),0);
   const fp=filtered.reduce((s,e)=>s+(e.isFestivo?e.normalPay+e.extraPay:0),0);
-  const dp=filtered.reduce((s,e)=>s+(e.isDiaLibre&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
   const kp=filtered.reduce((s,e)=>s+(e.kmPay||0),0);
   const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
 
@@ -1547,7 +1503,6 @@ async function exportPDF() {
     {label:T('normalPay'), val:fmt2(np), col:white},
     {label:T('extraPay'),  val:fmt2(ep), col:orange},
     {label:T('festivoPay'),val:fmt2(fp), col:festivo},
-    {label:T('diaLibrePay'),val:fmt2(dp), col:warn},
     {label:T('kmPay')+'  ('+totKm+' km)', val:fmt2(kp), col:muted},
     {label:T('pendingTickets'), val:fmt2(pt), col:warn},
     {label:T('total'),     val:fmt2(totPay), col:accent},
@@ -1605,8 +1560,7 @@ async function exportPDF() {
       doc.setFillColor(17,17,17);
       doc.rect(14,cy-4,W-28,7.5,'F');
     }
-    const dayType=e.isFestivo?'FEST':(e.isDiaLibre?'LIBRE':'-');
-    const dayTypeColor=e.isFestivo?festivo:(e.isDiaLibre?warn:muted);
+    const dayType=e.isFestivo?'🎉':'-';
     doc.setFontSize(7);
     doc.setTextColor(...white);
     doc.text(formatDate(e.date), 18, cy);
@@ -1615,8 +1569,8 @@ async function exportPDF() {
     doc.text(fmtHpdf(e.totalHours), 97, cy);
     doc.setTextColor(...orange);
     doc.text(e.extraHours>0?fmtHpdf(e.extraHours):'—', 116, cy);
-    doc.setTextColor(...dayTypeColor);
-    doc.text(dayType, 135, cy);
+    doc.setTextColor(e.isFestivo?festivo[0]:muted[0], e.isFestivo?festivo[1]:muted[1], e.isFestivo?festivo[2]:muted[2]);
+    doc.text(e.isFestivo?'FEST':'-', 135, cy);
     doc.setTextColor(...muted);
     doc.text(e.kmCount>0?String(e.kmCount):'—', 150, cy);
     doc.setFont('helvetica','bold');
@@ -1650,8 +1604,6 @@ function saveConfig() {
   config.kmRate           = parseFloat(document.getElementById('cfgKmRate').value)||0.20;
   config.diaLibreEnabled  = document.getElementById('cfgDiaLibreEnabled').checked;
   config.diaLibre         = parseInt(document.getElementById('cfgDiaLibre').value)||6;
-  config.diaLibreRate     = parseFloat(document.getElementById('cfgDiaLibreRate').value)||60;
-  config.diaLibreOvertimeRate = parseFloat(document.getElementById('cfgDiaLibreOvertimeRate').value)||90;
   config.onlyExtras       = document.getElementById('cfgOnlyExtras').checked;
   localStorage.setItem('tfc_config', JSON.stringify(config));
 
