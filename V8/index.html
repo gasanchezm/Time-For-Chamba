@@ -8,8 +8,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Time for Chamba">
 <link rel="manifest" href="manifest.json">
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <title>Time for Chamba</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +18,7 @@
   --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#2a2a2a;
   --accent:#c8f135; --accent2:#ff6b35; --text:#f0f0f0; --muted:#666;
   --danger:#ff4444; --success:#44ff88; --warn:#f5c542; --festivo:#b57bee;
-  --nav-h:64px; --safe-b:env(safe-area-inset-bottom,0px); --nocturno:#6c9fff;
+  --nav-h:64px; --safe-b:env(safe-area-inset-bottom,0px);
 }
 
 /* ── THEME: MIDNIGHT (default) ── */
@@ -282,28 +280,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .theme-swatch-name{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:rgba(200,200,200,.7)}
 .theme-swatch .active-tick{position:absolute;top:4px;right:4px;width:15px;height:15px;background:var(--accent);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:9px;color:var(--accent-text,#0a0a0a)}
 .theme-swatch.active .active-tick{display:flex}
-
-/* ── CONFIG ACCORDION ── */
-.cfg-accordion{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px}
-.cfg-accordion + .cfg-accordion{margin-top:-2px}
-.cfg-acc-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;background:var(--surface);transition:background .15s;user-select:none;-webkit-user-select:none}
-.cfg-acc-header:hover{background:var(--surface2)}
-.cfg-acc-left{display:flex;align-items:center;gap:10px}
-.cfg-acc-icon{font-size:18px;line-height:1;flex-shrink:0}
-.cfg-acc-label{font-size:14px;font-weight:600;color:var(--text)}
-.cfg-acc-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
-.cfg-acc-arrow{font-size:13px;color:var(--muted);transition:transform .22s cubic-bezier(.4,0,.2,1);flex-shrink:0}
-.cfg-acc-header.open .cfg-acc-arrow{transform:rotate(180deg)}
-.cfg-acc-body{display:none;padding:0 16px 14px;background:var(--surface)}
-.cfg-acc-body.open{display:block;animation:accOpen .18s ease}
-@keyframes accOpen{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-.cfg-acc-body .setting-row:first-child{border-top:1px solid var(--border)}
-.cfg-acc-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-family:'DM Mono',monospace;font-size:9px;background:var(--accent-dim,rgba(200,241,53,.1));color:var(--accent);border:1px solid var(--accent);margin-left:6px;font-weight:500}
-/* Nocturno color */
-:root{--nocturno:#6c9fff}
-
-/* night toggle blue */
-#cfgNightEnabled:checked + .toggle-track { background: var(--nocturno, #6c9fff) !important; }
 </style>
 </head>
 <body data-theme="midnight">
@@ -472,7 +448,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <hr class="divider">
       <div class="breakdown-row" id="prevPayNormalRow"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="prevPayNormal">—</span></div>
       <div class="breakdown-row" id="prevPayExtraRow"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="prevPayExtra">—</span></div>
-      <div class="breakdown-row" id="prevPayNightRow" style="display:none"><span class="breakdown-label" id="prevNightLabel">—</span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)" id="prevPayNight">—</span></div>
       <div class="breakdown-row" id="prevPayKmRow" style="display:none"><span class="breakdown-label" id="prevKmLabel">—</span><span class="breakdown-value" style="color:var(--muted)" id="prevPayKm">—</span></div>
       <div class="breakdown-row" id="prevTicketRow" style="display:none"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="prevTicketAmt">—</span></div>
       <div class="breakdown-row">
@@ -512,7 +487,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="festivoPay"></span><span class="breakdown-value festivo" id="sumFestivoPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="diaLibrePay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDiaLibrePay">$0.00</span></div>
-      <div class="breakdown-row"><span class="breakdown-label" data-t="nightPay"></span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)" id="sumNightPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="total"></span><span class="breakdown-value accent" id="sumTotal">$0.00</span></div>
@@ -535,50 +509,29 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
   <!-- CONFIG -->
   <div id="page-config" class="page">
+    <div class="card">
+      <div class="card-title"><span>⚙</span> <span data-t="rateConfig"></span></div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="currency"></div><div class="setting-desc" data-t="currencyDesc"></div></div>
+        <input type="text" class="setting-input" id="cfgCurrency" value="$" maxlength="4" style="width:58px;font-size:22px;text-align:center;">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="normalRate"></div><div class="setting-desc" data-t="normalRateDesc"></div></div>
+        <input type="number" class="setting-input" id="cfgRate" value="50" min="0" step="0.5">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="overtimeRate"></div><div class="setting-desc" data-t="overtimeRateDesc"></div></div>
+        <input type="number" class="setting-input" id="cfgOvertimeRate" value="75" min="0" step="0.5">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="threshold"></div><div class="setting-desc" data-t="thresholdDesc"></div></div>
+        <input type="number" class="setting-input" id="cfgThreshold" value="8" min="1" max="24" step="0.5">
+      </div>
 
-    <!-- ── ACCORDION: TARIFAS BASE ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accRates',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">💶</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryRates"></div><div class="cfg-acc-sub" data-t="rateConfig"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accRates">
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="currency"></div><div class="setting-desc" data-t="currencyDesc"></div></div>
-          <input type="text" class="setting-input" id="cfgCurrency" value="$" maxlength="4" style="width:58px;font-size:22px;text-align:center;">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="normalRate"></div><div class="setting-desc" data-t="normalRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgRate" value="50" min="0" step="0.5">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="overtimeRate"></div><div class="setting-desc" data-t="overtimeRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgOvertimeRate" value="75" min="0" step="0.5">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="threshold"></div><div class="setting-desc" data-t="thresholdDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgThreshold" value="8" min="0" max="24" step="0.5">
-        </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ACCORDION: FESTIVOS ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accFestivo',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">🎉</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryFestivo"></div><div class="cfg-acc-sub" data-t="festivoRates"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accFestivo">
-        <div class="setting-row">
+      <!-- FESTIVO RATES -->
+      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--festivo);margin-bottom:8px">🎉 <span data-t="festivoRates"></span></div>
+        <div class="setting-row" style="border-top:none;padding-top:0">
           <div><div class="setting-name" data-t="festivoNormalRate"></div><div class="setting-desc" data-t="festivoNormalRateDesc"></div></div>
           <input type="number" class="setting-input" id="cfgFestivoRate" value="75" min="0" step="0.5">
         </div>
@@ -586,51 +539,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <div><div class="setting-name" data-t="festivoOvertimeRate"></div><div class="setting-desc" data-t="festivoOvertimeRateDesc"></div></div>
           <input type="number" class="setting-input" id="cfgFestivoOvertimeRate" value="100" min="0" step="0.5">
         </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
       </div>
-    </div>
 
-    <!-- ── ACCORDION: HORAS NOCTURNAS ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accNocturno',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">🌙</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryNocturno"></div><div class="cfg-acc-sub" data-t="nightEnabledDesc"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accNocturno">
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="nightEnabled"></div><div class="setting-desc" data-t="nightEnabledDesc"></div></div>
-          <label class="toggle">
-            <input type="checkbox" id="cfgNightEnabled" onchange="onNightEnabledChange()">
-            <div class="toggle-track" style="transition:background .2s" class="night-toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-        <div class="setting-row" id="cfgNightRateRow" style="display:none;border-bottom:none;padding-bottom:0">
-          <div><div class="setting-name" data-t="nightRate"></div><div class="setting-desc" data-t="nightRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgNightRate" value="12" min="0" step="0.5">
-        </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0;padding-top:10px">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ACCORDION: KILÓMETROS ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accKm',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">🚗</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryKm"></div><div class="cfg-acc-sub" data-t="kmConfig"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accKm">
-        <div class="setting-row">
+      <!-- KM CONFIG -->
+      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">🚗 <span data-t="kmConfig"></span></div>
+        <div class="setting-row" style="border-top:none;padding-top:0">
           <div><div class="setting-name" data-t="kmEnabled"></div><div class="setting-desc" data-t="kmEnabledDesc"></div></div>
           <label class="toggle">
             <input type="checkbox" id="cfgKmEnabled" onchange="onKmEnabledChange()">
@@ -642,23 +556,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <div><div class="setting-name" data-t="kmRate"></div><div class="setting-desc" data-t="kmRateDesc"></div></div>
           <input type="number" class="setting-input" id="cfgKmRate" value="0.20" min="0" step="0.01">
         </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
       </div>
-    </div>
 
-    <!-- ── ACCORDION: DÍA LIBRE ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accDiaLibre',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">🏖</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryDiaLibre"></div><div class="cfg-acc-sub" data-t="diaLibreConfig"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accDiaLibre">
-        <div class="setting-row">
+      <!-- DIA LIBRE -->
+      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">🏖 <span data-t="diaLibreConfig"></span></div>
+        <div class="setting-row" style="border-top:none;padding-top:0">
           <div><div class="setting-name" data-t="diaLibreEnabled"></div><div class="setting-desc" data-t="diaLibreEnabledDesc"></div></div>
           <label class="toggle">
             <input type="checkbox" id="cfgDiaLibreEnabled" onchange="onDiaLibreChange()">
@@ -678,6 +581,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
               <option value="6" data-t-opt="saturday"></option>
             </select>
           </div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--warn);margin:8px 0 4px">💰 <span data-t="diaLibreRates"></span></div>
           <div class="setting-row">
             <div><div class="setting-name" data-t="diaLibreNormalRate"></div><div class="setting-desc" data-t="diaLibreNormalRateDesc"></div></div>
             <input type="number" class="setting-input" id="cfgDiaLibreRate" value="60" min="0" step="0.5">
@@ -687,23 +591,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
             <input type="number" class="setting-input" id="cfgDiaLibreOvertimeRate" value="90" min="0" step="0.5">
           </div>
         </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
       </div>
-    </div>
 
-    <!-- ── ACCORDION: OPCIONES ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accOpciones',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">⚙️</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryOpciones"></div><div class="cfg-acc-sub" data-t="onlyExtrasLabel"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accOpciones">
-        <div class="setting-row">
+      <!-- ONLY EXTRAS CONFIG -->
+      <div style="padding:10px 0 4px;border-top:1px solid var(--border);margin-top:4px">
+        <div class="setting-row" style="border-top:none;padding-top:0">
           <div><div class="setting-name" data-t="onlyExtrasLabel"></div><div class="setting-desc" data-t="onlyExtrasDesc"></div></div>
           <label class="toggle">
             <input type="checkbox" id="cfgOnlyExtras">
@@ -711,49 +603,35 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
             <div class="toggle-thumb"></div>
           </label>
         </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
+      </div>
+
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="yourName"></div><div class="setting-desc" data-t="yourNameDesc"></div></div>
+        <input type="text" class="setting-input" id="cfgName" value="" maxlength="20" style="width:120px;font-size:13px;font-family:'Space Grotesk',sans-serif;letter-spacing:0;color:var(--text);">
+      </div>
+      <div class="setting-row">
+        <div><div class="setting-name" data-t="language"></div><div class="setting-desc" data-t="languageDesc"></div></div>
+        <div style="display:flex;gap:8px">
+          <button onclick="setLangAndSave('es')" id="cfgLangEs" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇪🇸</button>
+          <button onclick="setLangAndSave('en')" id="cfgLangEn" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer">🇺🇸</button>
         </div>
       </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-name" data-t="notifTitle"></div>
+          <div class="setting-desc" data-t="notifDesc"></div>
+          <div id="notifStatus" style="font-family:'DM Mono',monospace;font-size:10px;margin-top:4px;color:var(--muted)"></div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="notifToggle" onchange="toggleNotifications(this.checked)">
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+      <hr class="divider">
+      <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig"></button>
     </div>
 
-    <!-- ── ACCORDION: PERSONAL ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accPersonal',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">👤</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryPersonal"></div><div class="cfg-acc-sub" data-t="yourNameDesc"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accPersonal">
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="yourName"></div><div class="setting-desc" data-t="yourNameDesc"></div></div>
-          <input type="text" class="setting-input" id="cfgName" value="" maxlength="20" style="width:120px;font-size:13px;font-family:'Space Grotesk',sans-serif;letter-spacing:0;color:var(--text);">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="language"></div><div class="setting-desc" data-t="languageDesc"></div></div>
-          <div style="display:flex;gap:8px">
-            <button onclick="setLangAndSave('es')" id="cfgLangEs" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer;transition:border-color .15s">🇪🇸</button>
-            <button onclick="setLangAndSave('en')" id="cfgLangEn" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer;transition:border-color .15s">🇺🇸</button>
-          </div>
-        </div>
-        <div class="setting-row" style="border-bottom:none">
-          <div>
-            <div class="setting-name" data-t="notifTitle"></div>
-            <div class="setting-desc" data-t="notifDesc"></div>
-            <div id="notifStatus" style="font-family:'DM Mono',monospace;font-size:10px;margin-top:4px;color:var(--muted)"></div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="notifToggle" onchange="toggleNotifications(this.checked)">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <!-- TEMAS -->
     <!-- TEMAS -->
     <div class="card">
       <div class="card-title"><span>🎨</span> <span data-t="themeTitle"></span></div>
@@ -762,7 +640,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> v9.0</div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> v5.0</div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -871,7 +749,7 @@ const STRINGS = {
     diaLibreRates:'Tarifas Día Libre',
     diaLibrePay:'Pago día libre', diaLibreDay:'Día Libre',
     monday:'Lunes', tuesday:'Martes', wednesday:'Miércoles', thursday:'Jueves', friday:'Viernes', saturday:'Sábado',
-    onlyExtrasLabel:'Solo horas extras', onlyExtrasDesc:'Al activar, solo se registran y muestran las horas trabajadas después del umbral normal', cfgCategoryGeneral:'General', cfgCategoryRates:'Tarifas y Horas', cfgCategoryFestivo:'Festivos y Domingos', cfgCategoryNocturno:'Horas Nocturnas', cfgCategoryKm:'Kilómetros', cfgCategoryDiaLibre:'Día Libre', cfgCategoryOpciones:'Opciones', cfgCategoryPersonal:'Personal',
+    onlyExtrasLabel:'Solo horas extras', onlyExtrasDesc:'Contabiliza únicamente horas extra en resúmenes',
     ticketsLabel:'Tickets por Entregar', ticketsSub:'Gastos pagados por la empresa',
     ticketDesc:'Concepto', ticketDescPh:'Ej: Gasolina, Comida...', amount:'Monto', add:'+ ADD',
     noTickets:'Sin tickets añadidos', pendingTotal:'Total pendiente',
@@ -882,7 +760,7 @@ const STRINGS = {
     today:'Hoy', week:'Semana', month:'Mes', all:'Todo',
     shifts:'Turnos', hours:'Horas', extras:'Extras', earned:'Ganado', total:'Total',
     allRecords:'Todos los registros', confirmClear:'¿Borrar todo el historial?', deleteAll:'Borrar todo',
-    rateConfig:'Tarifas Base', nightRate:'Tarifa nocturna / hora', nightRateDesc:'De 22:00 a 06:00 (se suma automáticamente)', nightConfig:'Horas Nocturnas', nightEnabled:'Activar horas nocturnas', nightEnabledDesc:'De 22:00 a 06:00 — tarifa diferente', nightPay:'Pago nocturno', nightHours:'Horas nocturnas', nightBadge:'NOCTURNO', rateConfig:'Tarifas Base', currency:'Moneda', currencyDesc:'Símbolo ej: $, €, Q',
+    rateConfig:'Tarifa y Pago', currency:'Moneda', currencyDesc:'Símbolo ej: $, €, Q',
     normalRate:'Tarifa Normal / hora', normalRateDesc:'Primeras N horas',
     overtimeRate:'Tarifa Extra / hora', overtimeRateDesc:'Después del umbral',
     threshold:'Umbral horas normales', thresholdDesc:'Antes del pago extra',
@@ -937,7 +815,7 @@ const STRINGS = {
     diaLibreRates:'Day Off Rates',
     diaLibrePay:'Day off pay', diaLibreDay:'Day Off',
     monday:'Monday', tuesday:'Tuesday', wednesday:'Wednesday', thursday:'Thursday', friday:'Friday', saturday:'Saturday',
-    onlyExtrasLabel:'Only overtime', onlyExtrasDesc:'When active, only hours worked after the normal threshold are recorded and shown', cfgCategoryGeneral:'General', cfgCategoryRates:'Rates & Hours', cfgCategoryFestivo:'Holidays & Sundays', cfgCategoryNocturno:'Night Hours', cfgCategoryKm:'Kilometers', cfgCategoryDiaLibre:'Day Off', cfgCategoryOpciones:'Options', cfgCategoryPersonal:'Personal',
+    onlyExtrasLabel:'Only overtime', onlyExtrasDesc:'Count only overtime hours in summaries',
     ticketsLabel:'Tickets to Submit', ticketsSub:'Company-paid expenses',
     ticketDesc:'Description', ticketDescPh:'e.g. Gas, Food...', amount:'Amount', add:'+ ADD',
     noTickets:'No tickets added', pendingTotal:'Pending total',
@@ -948,7 +826,7 @@ const STRINGS = {
     today:'Today', week:'Week', month:'Month', all:'All',
     shifts:'Shifts', hours:'Hours', extras:'Overtime', earned:'Earned', total:'Total',
     allRecords:'All records', confirmClear:'Delete entire history?', deleteAll:'Delete all',
-    rateConfig:'Base Rates', nightRate:'Night rate / hour', nightRateDesc:'From 10 PM to 6 AM (added automatically)', nightConfig:'Night Hours', nightEnabled:'Enable night hours', nightEnabledDesc:'10 PM to 6 AM — different rate', nightPay:'Night pay', nightHours:'Night hours', nightBadge:'NIGHT', rateConfig:'Base Rates', currency:'Currency', currencyDesc:'Symbol e.g. $, €, £',
+    rateConfig:'Rate & Pay', currency:'Currency', currencyDesc:'Symbol e.g. $, €, £',
     normalRate:'Regular rate / hour', normalRateDesc:'First N hours',
     overtimeRate:'Overtime rate / hour', overtimeRateDesc:'After threshold',
     threshold:'Regular hours threshold', thresholdDesc:'Before overtime kicks in',
@@ -1002,23 +880,6 @@ function applyTranslations() {
   if (cfgEn) cfgEn.style.borderColor = currentLang==='en' ? 'var(--accent)' : 'var(--border)';
 }
 
-
-// ══════════════════════════════════════
-//  ACCORDION TOGGLE
-// ══════════════════════════════════════
-function toggleAcc(id, headerEl) {
-  const body = document.getElementById(id);
-  if (!body) return;
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  if (headerEl) headerEl.classList.toggle('open', !isOpen);
-}
-
-function onNightEnabledChange() {
-  const en = document.getElementById('cfgNightEnabled').checked;
-  document.getElementById('cfgNightRateRow').style.display = en ? 'flex' : 'none';
-}
-
 // ══════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════
@@ -1027,8 +888,7 @@ let config = {
   festivoRate:75, festivoOvertimeRate:100,
   kmEnabled:false, kmRate:0.20,
   diaLibreEnabled:false, diaLibre:6, diaLibreRate:60, diaLibreOvertimeRate:90,
-  onlyExtras:false,
-  nightEnabled:false, nightRate:12
+  onlyExtras:false
 };
 let entries = [];
 let previewData = null;
@@ -1141,9 +1001,6 @@ function loadConfigUI() {
   document.getElementById('cfgDiaLibreRate').value = config.diaLibreRate;
   document.getElementById('cfgDiaLibreOvertimeRate').value = config.diaLibreOvertimeRate;
   document.getElementById('cfgOnlyExtras').checked = config.onlyExtras;
-  document.getElementById('cfgNightEnabled').checked = config.nightEnabled;
-  document.getElementById('cfgNightRate').value = config.nightRate;
-  document.getElementById('cfgNightRateRow').style.display = config.nightEnabled ? 'flex' : 'none';
   document.getElementById('cfgName').value = localStorage.getItem('tfc_name') || '';
   renderThemesGrid();
 }
@@ -1318,20 +1175,6 @@ function closePhotoViewer() {
 // ══════════════════════════════════════
 //  CALC
 // ══════════════════════════════════════
-function calcNightHours(startDt, endDt) {
-  // Returns hours that overlap with 22:00-06:00 window
-  let nightMins = 0;
-  const msPerMin = 60000;
-  let cur = new Date(startDt);
-  while (cur < endDt) {
-    const next = new Date(Math.min(cur.getTime() + 60000, endDt.getTime()));
-    const h = cur.getHours();
-    if (h >= 22 || h < 6) nightMins++;
-    cur = next;
-  }
-  return nightMins / 60;
-}
-
 function calcAndPreview() {
   const date  = document.getElementById('fieldDate').value;
   const start = document.getElementById('fieldStart').value;
@@ -1341,26 +1184,21 @@ function calcAndPreview() {
   const kmOn = document.getElementById('kmToggle').checked;
 
   if (!date||!start||!end) { showToast(T('fillFields'),'error'); return; }
-  const startDt = new Date(`${date}T${start}`);
-  let   endDt   = new Date(`${date}T${end}`);
-  if (endDt <= startDt) endDt.setDate(endDt.getDate()+1);
-  const totalMin = (endDt - startDt)/60000 - breakMinutes;
-  if (totalMin <= 0) { showToast(T('invalidTime'),'error'); return; }
+  const s = new Date(`${date}T${start}`);
+  let   e = new Date(`${date}T${end}`);
+  if (e<=s) e.setDate(e.getDate()+1);
+  const totalMin = (e-s)/60000 - breakMinutes;
+  if (totalMin<=0) { showToast(T('invalidTime'),'error'); return; }
 
-  const totalHours  = totalMin / 60;
+  const totalHours  = totalMin/60;
   const normalHours = Math.min(totalHours, config.threshold);
-  const extraHours  = Math.max(0, totalHours - config.threshold);
+  const extraHours  = Math.max(0, totalHours-config.threshold);
 
-  // Night hours (22-6): calculate overlap with shift (after removing break, approximate)
-  const nightHoursRaw = config.nightEnabled ? calcNightHours(startDt, endDt) : 0;
-  // Night hours are capped at total worked hours and can overlap normal/extra
-  const nightHours = Math.min(nightHoursRaw, totalHours);
-
-  // Day of week for día libre detection
-  const selectedDow = new Date(date+'T12:00:00').getDay();
+  // Detect if selected date is the configured día libre
+  const selectedDow = new Date(date+'T12:00:00').getDay(); // 0=Sun
   const isDiaLibre = config.diaLibreEnabled && selectedDow === config.diaLibre;
 
-  // Pick rates: festivo > dia libre > normal
+  // Pick rates: festivo > dia libre > normal (festivo takes priority if both toggled)
   let rateNormal, rateExtra;
   if (isFestivo) {
     rateNormal = config.festivoRate;
@@ -1373,81 +1211,55 @@ function calcAndPreview() {
     rateExtra  = config.overtimeRate;
   }
 
-  // onlyExtras mode: only record/show extra hours, skip normal
-  const billedNormalHours = config.onlyExtras ? 0 : normalHours;
-  const normalPay = billedNormalHours * rateNormal;
-  const extraPay  = extraHours * rateExtra;
-  // Night pay is an additional supplement on top of base pay
-  const nightPay  = nightHours * config.nightRate;
+  const normalPay   = normalHours * rateNormal;
+  const extraPay    = extraHours  * rateExtra;
 
-  const kmCount = kmOn ? draftKm : 0;
-  const kmPay   = kmCount * config.kmRate;
+  // Km
+  const kmCount   = kmOn ? draftKm : 0;
+  const kmPay     = kmCount * config.kmRate;
+
   const pendingTicketAmt = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
+  const totalPay  = normalPay + extraPay + kmPay + pendingTicketAmt;
 
-  // In onlyExtras mode, total = extra pay + night + km + tickets (no normal pay)
-  const totalPay = normalPay + extraPay + nightPay + kmPay + pendingTicketAmt;
-
-  previewData = {
-    date, start, end, breakMin:breakMinutes, desc,
-    totalHours, normalHours: billedNormalHours, extraHours,
-    nightHours, normalPay, extraPay, nightPay, totalPay,
-    tickets:[...draftTickets], id:Date.now(),
-    isFestivo, isDiaLibre, kmCount, kmPay,
-    onlyExtrasMode: config.onlyExtras
-  };
+  previewData = { date, start, end, breakMin:breakMinutes, desc, totalHours, normalHours, extraHours,
+    normalPay, extraPay, totalPay, tickets:[...draftTickets], id:Date.now(),
+    isFestivo, isDiaLibre, kmCount, kmPay };
 
   const fmt  = v => `${config.currency}${v.toFixed(2)}`;
-  const fmtH = h => h < .01 ? '0m' : h >= 1 ? `${Math.floor(h)}h ${Math.round((h%1)*60)}m` : `${Math.round(h*60)}m`;
+  const fmtH = h => h<.01?'0m':h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
 
-  // Badges
+  // Preview badges
   document.getElementById('festivoBadgePreview').style.display = isFestivo ? 'block' : 'none';
   document.getElementById('diaLibreBadgePreview').style.display = (!isFestivo && isDiaLibre) ? 'block' : 'none';
 
-  // Hours breakdown
-  if (config.onlyExtras) {
-    document.getElementById('prevNormal').textContent = '—';
-    document.getElementById('prevNormal').style.opacity = '0.35';
-  } else {
-    document.getElementById('prevNormal').textContent = fmtH(normalHours);
-    document.getElementById('prevNormal').style.opacity = '1';
-  }
-  document.getElementById('prevExtra').textContent = extraHours > 0 ? fmtH(extraHours) : '—';
-  document.getElementById('prevTotal').textContent = config.onlyExtras ? fmtH(extraHours) : fmtH(totalHours);
+  document.getElementById('prevNormal').textContent    = fmtH(normalHours);
+  document.getElementById('prevExtra').textContent     = extraHours>0?fmtH(extraHours):'—';
+  document.getElementById('prevTotal').textContent     = fmtH(totalHours);
 
-  // Pay breakdown
+  // Hide/show normal pay depending on onlyExtras
   document.getElementById('prevPayNormalRow').style.display = config.onlyExtras ? 'none' : 'flex';
   document.getElementById('prevPayNormal').textContent = fmt(normalPay);
-  document.getElementById('prevPayExtra').textContent  = extraHours > 0 ? fmt(extraPay) : '—';
+  document.getElementById('prevPayExtra').textContent  = extraHours>0?fmt(extraPay):'—';
   document.getElementById('prevEarnings').textContent  = totalPay.toFixed(2);
   document.getElementById('prevCurrSym').textContent   = config.currency;
 
-  // Night row
-  const nightRow = document.getElementById('prevPayNightRow');
-  if (nightHours > 0 && config.nightEnabled) {
-    nightRow.style.display = 'flex';
-    document.getElementById('prevNightLabel').textContent = `🌙 ${T('nightHours')}: ${fmtH(nightHours)}`;
-    document.getElementById('prevPayNight').textContent = fmt(nightPay);
-  } else {
-    nightRow.style.display = 'none';
-  }
-
   // Km row
-  if (kmCount > 0) {
-    document.getElementById('prevPayKmRow').style.display = 'flex';
+  if (kmCount>0) {
+    document.getElementById('prevPayKmRow').style.display='flex';
     document.getElementById('prevKmLabel').textContent = `${T('kmLine')}: ${kmCount} km`;
     document.getElementById('prevPayKm').textContent = fmt(kmPay);
   } else {
-    document.getElementById('prevPayKmRow').style.display = 'none';
+    document.getElementById('prevPayKmRow').style.display='none';
   }
 
   // Tickets row
-  if (pendingTicketAmt > 0) {
-    document.getElementById('prevTicketRow').style.display = 'flex';
+  if (pendingTicketAmt>0) {
+    document.getElementById('prevTicketRow').style.display='flex';
     document.getElementById('prevTicketAmt').textContent = fmt(pendingTicketAmt);
-  } else { document.getElementById('prevTicketRow').style.display = 'none'; }
+  } else { document.getElementById('prevTicketRow').style.display='none'; }
 
-  document.getElementById('previewCard').style.display = 'block';
-  document.getElementById('previewCard').scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('previewCard').style.display='block';
+  document.getElementById('previewCard').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function saveEntry() {
@@ -1482,7 +1294,6 @@ function renderHistory() {
     const ticketBadge = pendingAmt>0 ? `<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)} ${T('pendingBadge')}</span>` : (e.tickets&&e.tickets.length?`<span class="paid-badge">✓ ${T('paidBadge')}</span>`:'');
     const festivoBadge = e.isFestivo ? `<span class="festivo-chip">🎉</span>` : '';
     const diaLibreBadge = (!e.isFestivo && e.isDiaLibre) ? `<span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖</span>` : '';
-    const nightBadge = (e.nightHours>0) ? `<span class="entry-chip" style="color:var(--nocturno,#6c9fff);border-color:var(--nocturno,#6c9fff)">🌙 ${fmtH(e.nightHours)}</span>` : '';
     const kmBadge = e.kmCount>0 ? `<span class="entry-chip">🚗 ${e.kmCount}km</span>` : '';
     return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
@@ -1492,7 +1303,7 @@ function renderHistory() {
         <span class="entry-chip">▶ ${e.start}</span>
         <span class="entry-chip">■ ${e.end}</span>
         ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2);border-color:var(--accent2)">+${fmtH(e.extraHours)}</span>`:''}
-        ${nightBadge}${kmBadge}${festivoBadge}${diaLibreBadge}${ticketBadge}
+        ${kmBadge}${festivoBadge}${diaLibreBadge}${ticketBadge}
       </div>
     </div>`;
   }).join('');
@@ -1536,7 +1347,6 @@ function openModal(id) {
 
   const festivoLine = e.isFestivo ? `<div class="breakdown-row"><span class="breakdown-label">${T('festivoDay')}</span><span class="breakdown-value festivo">🎉 Sí</span></div>` : '';
   const diaLibreLine = (!e.isFestivo && e.isDiaLibre) ? `<div class="breakdown-row"><span class="breakdown-label">${T('diaLibreDay')}</span><span class="breakdown-value" style="color:var(--warn)">🏖 Sí</span></div>` : '';
-  const nightLine = (e.nightHours>0&&e.nightPay>0) ? `<div class="breakdown-row"><span class="breakdown-label">🌙 ${T('nightHours')}</span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)">${fmtH(e.nightHours)} — ${fmt(e.nightPay)}</span></div>` : '';
   const kmLine = e.kmCount>0 ? `<div class="breakdown-row"><span class="breakdown-label">${T('kmLine')}</span><span class="breakdown-value">${e.kmCount} km — ${fmt(e.kmPay||0)}</span></div>` : '';
 
   document.getElementById('modalTitle').textContent = formatDate(e.date);
@@ -1551,7 +1361,7 @@ function openModal(id) {
     <hr class="divider">
     <div class="breakdown-row"><span class="breakdown-label">${T('normalPay')}</span><span class="breakdown-value">${fmt(e.normalPay)}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('extraPay')}</span><span class="breakdown-value orange">${e.extraHours>0?fmt(e.extraPay):'—'}</span></div>
-    ${nightLine}${kmLine}
+    ${kmLine}
     <div class="breakdown-row"><span class="breakdown-label">${T('totalEarned')}</span><span class="breakdown-value accent" style="font-size:20px;font-family:'Bebas Neue',sans-serif">${fmt(e.totalPay)}</span></div>
     ${e.desc?`<hr class="divider"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.6">${escHtml(e.desc)}</div>`:''}
     ${ticketsHtml}
@@ -1678,7 +1488,6 @@ function renderSummary(period) {
         ${e.isFestivo?`<span class="festivo-chip">🎉</span>`:''}
         ${(!e.isFestivo&&e.isDiaLibre)?`<span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖</span>`:''}
         ${e.kmCount>0?`<span class="entry-chip">🚗 ${e.kmCount}km</span>`:''}
-        ${(e.nightHours>0)?`<span class="entry-chip" style="color:var(--nocturno,#6c9fff);border-color:var(--nocturno,#6c9fff)">🌙</span>`:''}
         ${pendingAmt>0?`<span class="pending-badge">🧾 ${config.currency}${pendingAmt.toFixed(2)}</span>`:''}
       </div>
     </div>`;
@@ -1811,7 +1620,6 @@ async function exportPDF() {
     {label:T('extraPay'),  val:fmt2(ep), col:orange},
     {label:T('festivoPay'),val:fmt2(fp), col:festivo},
     {label:T('diaLibrePay'),val:fmt2(dp), col:warn},
-    {label:'🌙 '+T('nightPay'),val:fmt2(filtered.reduce((s,e)=>s+(e.nightPay||0),0)), col:[108,153,255]},
     {label:T('kmPay')+'  ('+totKm+' km)', val:fmt2(kp), col:muted},
     {label:T('pendingTickets'), val:fmt2(pt), col:warn},
     {label:T('total'),     val:fmt2(totPay), col:accent},
@@ -1905,20 +1713,18 @@ async function exportPDF() {
 // ══════════════════════════════════════
 function saveConfig() {
   config.currency         = document.getElementById('cfgCurrency').value||'$';
-  config.rate             = parseFloat(document.getElementById('cfgRate').value) ?? 0; config.rate = isNaN(config.rate) ? 0 : config.rate;
-  config.overtimeRate     = parseFloat(document.getElementById('cfgOvertimeRate').value) ?? 0; config.overtimeRate = isNaN(config.overtimeRate) ? 0 : config.overtimeRate;
+  config.rate             = parseFloat(document.getElementById('cfgRate').value)||50;
+  config.overtimeRate     = parseFloat(document.getElementById('cfgOvertimeRate').value)||75;
   config.threshold        = parseFloat(document.getElementById('cfgThreshold').value)||8;
-  config.festivoRate      = parseFloat(document.getElementById('cfgFestivoRate').value) ?? 0; config.festivoRate = isNaN(config.festivoRate) ? 0 : config.festivoRate;
-  config.festivoOvertimeRate = parseFloat(document.getElementById('cfgFestivoOvertimeRate').value) ?? 0; config.festivoOvertimeRate = isNaN(config.festivoOvertimeRate) ? 0 : config.festivoOvertimeRate;
+  config.festivoRate      = parseFloat(document.getElementById('cfgFestivoRate').value)||75;
+  config.festivoOvertimeRate = parseFloat(document.getElementById('cfgFestivoOvertimeRate').value)||100;
   config.kmEnabled        = document.getElementById('cfgKmEnabled').checked;
   config.kmRate           = parseFloat(document.getElementById('cfgKmRate').value)||0.20;
   config.diaLibreEnabled  = document.getElementById('cfgDiaLibreEnabled').checked;
   config.diaLibre         = parseInt(document.getElementById('cfgDiaLibre').value)||6;
-  config.diaLibreRate     = parseFloat(document.getElementById('cfgDiaLibreRate').value) ?? 0; config.diaLibreRate = isNaN(config.diaLibreRate) ? 0 : config.diaLibreRate;
-  config.diaLibreOvertimeRate = parseFloat(document.getElementById('cfgDiaLibreOvertimeRate').value) ?? 0; config.diaLibreOvertimeRate = isNaN(config.diaLibreOvertimeRate) ? 0 : config.diaLibreOvertimeRate;
+  config.diaLibreRate     = parseFloat(document.getElementById('cfgDiaLibreRate').value)||60;
+  config.diaLibreOvertimeRate = parseFloat(document.getElementById('cfgDiaLibreOvertimeRate').value)||90;
   config.onlyExtras       = document.getElementById('cfgOnlyExtras').checked;
-  config.nightEnabled     = document.getElementById('cfgNightEnabled').checked;
-  config.nightRate        = parseFloat(document.getElementById('cfgNightRate').value) || 0;
   localStorage.setItem('tfc_config', JSON.stringify(config));
 
   // Show/hide km toggle on registro page
@@ -2013,89 +1819,8 @@ function notifInit() {
   if (enabled&&perm==='granted') notifScheduleDaily();
 }
 
-
 // ══════════════════════════════════════
-//  FIREBASE SYNC
-//  Base de datos compartida empresa
-// ══════════════════════════════════════
-const FB_CONFIG = {
-  apiKey: "AIzaSyD-placeholder-changeThis",
-  authDomain: "timeforchamba.firebaseapp.com",
-  databaseURL: "https://timeforchamba-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "timeforchamba",
-};
-let fbApp = null, fbDb = null, fbSyncEnabled = false;
-
-function fbInit() {
-  try {
-    if (!firebase.apps.length) {
-      fbApp = firebase.initializeApp(FB_CONFIG);
-    } else {
-      fbApp = firebase.apps[0];
-    }
-    fbDb = firebase.database(fbApp);
-    fbSyncEnabled = true;
-    console.log('[TFC] Firebase conectado');
-  } catch(e) {
-    console.warn('[TFC] Firebase no disponible, modo offline:', e.message);
-    fbSyncEnabled = false;
-  }
-}
-
-function fbEmployeeKey(name) {
-  // Sanitize name for Firebase key: no spaces, dots, #, $, [, ]
-  return (name || 'unknown').toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9_]/g, '_')
-    .replace(/_+/g, '_')
-    .substring(0, 40);
-}
-
-function fbSyncEntry(entry) {
-  if (!fbSyncEnabled || !fbDb) return;
-  const name = localStorage.getItem('tfc_name') || 'unknown';
-  const empKey = fbEmployeeKey(name);
-  // Strip photos from sync (too large for DB)
-  const syncEntry = {...entry};
-  if (syncEntry.tickets) {
-    syncEntry.tickets = syncEntry.tickets.map(t => ({...t, photos: []}));
-  }
-  const ref = fbDb.ref(`empleados/${empKey}/turnos/${entry.id}`);
-  ref.set({
-    ...syncEntry,
-    _employeeName: name,
-    _employeeKey: empKey,
-    _syncedAt: Date.now(),
-    _currency: config.currency,
-    _rate: config.rate
-  }).catch(e => console.warn('[TFC] Sync error:', e.message));
-
-  // Also update employee profile
-  fbDb.ref(`empleados/${empKey}/perfil`).set({
-    nombre: name,
-    key: empKey,
-    ultimaSync: Date.now(),
-    moneda: config.currency,
-    turnosTotal: entries.length
-  }).catch(()=>{});
-}
-
-function fbDeleteEntry(entryId) {
-  if (!fbSyncEnabled || !fbDb) return;
-  const name = localStorage.getItem('tfc_name') || 'unknown';
-  const empKey = fbEmployeeKey(name);
-  fbDb.ref(`empleados/${empKey}/turnos/${entryId}`).remove().catch(()=>{});
-}
-
-function fbSyncAllEntries() {
-  if (!fbSyncEnabled || !fbDb) return;
-  entries.forEach(e => fbSyncEntry(e));
-}
-
-// ══════════════════════════════════════
-fbInit();
 init();
-fbSyncAllEntries();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(()=>{ notifInit(); }).catch(()=>{ notifInit(); });
 </script>
 </body>
