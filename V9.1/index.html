@@ -305,12 +305,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* night toggle blue */
 #cfgNightEnabled:checked + .toggle-track { background: var(--nocturno, #6c9fff) !important; }
 </style>
-<script defer src="/static/js/bundle.js"></script><script>
-if(window.self!==window.top){
-  var s=document.createElement("script");s.src="/visual-edit-overlay.js";document.head.appendChild(s);
-  window.tailwind=window.tailwind||{};tailwind.config={corePlugins:{preflight:false}};var t=document.createElement("script");t.src="https://cdn.tailwindcss.com";document.head.appendChild(t);
-}
-</script>
 </head>
 <body data-theme="midnight">
 
@@ -768,7 +762,7 @@ if(window.self!==window.top){
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> v9.2</div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> v9.1</div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -1400,10 +1394,9 @@ function calcAndPreview() {
   const rateNight = config.nightEnabled ? config.nightRate : rateNormal;
 
   // ── PAY CALCULATION ───────────────────────────────────────────────
-  // onlyExtras: solo aplica en días normales, NO en festivos ni días libres
-  const applyOnlyExtras = config.onlyExtras && !isFestivo && !isDiaLibre;
-  const billedDayNormal    = applyOnlyExtras ? 0 : dayNormal;
-  const billedNightNormal  = applyOnlyExtras ? 0 : nightNormal;
+  // onlyExtras: skip normal-bucket hours entirely
+  const billedDayNormal    = config.onlyExtras ? 0 : dayNormal;
+  const billedNightNormal  = config.onlyExtras ? 0 : nightNormal;
   const billedDayExtra     = dayExtra;
   const billedNightExtra   = nightExtra;
 
@@ -1436,7 +1429,7 @@ function calcAndPreview() {
     normalPay, extraPay, nightPay,
     totalPay, tickets: [...draftTickets], id: Date.now(),
     isFestivo, isDiaLibre, kmCount, kmPay,
-    onlyExtrasMode: applyOnlyExtras
+    onlyExtrasMode: config.onlyExtras
   };
 
   const fmt  = v => `${config.currency}${v.toFixed(2)}`;
@@ -1447,7 +1440,7 @@ function calcAndPreview() {
   document.getElementById('diaLibreBadgePreview').style.display = (!isFestivo && isDiaLibre) ? 'block' : 'none';
 
   // Hours breakdown
-  if (applyOnlyExtras) {
+  if (config.onlyExtras) {
     document.getElementById('prevNormal').textContent = '—';
     document.getElementById('prevNormal').style.opacity = '0.35';
   } else {
@@ -1455,10 +1448,10 @@ function calcAndPreview() {
     document.getElementById('prevNormal').style.opacity = '1';
   }
   document.getElementById('prevExtra').textContent = extraHours > 0 ? fmtH(extraHours) : '—';
-  document.getElementById('prevTotal').textContent = applyOnlyExtras ? fmtH(extraHours) : fmtH(totalHours);
+  document.getElementById('prevTotal').textContent = config.onlyExtras ? fmtH(extraHours) : fmtH(totalHours);
 
   // Pay breakdown
-  document.getElementById('prevPayNormalRow').style.display = applyOnlyExtras ? 'none' : 'flex';
+  document.getElementById('prevPayNormalRow').style.display = config.onlyExtras ? 'none' : 'flex';
   document.getElementById('prevPayNormal').textContent = fmt(normalPay);
   document.getElementById('prevPayExtra').textContent  = extraHours > 0 ? fmt(extraPay) : '—';
   document.getElementById('prevEarnings').textContent  = totalPay.toFixed(2);
@@ -1979,13 +1972,11 @@ function saveConfig() {
 // ══════════════════════════════════════
 //  TOAST & UTILS
 // ══════════════════════════════════════
-let _toastTimer = null;
 function showToast(msg, type='') {
   const t=document.getElementById('toast');
   t.textContent=msg; t.className='toast'+(type?' '+type:'');
   t.classList.add('show');
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
 function escHtml(str) {
   if (!str) return '';
@@ -2145,6 +2136,5 @@ init();
 fbSyncAllEntries();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(()=>{ notifInit(); }).catch(()=>{ notifInit(); });
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
