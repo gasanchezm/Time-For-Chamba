@@ -762,7 +762,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> v5.0</div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> v9.0</div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -882,7 +882,7 @@ const STRINGS = {
     today:'Hoy', week:'Semana', month:'Mes', all:'Todo',
     shifts:'Turnos', hours:'Horas', extras:'Extras', earned:'Ganado', total:'Total',
     allRecords:'Todos los registros', confirmClear:'¿Borrar todo el historial?', deleteAll:'Borrar todo',
-    rateConfig:'Tarifas Base', nightRate:'Tarifa nocturna / hora', nightRateDesc:'Horas de 22:00 a 06:00 se cobran a este precio', nightConfig:'Horas Nocturnas', nightEnabled:'Activar horas nocturnas', nightEnabledDesc:'De 22:00 a 06:00 — tarifa diferente', nightPay:'Pago nocturno', nightHours:'Horas nocturnas', nightBadge:'NOCTURNO', rateConfig:'Tarifas Base', currency:'Moneda', currencyDesc:'Símbolo ej: $, €, Q',
+    rateConfig:'Tarifas Base', nightRate:'Tarifa nocturna / hora', nightRateDesc:'De 22:00 a 06:00 (se suma automáticamente)', nightConfig:'Horas Nocturnas', nightEnabled:'Activar horas nocturnas', nightEnabledDesc:'De 22:00 a 06:00 — tarifa diferente', nightPay:'Pago nocturno', nightHours:'Horas nocturnas', nightBadge:'NOCTURNO', rateConfig:'Tarifas Base', currency:'Moneda', currencyDesc:'Símbolo ej: $, €, Q',
     normalRate:'Tarifa Normal / hora', normalRateDesc:'Primeras N horas',
     overtimeRate:'Tarifa Extra / hora', overtimeRateDesc:'Después del umbral',
     threshold:'Umbral horas normales', thresholdDesc:'Antes del pago extra',
@@ -948,7 +948,7 @@ const STRINGS = {
     today:'Today', week:'Week', month:'Month', all:'All',
     shifts:'Shifts', hours:'Hours', extras:'Overtime', earned:'Earned', total:'Total',
     allRecords:'All records', confirmClear:'Delete entire history?', deleteAll:'Delete all',
-    rateConfig:'Base Rates', nightRate:'Night rate / hour', nightRateDesc:'Hours from 10 PM to 6 AM billed at this rate', nightConfig:'Night Hours', nightEnabled:'Enable night hours', nightEnabledDesc:'10 PM to 6 AM — different rate', nightPay:'Night pay', nightHours:'Night hours', nightBadge:'NIGHT', rateConfig:'Base Rates', currency:'Currency', currencyDesc:'Symbol e.g. $, €, £',
+    rateConfig:'Base Rates', nightRate:'Night rate / hour', nightRateDesc:'From 10 PM to 6 AM (added automatically)', nightConfig:'Night Hours', nightEnabled:'Enable night hours', nightEnabledDesc:'10 PM to 6 AM — different rate', nightPay:'Night pay', nightHours:'Night hours', nightBadge:'NIGHT', rateConfig:'Base Rates', currency:'Currency', currencyDesc:'Symbol e.g. $, €, £',
     normalRate:'Regular rate / hour', normalRateDesc:'First N hours',
     overtimeRate:'Overtime rate / hour', overtimeRateDesc:'After threshold',
     threshold:'Regular hours threshold', thresholdDesc:'Before overtime kicks in',
@@ -1318,116 +1318,80 @@ function closePhotoViewer() {
 // ══════════════════════════════════════
 //  CALC
 // ══════════════════════════════════════
-// Returns minutes overlapping 22:00–06:00 within [startDt, endDt)
-function calcNightMinutes(startDt, endDt) {
-  // Walk minute by minute — correct for any shift crossing midnight
+function calcNightHours(startDt, endDt) {
+  // Returns hours that overlap with 22:00-06:00 window
   let nightMins = 0;
+  const msPerMin = 60000;
   let cur = new Date(startDt);
   while (cur < endDt) {
+    const next = new Date(Math.min(cur.getTime() + 60000, endDt.getTime()));
     const h = cur.getHours();
     if (h >= 22 || h < 6) nightMins++;
-    cur = new Date(cur.getTime() + 60000);
+    cur = next;
   }
-  return nightMins;
+  return nightMins / 60;
 }
 
 function calcAndPreview() {
-  const date    = document.getElementById('fieldDate').value;
-  const start   = document.getElementById('fieldStart').value;
-  const end     = document.getElementById('fieldEnd').value;
-  const desc    = document.getElementById('fieldDesc').value.trim();
+  const date  = document.getElementById('fieldDate').value;
+  const start = document.getElementById('fieldStart').value;
+  const end   = document.getElementById('fieldEnd').value;
+  const desc  = document.getElementById('fieldDesc').value.trim();
   const isFestivo = document.getElementById('festivoToggle').checked;
-  const kmOn    = document.getElementById('kmToggle').checked;
+  const kmOn = document.getElementById('kmToggle').checked;
 
   if (!date||!start||!end) { showToast(T('fillFields'),'error'); return; }
   const startDt = new Date(`${date}T${start}`);
   let   endDt   = new Date(`${date}T${end}`);
   if (endDt <= startDt) endDt.setDate(endDt.getDate()+1);
+  const totalMin = (endDt - startDt)/60000 - breakMinutes;
+  if (totalMin <= 0) { showToast(T('invalidTime'),'error'); return; }
 
-  // Total worked minutes (gross - break)
-  const workedMin  = (endDt - startDt) / 60000 - breakMinutes;
-  if (workedMin <= 0) { showToast(T('invalidTime'),'error'); return; }
-  const totalHours = workedMin / 60;
+  const totalHours  = totalMin / 60;
+  const normalHours = Math.min(totalHours, config.threshold);
+  const extraHours  = Math.max(0, totalHours - config.threshold);
 
-  // ── NIGHT HOURS ───────────────────────────────────────────────────
-  // Night hours are NOT a supplement — they replace the normal/extra rate
-  // for those specific hours. We detect how many worked minutes fall in 22-06.
-  // Break is distributed proportionally (approximation).
-  let nightHours = 0;
-  if (config.nightEnabled) {
-    const nightMinsGross = calcNightMinutes(startDt, endDt);
-    const shiftMinsGross = (endDt - startDt) / 60000;
-    // Scale night minutes by the worked fraction (removes break proportionally)
-    const nightMinsWorked = shiftMinsGross > 0
-      ? (nightMinsGross / shiftMinsGross) * workedMin
-      : 0;
-    nightHours = Math.min(nightMinsWorked / 60, totalHours);
+  // Night hours (22-6): calculate overlap with shift (after removing break, approximate)
+  const nightHoursRaw = config.nightEnabled ? calcNightHours(startDt, endDt) : 0;
+  // Night hours are capped at total worked hours and can overlap normal/extra
+  const nightHours = Math.min(nightHoursRaw, totalHours);
+
+  // Day of week for día libre detection
+  const selectedDow = new Date(date+'T12:00:00').getDay();
+  const isDiaLibre = config.diaLibreEnabled && selectedDow === config.diaLibre;
+
+  // Pick rates: festivo > dia libre > normal
+  let rateNormal, rateExtra;
+  if (isFestivo) {
+    rateNormal = config.festivoRate;
+    rateExtra  = config.festivoOvertimeRate;
+  } else if (isDiaLibre) {
+    rateNormal = config.diaLibreRate;
+    rateExtra  = config.diaLibreOvertimeRate;
+  } else {
+    rateNormal = config.rate;
+    rateExtra  = config.overtimeRate;
   }
 
-  // ── DAY HOURS ─────────────────────────────────────────────────────
-  // Day hours = total worked - night hours
-  const dayHours   = totalHours - nightHours;
+  // onlyExtras mode: only record/show extra hours, skip normal
+  const billedNormalHours = config.onlyExtras ? 0 : normalHours;
+  const normalPay = billedNormalHours * rateNormal;
+  const extraPay  = extraHours * rateExtra;
+  // Night pay is an additional supplement on top of base pay
+  const nightPay  = nightHours * config.nightRate;
 
-  // Normal vs extra split applies to ALL worked hours (day + night):
-  // We split first by threshold, then determine how many of each bucket are night
-  const normalHoursTotal = Math.min(totalHours, config.threshold);
-  const extraHoursTotal  = Math.max(0, totalHours - config.threshold);
-
-  // Night hours are distributed first into the normal bucket, then extra
-  const nightNormal = Math.min(nightHours, normalHoursTotal);
-  const nightExtra  = nightHours - nightNormal;
-
-  // Day hours that are normal / extra
-  const dayNormal = normalHoursTotal - nightNormal;
-  const dayExtra  = extraHoursTotal  - nightExtra;
-
-  // ── RATES ─────────────────────────────────────────────────────────
-  const selectedDow = new Date(date + 'T12:00:00').getDay();
-  const isDiaLibre  = config.diaLibreEnabled && selectedDow === config.diaLibre;
-
-  let rateNormal, rateExtra;
-  if (isFestivo)        { rateNormal = config.festivoRate;   rateExtra = config.festivoOvertimeRate; }
-  else if (isDiaLibre)  { rateNormal = config.diaLibreRate;  rateExtra = config.diaLibreOvertimeRate; }
-  else                  { rateNormal = config.rate;           rateExtra = config.overtimeRate; }
-
-  // Night hours are billed at nightRate (replaces rateNormal/rateExtra for those hours)
-  const rateNight = config.nightEnabled ? config.nightRate : rateNormal;
-
-  // ── PAY CALCULATION ───────────────────────────────────────────────
-  // onlyExtras: skip normal-bucket hours entirely
-  const billedDayNormal    = config.onlyExtras ? 0 : dayNormal;
-  const billedNightNormal  = config.onlyExtras ? 0 : nightNormal;
-  const billedDayExtra     = dayExtra;
-  const billedNightExtra   = nightExtra;
-
-  const normalDayPay   = billedDayNormal   * rateNormal;
-  const extraDayPay    = billedDayExtra    * rateExtra;
-  const nightNormalPay = billedNightNormal * rateNight;
-  const nightExtraPay  = billedNightExtra  * rateNight;  // extra hours at night still at nightRate
-  const nightPay       = nightNormalPay + nightExtraPay;
-
-  // Aggregates for display:
-  // normalHours/extraHours = total hours in each bucket (day + night combined)
-  // normalPay/extraPay = DAY-ONLY pay (night hours shown separately)
-  // nightPay = all night hours billed at nightRate (replaces their day rate)
-  const normalHours = billedDayNormal + billedNightNormal;
-  const extraHours  = billedDayExtra  + billedNightExtra;
-  // normalPay/extraPay are DAY-ONLY so summary doesn't double-count night
-  const normalPay   = normalDayPay;
-  const extraPay    = extraDayPay;
-
-  const kmCount  = kmOn ? draftKm : 0;
-  const kmPay    = kmCount * config.kmRate;
+  const kmCount = kmOn ? draftKm : 0;
+  const kmPay   = kmCount * config.kmRate;
   const pendingTicketAmt = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-  // Total = day-normal + day-extra + all-night + km + tickets
-  const totalPay = normalDayPay + extraDayPay + nightPay + kmPay + pendingTicketAmt;
+
+  // In onlyExtras mode, total = extra pay + night + km + tickets (no normal pay)
+  const totalPay = normalPay + extraPay + nightPay + kmPay + pendingTicketAmt;
 
   previewData = {
-    date, start, end, breakMin: breakMinutes, desc,
-    totalHours, normalHours, extraHours,
-    nightHours, nightNormal, nightExtra,
-    normalPay, extraPay, nightPay,
-    totalPay, tickets: [...draftTickets], id: Date.now(),
+    date, start, end, breakMin:breakMinutes, desc,
+    totalHours, normalHours: billedNormalHours, extraHours,
+    nightHours, normalPay, extraPay, nightPay, totalPay,
+    tickets:[...draftTickets], id:Date.now(),
     isFestivo, isDiaLibre, kmCount, kmPay,
     onlyExtrasMode: config.onlyExtras
   };
@@ -1466,8 +1430,6 @@ function calcAndPreview() {
   } else {
     nightRow.style.display = 'none';
   }
-  // Update normal/extra labels to clarify night hours are included at nightRate
-  // The normalPay and extraPay already incorporate night hours at nightRate
 
   // Km row
   if (kmCount > 0) {
