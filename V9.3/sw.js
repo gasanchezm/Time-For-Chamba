@@ -1,4 +1,4 @@
-const CACHE_NAME = 'time-for-chamba-v9.5';
+const CACHE_NAME = 'time-for-chamba-v9.3';
 const ASSETS = [
   './',
   './index.html',

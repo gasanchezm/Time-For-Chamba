@@ -80,8 +80,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ── BOTTOM NAV ── */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav-bg,rgba(12,12,12,.96));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:10px;padding-bottom:var(--safe-b);padding-bottom:env(safe-area-inset-bottom,0px);height:calc(var(--nav-h) + var(--safe-b));height:calc(var(--nav-h) + env(safe-area-inset-bottom,0px));z-index:100}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px}
-.nav-icon{font-size:20px;line-height:1;transition:transform .15s}
-.nav-label{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;transition:color .15s}
+.nav-icon{font-size:22px;line-height:1;transition:transform .15s}
+.nav-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;transition:color .15s}
 .nav-dot{width:4px;height:4px;background:var(--accent);border-radius:50%;opacity:0;transition:opacity .15s;margin-top:1px}
 .nav-item.active .nav-label{color:var(--accent)}
 .nav-item.active .nav-icon{transform:scale(1.15)}
@@ -306,56 +306,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #cfgNightEnabled:checked + .toggle-track { background: var(--nocturno, #6c9fff) !important; }
 /* adelanto toggle orange */
 #adelantoToggle:checked + .toggle-track { background: var(--warn) !important; }
-
-/* ── GALLERY ── */
-.gallery-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.gallery-tabs::-webkit-scrollbar{display:none}
-.gallery-tab{flex-shrink:0;padding:7px 15px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all .15s}
-.gallery-tab:hover{border-color:var(--accent);color:var(--accent)}
-.gallery-tab.active{background:var(--accent);color:var(--accent-text,#0a0a0a);border-color:var(--accent)}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:10px}
-.gallery-item{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;background:var(--surface2)}
-.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
-.gallery-item:hover img{transform:scale(1.05)}
-.gallery-item-overlay{position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.75));display:flex;flex-direction:column;justify-content:flex-end;padding:6px;opacity:0;transition:opacity .2s}
-.gallery-item:hover .gallery-item-overlay,.gallery-item:active .gallery-item-overlay{opacity:1}
-.gallery-item-date{font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.8);letter-spacing:.5px}
-.gallery-item-label{font-family:'DM Mono',monospace;font-size:9px;color:#fff;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gallery-item-del{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(255,68,68,.85);border:none;border-radius:50%;color:#fff;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s}
-.gallery-item:hover .gallery-item-del{opacity:1}
-.gallery-add-card{background:var(--surface);border:1.5px dashed var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
-.gallery-add-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end}
-.gallery-upload-area{border:1.5px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--surface2)}
-.gallery-upload-area:hover{border-color:var(--accent);background:var(--accent-dim)}
-.gallery-upload-icon{font-size:28px;margin-bottom:6px}
-.gallery-upload-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px}
-.gallery-empty{text-align:center;padding:40px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
-.gallery-cat-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-family:'DM Mono',monospace;font-size:9px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);margin-bottom:4px}
-
-/* ── CONFIRM DIALOG ── */
-.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:350;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.confirm-overlay.open{display:flex}
-.confirm-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 22px;max-width:320px;width:calc(100% - 40px);animation:scaleIn .2s cubic-bezier(.34,1.56,.64,1)}
-@keyframes scaleIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
-.confirm-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text);margin-bottom:10px}
-.confirm-msg{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px}
-.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.confirm-cancel{padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);cursor:pointer;transition:background .15s}
-.confirm-cancel:hover{background:var(--border)}
-.confirm-ok{padding:12px;background:var(--danger);border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#fff;cursor:pointer;transition:opacity .15s}
-.confirm-ok:active{opacity:.8}
-
-/* ── SWIPE TO DELETE ── */
-.entry-card{touch-action:pan-y;position:relative;overflow:hidden}
-.entry-card-inner{position:relative;background:var(--surface);transition:transform .25s cubic-bezier(.4,0,.2,1);will-change:transform;border-radius:inherit;padding:inherit;display:block}
-.entry-swipe-reveal{position:absolute;right:0;top:0;bottom:0;width:80px;background:var(--danger);display:flex;align-items:center;justify-content:center;font-size:20px;border-radius:0 12px 12px 0;opacity:0;transition:opacity .2s}
-
-/* ── PROGRESS BAR ── */
-.hours-progress{margin:10px 0 4px}
-.hours-progress-label{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:5px}
-.hours-progress-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
-.hours-progress-fill{height:100%;border-radius:4px;background:var(--accent);transition:width .4s cubic-bezier(.4,0,.2,1)}
-.hours-progress-fill.over{background:var(--accent2)}
 </style>
 </head>
 <body data-theme="midnight">
@@ -487,18 +437,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
       <!-- TICKETS SECTION -->
       <div class="tickets-wrap" id="ticketsSection" style="display:none;margin-top:10px">
-        <div style="margin-bottom:10px">
-          <div class="field" style="margin-bottom:8px">
+        <div class="ticket-add-row">
+          <div class="field" style="grid-column:1/3">
             <label data-t="ticketDesc"></label>
             <input type="text" id="ticketLabelInput" data-t-placeholder="ticketDescPh" maxlength="40">
           </div>
-          <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end">
-            <div class="field" style="margin-bottom:0">
-              <label data-t="amount"></label>
-              <input type="number" id="ticketAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
-            </div>
-            <button class="ticket-add-btn" onclick="addTicket()" data-t="add"></button>
+          <div class="field">
+            <label data-t="amount"></label>
+            <input type="number" id="ticketAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
           </div>
+          <button class="ticket-add-btn" onclick="addTicket()" data-t="add"></button>
         </div>
         <div class="tickets-list" id="ticketsList">
           <div class="tickets-empty" data-t="noTickets"></div>
@@ -525,18 +473,16 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
       <!-- ADELANTO SECTION -->
       <div id="adelantoSection" style="display:none;margin-top:10px">
-        <div style="margin-bottom:10px">
-          <div class="field" style="margin-bottom:8px">
+        <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:flex-end;margin-bottom:10px">
+          <div class="field" style="grid-column:1/3;margin-bottom:0">
             <label data-t="adelantoDesc"></label>
             <input type="text" id="adelantoLabelInput" data-t-placeholder="adelantoDescPh" maxlength="50">
           </div>
-          <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end">
-            <div class="field" style="margin-bottom:0">
-              <label data-t="adelantoAmt"></label>
-              <input type="number" id="adelantoAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
-            </div>
-            <button class="ticket-add-btn" onclick="addAdelanto()" data-t="adelantoAdd" style="background:var(--warn);color:#0a0a0a"></button>
+          <div class="field" style="margin-bottom:0">
+            <label data-t="adelantoAmt"></label>
+            <input type="number" id="adelantoAmtInput" placeholder="0.00" min="0" step="0.01" style="text-align:right">
           </div>
+          <button class="ticket-add-btn" onclick="addAdelanto()" data-t="adelantoAdd" style="background:var(--warn);color:#0a0a0a"></button>
         </div>
         <div id="adelantoList"><div class="tickets-empty" data-t="noAdelantos"></div></div>
         <div id="adelantoSummaryRow" style="display:none">
@@ -597,34 +543,18 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="card-title"><span>↗</span> <span id="periodLabel">Hoy</span></div>
       <div class="summary-grid">
         <div class="summary-box"><div class="summary-num" id="sumDays">0</div><div class="summary-lbl" data-t="shifts"></div></div>
-        <div class="summary-box">
-          <div class="summary-num" id="sumHours">0h</div>
-          <div class="summary-lbl" data-t="hours"></div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px" id="sumKmStat" style="display:none"></div>
-        </div>
+        <div class="summary-box"><div class="summary-num" id="sumHours">0h</div><div class="summary-lbl" data-t="hours"></div></div>
         <div class="summary-box"><div class="summary-num" id="sumExtra">0h</div><div class="summary-lbl" data-t="extras"></div></div>
-        <div class="summary-box">
-          <div class="summary-num" id="sumEarn" style="font-size:20px">$0</div>
-          <div class="summary-lbl" data-t="earned"></div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px"><span id="sumAvg">—</span> <span data-t="perDay"></span></div>
-        </div>
+        <div class="summary-box"><div class="summary-num" id="sumEarn" style="font-size:20px">$0</div><div class="summary-lbl" data-t="earned"></div></div>
       </div>
-      <div class="hours-progress" id="hoursProgressWrap" style="display:none">
-        <div class="hours-progress-label">
-          <span data-t="hours"></span>
-          <span id="hoursProgressLabel">—</span>
-        </div>
-        <div class="hours-progress-bar"><div class="hours-progress-fill" id="hoursProgressFill" style="width:0%"></div></div>
-      </div>
-      <hr class="divider" style="margin:8px 0 10px">
-      <div class="breakdown-row" id="sumRowNormal"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="sumNormalPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowExtra"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowFestivo"><span class="breakdown-label" data-t="festivoPay"></span><span class="breakdown-value festivo" id="sumFestivoPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowDiaLibre"><span class="breakdown-label" data-t="diaLibrePay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDiaLibrePay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowNight"><span class="breakdown-label" data-t="nightPay"></span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)" id="sumNightPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowKm"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowTickets"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowAdelanto"><span class="breakdown-label" data-t="adelantoTotal"></span><span class="breakdown-value" style="color:var(--warn)" id="sumAdelanto">— $0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="sumNormalPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="festivoPay"></span><span class="breakdown-value festivo" id="sumFestivoPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="diaLibrePay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDiaLibrePay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="nightPay"></span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)" id="sumNightPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
+      <div class="breakdown-row"><span class="breakdown-label" data-t="adelantoTotal"></span><span class="breakdown-value" style="color:var(--warn)" id="sumAdelanto">— $0.00</span></div>
       <div class="breakdown-row"><span class="breakdown-label" data-t="total"></span><span class="breakdown-value accent" id="sumTotal">$0.00</span></div>
     </div>
     <!-- PDF Export Button -->
@@ -638,17 +568,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <div id="page-historial" class="page">
     <div class="section-header">
       <div class="section-title" data-t="allRecords"></div>
-      <button class="btn btn-secondary btn-sm" onclick="showConfirm(T('confirmClear')).then(ok=>{if(ok)clearAll()})" data-t="deleteAll"></button>
-    </div>
-    <!-- Adelantos del mes en historial -->
-    <div id="histAdelantoCard" style="display:none;margin-bottom:10px">
-      <div class="card warn-top" style="padding:12px 14px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--warn);text-transform:uppercase">💸 Adelantos / Vales</div>
-          <div id="histAdelantoTotal" style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--warn)"></div>
-        </div>
-        <div id="histAdelantoList"></div>
-      </div>
+      <button class="btn btn-secondary btn-sm" onclick="if(confirm(T('confirmClear')))clearAll()" data-t="deleteAll"></button>
     </div>
     <div id="historyList"></div>
   </div>
@@ -858,15 +778,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
             <button onclick="setLangAndSave('en')" id="cfgLangEn" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:16px;cursor:pointer;transition:border-color .15s">🇺🇸</button>
           </div>
         </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="backupExport"></div></div>
-          <button class="btn btn-secondary btn-sm" onclick="exportBackup()">⬇ JSON</button>
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="backupImport"></div></div>
-          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('backupFileInput').click()">⬆ JSON</button>
-        </div>
-        <input type="file" id="backupFileInput" accept=".json" style="display:none" onchange="importBackup(event)">
         <div class="setting-row" style="border-bottom:none">
           <div>
             <div class="setting-name" data-t="notifTitle"></div>
@@ -930,48 +841,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.5</span></div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.3</span></div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
     </div>
-  </div>
-
-  <!-- ═══ GALERÍA ═══ -->
-  <div id="page-galeria" class="page">
-    <!-- Category filter tabs -->
-    <div class="gallery-tabs" id="galleryTabs">
-      <button class="gallery-tab active" onclick="selectGalleryTab('all',this)" data-t="galleryAll"></button>
-      <button class="gallery-tab" onclick="selectGalleryTab('evento',this)" data-t="galleryEvents"></button>
-      <button class="gallery-tab" onclick="selectGalleryTab('ticket',this)" data-t="galleryTickets"></button>
-      <button class="gallery-tab" onclick="selectGalleryTab('presupuesto',this)" data-t="galleryBudgets"></button>
-      <button class="gallery-tab" onclick="selectGalleryTab('otro',this)" data-t="galleryOther"></button>
-    </div>
-
-    <!-- Upload new photo -->
-    <div class="gallery-add-card">
-      <div class="card-title" style="margin-bottom:10px"><span style="color:var(--accent)">+</span> <span data-t="galleryAdd"></span></div>
-      <div class="field" style="margin-bottom:8px">
-        <label data-t="galleryDesc"></label>
-        <input type="text" id="galleryDescInput" data-t-placeholder="galleryDescPh" maxlength="80">
-      </div>
-      <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end;margin-bottom:8px">
-        <div class="field" style="margin-bottom:0">
-          <label data-t="galleryCategory"></label>
-          <select id="galleryCatInput" class="field input" style="width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none;appearance:none">
-            <option value="evento" data-t-opt="galleryEvents"></option>
-            <option value="ticket" data-t-opt="galleryTickets"></option>
-            <option value="presupuesto" data-t-opt="galleryBudgets"></option>
-            <option value="otro" data-t-opt="galleryOther"></option>
-          </select>
-        </div>
-        <button class="ticket-add-btn" onclick="document.getElementById('galleryFileInput').click()" style="height:48px;padding:0 16px;align-self:flex-end" data-t="galleryUpload"></button>
-      </div>
-      <input type="file" id="galleryFileInput" accept="image/*,video/*" multiple style="display:none" onchange="onGalleryFilesSelected(event)">
-    </div>
-
-    <!-- Gallery grid -->
-    <div id="galleryGrid"></div>
   </div>
 </div>
 
@@ -986,9 +860,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <button class="nav-item" id="nav-historial" onclick="switchTab('historial',this)">
     <div class="nav-icon">📋</div><div class="nav-label" data-t="tabHistory"></div><div class="nav-dot"></div>
   </button>
-  <button class="nav-item" id="nav-galeria" onclick="switchTab('galeria',this)">
-    <div class="nav-icon">🖼️</div><div class="nav-label" data-t="tabGallery"></div><div class="nav-dot"></div>
-  </button>
   <button class="nav-item" id="nav-config" onclick="switchTab('config',this)">
     <div class="nav-icon">⚙️</div><div class="nav-label" data-t="tabConfig"></div><div class="nav-dot"></div>
   </button>
@@ -1001,7 +872,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="modal-title" id="modalTitle">Turno</div>
     <div id="modalContent"></div>
     <hr class="divider">
-    <button class="btn btn-secondary" onclick="editCurrentEntry()" style="margin-bottom:8px" data-t="editShift"></button>
     <button class="btn btn-danger" onclick="deleteCurrentEntry()" style="margin-bottom:8px" data-t="deleteShift"></button>
     <button class="btn btn-secondary" onclick="closeModal()" data-t="close"></button>
   </div>
@@ -1015,19 +885,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 <!-- Hidden file input for photos -->
 <input type="file" id="photoFileInput" accept="image/*" capture="environment" style="display:none" onchange="onPhotoSelected(event)">
-
-
-<!-- CUSTOM CONFIRM DIALOG -->
-<div class="confirm-overlay" id="confirmOverlay">
-  <div class="confirm-box">
-    <div class="confirm-title" id="confirmTitle">⚠️</div>
-    <div class="confirm-msg" id="confirmMsg"></div>
-    <div class="confirm-btns">
-      <button class="confirm-cancel" id="confirmCancel" onclick="resolveConfirm(false)">Cancelar</button>
-      <button class="confirm-ok" id="confirmOk" onclick="resolveConfirm(true)">Eliminar</button>
-    </div>
-  </div>
-</div>
 
 <div class="toast" id="toast"></div>
 
@@ -1101,7 +958,7 @@ const STRINGS = {
     normalHours:'Horas normales', extraHours:'Horas extra', totalWorked:'Total trabajado',
     normalPay:'Pago normal', extraPay:'Pago extra', pendingTickets:'Tickets pendientes',
     totalEarned:'TOTAL GANADO', saveShift:'GUARDAR TURNO',
-    today:'Hoy', week:'Semana', month:'Mes', all:'Todo', perDay:'/día',
+    today:'Hoy', week:'Semana', month:'Mes', all:'Todo',
     shifts:'Turnos', hours:'Horas', extras:'Extras', earned:'Ganado', total:'Total',
     allRecords:'Todos los registros', confirmClear:'¿Borrar todo el historial?', deleteAll:'Borrar todo',
     rateConfig:'Tarifas Base', nightRate:'Tarifa nocturna / hora', nightRateDesc:'Horas de 22:00 a 06:00 se cobran a este precio', nightConfig:'Horas Nocturnas', nightEnabled:'Activar horas nocturnas', nightEnabledDesc:'De 22:00 a 06:00 — tarifa diferente', nightPay:'Pago nocturno', nightHours:'Horas nocturnas', nightBadge:'NOCTURNO', rateConfig:'Tarifas Base', currency:'Moneda', currencyDesc:'Símbolo ej: $, €, Q',
@@ -1143,13 +1000,6 @@ const STRINGS = {
     adelantoDesc:'Concepto del adelanto', adelantoDescPh:'Ej: Adelanto nómina, Vale…',
     adelantoAmt:'Importe', adelantoAdd:'+ AÑADIR', noAdelantos:'Sin adelantos registrados',
     adelantoTotal:'Total adelantos del mes', adelantoWarning:'⚠ El total supera las horas extras disponibles',
-    tabGallery:'Galería',
-    galleryAll:'Todo', galleryEvents:'Eventos', galleryTickets:'Tickets', galleryBudgets:'Presupuestos', galleryOther:'Otros',
-    galleryAdd:'Añadir foto', galleryDesc:'Descripción', galleryDescPh:'¿Qué es esta foto?',
-    galleryCategory:'Categoría', galleryUpload:'📷 Subir',
-    galleryEmpty:'No hay fotos en esta categoría', galleryEmptyAll:'La galería está vacía',
-    galleryDeleteConfirm:'¿Eliminar esta foto?',
-    backupExport:'Exportar datos (JSON)', backupImport:'Importar datos', backupSuccess:'✅ Datos importados correctamente', backupError:'❌ Archivo inválido', backupConfirmImport:'Esto reemplazará todos tus datos actuales. ¿Continuar?',
     pdfConfigTitle:'Configuración del PDF', pdfFullName:'Nombre completo', pdfDocNum:'Nº de documento',
     pdfCompany:'Empresa', pdfStyle:'Estilo del PDF', pdfStyleApp:'Colores de la app', pdfStyleBW:'Formal (blanco y negro)',
     aboutDesc:'Registro de turnos · Tarifas festivos, nocturnos y día libre · Horas extras · Kilómetros · Tickets y fotos · Adelantos sobre extras · PDF personalizable · Temas visuales · Notificaciones · PWA instalable',
@@ -1181,7 +1031,7 @@ const STRINGS = {
     normalHours:'Regular hours', extraHours:'Overtime hours', totalWorked:'Total worked',
     normalPay:'Regular pay', extraPay:'Overtime pay', pendingTickets:'Pending tickets',
     totalEarned:'TOTAL EARNED', saveShift:'SAVE SHIFT',
-    today:'Today', week:'Week', month:'Month', all:'All', perDay:'/day',
+    today:'Today', week:'Week', month:'Month', all:'All',
     shifts:'Shifts', hours:'Hours', extras:'Overtime', earned:'Earned', total:'Total',
     allRecords:'All records', confirmClear:'Delete entire history?', deleteAll:'Delete all',
     rateConfig:'Base Rates', nightRate:'Night rate / hour', nightRateDesc:'Hours from 10 PM to 6 AM billed at this rate', nightConfig:'Night Hours', nightEnabled:'Enable night hours', nightEnabledDesc:'10 PM to 6 AM — different rate', nightPay:'Night pay', nightHours:'Night hours', nightBadge:'NIGHT', rateConfig:'Base Rates', currency:'Currency', currencyDesc:'Symbol e.g. $, €, £',
@@ -1223,13 +1073,6 @@ const STRINGS = {
     adelantoDesc:'Description', adelantoDescPh:'e.g. Salary advance, Voucher…',
     adelantoAmt:'Amount', adelantoAdd:'+ ADD', noAdelantos:'No advances registered',
     adelantoTotal:'Total advances this month', adelantoWarning:'⚠ Total exceeds available overtime hours',
-    tabGallery:'Gallery',
-    galleryAll:'All', galleryEvents:'Events', galleryTickets:'Tickets', galleryBudgets:'Budgets', galleryOther:'Other',
-    galleryAdd:'Add photo', galleryDesc:'Description', galleryDescPh:'What is this photo?',
-    galleryCategory:'Category', galleryUpload:'📷 Upload',
-    galleryEmpty:'No photos in this category', galleryEmptyAll:'Gallery is empty',
-    galleryDeleteConfirm:'Delete this photo?',
-    backupExport:'Export data (JSON)', backupImport:'Import data', backupSuccess:'✅ Data imported successfully', backupError:'❌ Invalid file', backupConfirmImport:'This will replace all your current data. Continue?',
     pdfConfigTitle:'PDF Configuration', pdfFullName:'Full name', pdfDocNum:'Document number',
     pdfCompany:'Company', pdfStyle:'PDF style', pdfStyleApp:'App theme colors', pdfStyleBW:'Formal (black & white)',
     aboutDesc:'Shift tracking · Holiday, night & day-off rates · Overtime · Kilometers · Tickets & photos · Advances on overtime · Customisable PDF · Visual themes · Notifications · Installable PWA',
@@ -1323,274 +1166,6 @@ function renderAdelantoList() {
   if (warnRow) warnRow.style.display = (total > monthExtraPay && monthExtraPay > 0) ? 'block' : 'none';
 }
 
-
-
-
-// ══════════════════════════════════════
-//  SWIPE TO DELETE (history entries)
-// ══════════════════════════════════════
-function addSwipeListeners() {
-  const cards = document.querySelectorAll('#historyList .entry-card');
-  cards.forEach(card => {
-    let startX = 0, currentX = 0, swiping = false;
-    const threshold = 80; // px to trigger delete
-    
-    card.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-      currentX = 0;
-      swiping = true;
-      card.style.transition = 'none';
-    }, { passive: true });
-    
-    card.addEventListener('touchmove', e => {
-      if (!swiping) return;
-      currentX = e.touches[0].clientX - startX;
-      if (currentX < 0) { // left swipe only
-        const dx = Math.max(currentX, -threshold - 20);
-        card.style.transform = `translateX(${dx}px)`;
-        card.style.opacity = 1 + dx / (threshold * 2);
-      }
-    }, { passive: true });
-    
-    card.addEventListener('touchend', () => {
-      swiping = false;
-      card.style.transition = 'transform .25s ease, opacity .25s ease';
-      if (currentX < -threshold) {
-        // Animate out
-        card.style.transform = 'translateX(-110%)';
-        card.style.opacity = '0';
-        const id = parseInt(card.getAttribute('data-entry-id'));
-        setTimeout(async () => {
-          const ok = await showConfirm(T('deleteShift') + '?', '🗑️');
-          if (ok) {
-            entries = entries.filter(e => e.id !== id);
-            localStorage.setItem('tfc_entries', JSON.stringify(entries));
-            renderHistory(); renderSummary(currentPeriod);
-            showToast(T('deleted'));
-          } else {
-            card.style.transform = 'translateX(0)';
-            card.style.opacity = '1';
-          }
-        }, 50);
-      } else {
-        card.style.transform = 'translateX(0)';
-        card.style.opacity = '1';
-      }
-    });
-  });
-}
-
-// ══════════════════════════════════════
-//  BACKUP / RESTORE
-// ══════════════════════════════════════
-function exportBackup() {
-  const backup = {
-    version: '9.3',
-    exportedAt: new Date().toISOString(),
-    config, entries, adelantos, pdfConfig, galleryPhotos
-  };
-  const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.download = `chamba_backup_${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('✅ Backup descargado', 'success');
-}
-
-function importBackup(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  if (!confirm(T('backupConfirmImport'))) {
-    event.target.value = '';
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (!data.entries && !data.config) throw new Error('Invalid');
-      if (data.config)       { config = {...config, ...data.config}; localStorage.setItem('tfc_config', JSON.stringify(config)); }
-      if (data.entries)      { entries = data.entries; localStorage.setItem('tfc_entries', JSON.stringify(entries)); }
-      if (data.adelantos)    { adelantos = data.adelantos; localStorage.setItem('tfc_adelantos', JSON.stringify(adelantos)); }
-      if (data.pdfConfig)    { pdfConfig = {...pdfConfig, ...data.pdfConfig}; localStorage.setItem('tfc_pdfcfg', JSON.stringify(pdfConfig)); }
-      if (data.galleryPhotos){ galleryPhotos = data.galleryPhotos; saveGallery(); }
-      // Refresh all UI
-      loadConfigUI();
-      renderHistory();
-      renderSummary(currentPeriod);
-      renderAdelantoList();
-      showToast(T('backupSuccess'), 'success');
-    } catch(err) {
-      showToast(T('backupError'), 'error');
-    }
-    event.target.value = '';
-  };
-  reader.readAsText(file);
-}
-
-// ══════════════════════════════════════
-//  GALLERY
-// ══════════════════════════════════════
-let currentGalleryTab = 'all';
-
-function saveGallery() {
-  // Strip very large items if storage full
-  try {
-    localStorage.setItem('tfc_gallery', JSON.stringify(galleryPhotos));
-  } catch(e) {
-    // If quota exceeded, remove oldest until it fits
-    while (galleryPhotos.length > 0) {
-      galleryPhotos.shift();
-      try { localStorage.setItem('tfc_gallery', JSON.stringify(galleryPhotos)); break; }
-      catch(e2) { continue; }
-    }
-  }
-}
-
-function selectGalleryTab(cat, btnEl) {
-  currentGalleryTab = cat;
-  document.querySelectorAll('.gallery-tab').forEach(b => b.classList.remove('active'));
-  if (btnEl) btnEl.classList.add('active');
-  renderGallery();
-}
-
-function onGalleryFilesSelected(event) {
-  const files = Array.from(event.target.files);
-  if (!files.length) return;
-  const label = document.getElementById('galleryDescInput').value.trim();
-  const cat   = document.getElementById('galleryCatInput').value || 'otro';
-  const date  = new Date().toISOString().split('T')[0];
-
-  let processed = 0;
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      galleryPhotos.unshift({
-        id: Date.now() + Math.random(),
-        date,
-        label: label || file.name.replace(/\.[^.]+$/,''),
-        category: cat,
-        dataUrl: e.target.result,
-        source: 'manual',
-        mimeType: file.type
-      });
-      processed++;
-      if (processed === files.length) {
-        saveGallery();
-        document.getElementById('galleryDescInput').value = '';
-        document.getElementById('galleryFileInput').value = '';
-        renderGallery();
-        showToast('✅ ' + processed + (processed > 1 ? ' fotos añadidas' : ' foto añadida'), 'success');
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function addToGalleryFromTicket(dataUrl, label, date) {
-  // Called automatically when ticket photos are saved
-  galleryPhotos.unshift({
-    id: Date.now() + Math.random(),
-    date: date || new Date().toISOString().split('T')[0],
-    label: label || T('galleryTickets'),
-    category: 'ticket',
-    dataUrl,
-    source: 'ticket'
-  });
-  saveGallery();
-}
-
-async function deleteGalleryPhoto(id) {
-  const ok2 = await showConfirm(T('galleryDeleteConfirm'), '🗑️', currentLang==='en'?'Delete':'Eliminar');
-  if (!ok2) return;
-  galleryPhotos = galleryPhotos.filter(p => p.id !== id);
-  saveGallery();
-  renderGallery();
-}
-
-function renderGallery() {
-  const grid = document.getElementById('galleryGrid');
-  if (!grid) return;
-
-  const filtered = currentGalleryTab === 'all'
-    ? galleryPhotos
-    : galleryPhotos.filter(p => p.category === currentGalleryTab);
-
-  if (!filtered.length) {
-    const msg = currentGalleryTab === 'all' ? T('galleryEmptyAll') : T('galleryEmpty');
-    const hint = currentGalleryTab === 'all' && galleryPhotos.length === 0
-      ? (currentLang==='en' ? '<div style="margin-top:6px;font-size:10px;opacity:.5">Ticket photos sync automatically</div>' : '<div style="margin-top:6px;font-size:10px;opacity:.5">Las fotos de tickets se sincronizan automáticamente</div>')
-      : '';
-    grid.innerHTML = `<div class="gallery-empty"><span style="font-size:40px;opacity:.18;display:block;margin-bottom:12px">🖼️</span>${msg}${hint}</div>`;
-    return;
-  }
-
-  // Group by date
-  const byDate = {};
-  filtered.forEach(p => {
-    const d = p.date || 'unknown';
-    if (!byDate[d]) byDate[d] = [];
-    byDate[d].push(p);
-  });
-
-  const catIcons = { evento:'🎪', ticket:'🧾', presupuesto:'📋', otro:'📁', ticket_auto:'🧾' };
-  const catColors = { evento:'var(--accent)', ticket:'var(--warn)', presupuesto:'var(--accent2)', otro:'var(--muted)' };
-
-  let html = '';
-  Object.entries(byDate).sort((a,b) => b[0].localeCompare(a[0])).forEach(([date, photos]) => {
-    html += `<div style="margin-bottom:16px">
-      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">${formatDate(date)}</div>
-      <div class="gallery-grid">`;
-    photos.forEach(p => {
-      const icon = catIcons[p.category] || '📷';
-      const col  = catColors[p.category] || 'var(--muted)';
-      const isVideo = (p.mimeType || '').startsWith('video/');
-      const thumb = isVideo
-        ? `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--surface);font-size:28px">🎬</div>`
-        : `<img src="${p.dataUrl}" alt="${escHtml(p.label)}" loading="lazy" onclick="openPhotoViewer('${p.dataUrl.replace(/'/g,"\'")}')" style="width:100%;height:100%;object-fit:cover">`;
-      html += `<div class="gallery-item">
-        ${thumb}
-        <div class="gallery-item-overlay" onclick="openPhotoViewer('${p.dataUrl.replace(/'/g,"\'")}')">
-          <div class="gallery-cat-badge" style="border-color:${col};color:${col};background:transparent;margin-bottom:2px">${icon}</div>
-          <div class="gallery-item-label">${escHtml(p.label)}</div>
-        </div>
-        <button class="gallery-item-del" onclick="event.stopPropagation();deleteGalleryPhoto(${p.id})">✕</button>
-      </div>`;
-    });
-    html += '</div></div>';
-  });
-
-  grid.innerHTML = html;
-
-  // Translate option elements in category select
-  document.querySelectorAll('[data-t-opt]').forEach(el => { el.textContent = T(el.getAttribute('data-t-opt')); });
-}
-
-// Auto-sync ticket photos to gallery when an entry is saved
-function syncTicketPhotosToGallery(entry) {
-  if (!entry.tickets || !entry.tickets.length) return;
-  entry.tickets.forEach(ticket => {
-    if (!ticket.photos || !ticket.photos.length) return;
-    ticket.photos.forEach(photoDataUrl => {
-      // Don't add duplicates (check if same dataUrl already exists for same entry)
-      const exists = galleryPhotos.some(p => p.dataUrl === photoDataUrl && p.source === 'ticket_auto');
-      if (!exists) {
-        galleryPhotos.unshift({
-          id: Date.now() + Math.random(),
-          date: entry.date,
-          label: ticket.label || T('galleryTickets'),
-          category: 'ticket',
-          dataUrl: photoDataUrl,
-          source: 'ticket_auto'
-        });
-      }
-    });
-  });
-  saveGallery();
-}
-
 // ══════════════════════════════════════
 //  ACCORDION TOGGLE
 // ══════════════════════════════════════
@@ -1620,7 +1195,6 @@ let config = {
 };
 let pdfConfig = { fullName:'', docNum:'', company:'', style:'app' };
 let adelantos = [];
-let galleryPhotos = []; // [{id, date, label, category, dataUrl, source}]
 let entries = [];
 let previewData = null;
 let currentModalId = null;
@@ -1646,8 +1220,6 @@ function init() {
   if (sp) pdfConfig = {...pdfConfig, ...JSON.parse(sp)};
   const sa = localStorage.getItem('tfc_adelantos');
   if (sa) adelantos = JSON.parse(sa);
-  const sg = localStorage.getItem('tfc_gallery');
-  if (sg) try { galleryPhotos = JSON.parse(sg); } catch(e) { galleryPhotos = []; }
   const storedLang = localStorage.getItem('tfc_lang');
   if (storedLang) { currentLang = storedLang; selectedWelcomeLang = storedLang; }
   applyTranslations();
@@ -1747,6 +1319,24 @@ function loadConfigUI() {
   loadPdfConfigUI();
 }
 
+function loadPdfConfigUI() {
+  document.getElementById('cfgPdfFullName').value = pdfConfig.fullName || '';
+  document.getElementById('cfgPdfDocNum').value   = pdfConfig.docNum   || '';
+  document.getElementById('cfgPdfCompany').value  = pdfConfig.company  || '';
+  const styleEl = document.getElementById(pdfConfig.style === 'bw' ? 'pdfStyleBW' : 'pdfStyleApp');
+  if (styleEl) styleEl.checked = true;
+}
+
+function savePdfConfig() {
+  pdfConfig.fullName = document.getElementById('cfgPdfFullName').value.trim();
+  pdfConfig.docNum   = document.getElementById('cfgPdfDocNum').value.trim();
+  pdfConfig.company  = document.getElementById('cfgPdfCompany').value.trim();
+  const styleEl = document.querySelector('input[name="pdfStyle"]:checked');
+  pdfConfig.style = styleEl ? styleEl.value : 'app';
+  localStorage.setItem('tfc_pdfcfg', JSON.stringify(pdfConfig));
+  showToast(T('configSaved'), 'success');
+}
+
 function setToday() {
   document.getElementById('fieldDate').value = new Date().toISOString().split('T')[0];
 }
@@ -1781,7 +1371,6 @@ function switchTab(tab, btn) {
   if (tab==='historial') renderHistory();
   if (tab==='resumen') renderSummary(currentPeriod);
   if (tab==='config') { loadConfigUI(); notifUpdateStatus(); renderAdelantoList(); }
-  if (tab==='galeria') { renderGallery(); }
 }
 
 // ══════════════════════════════════════
@@ -1918,40 +1507,17 @@ function closePhotoViewer() {
 // ══════════════════════════════════════
 //  CALC
 // ══════════════════════════════════════
-// Returns minutes overlapping 22:00–06:00 within [startDt, endDt) — O(1) math
+// Returns minutes overlapping 22:00–06:00 within [startDt, endDt)
 function calcNightMinutes(startDt, endDt) {
-  // "Night window" spans [22:00, 06:00 next day] = 8h per 24h cycle
-  // We iterate over each 24h block the shift spans and sum night overlap
-  const msPerDay = 86400000;
-  const nightStartH = 22, nightEndH = 6; // hours in 24h
-  
-  function nightMinsInDay(dayStart, dayEnd) {
-    // dayStart/dayEnd are Date objects within the same calendar day (or crossing midnight)
-    // Night window for this day: [22:00 today, 06:00 tomorrow]
-    const d = new Date(dayStart);
-    d.setHours(0,0,0,0);
-    const night1Start = new Date(d); night1Start.setHours(nightStartH, 0, 0, 0); // 22:00
-    const night1End   = new Date(d); night1End.setHours(24,          0, 0, 0); // midnight
-    const night2Start = new Date(d);                                              // 00:00
-    const night2End   = new Date(d); night2End.setHours(nightEndH,   0, 0, 0); // 06:00
-    
-    const overlap = (s1, e1, s2, e2) => Math.max(0, Math.min(e1,e2) - Math.max(s1,s2));
-    const ms = overlap(dayStart, dayEnd, night1Start, night1End)
-             + overlap(dayStart, dayEnd, night2Start, night2End);
-    return ms / 60000;
-  }
-  
-  // Process each calendar day in the shift
-  let total = 0;
+  // Walk minute by minute — correct for any shift crossing midnight
+  let nightMins = 0;
   let cur = new Date(startDt);
   while (cur < endDt) {
-    const dayEnd = new Date(cur);
-    dayEnd.setHours(24, 0, 0, 0);
-    const segEnd = dayEnd < endDt ? dayEnd : endDt;
-    total += nightMinsInDay(cur, segEnd);
-    cur = dayEnd;
+    const h = cur.getHours();
+    if (h >= 22 || h < 6) nightMins++;
+    cur = new Date(cur.getTime() + 60000);
   }
-  return total;
+  return nightMins;
 }
 
 function calcAndPreview() {
@@ -2115,7 +1681,6 @@ function saveEntry() {
   if (!previewData) return;
   entries.unshift(previewData);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
-  syncTicketPhotosToGallery(previewData);
   showToast(T('saved'),'success');
   document.getElementById('previewCard').style.display='none';
   document.getElementById('fieldStart').value='';
@@ -2137,29 +1702,9 @@ function saveEntry() {
 //  HISTORY
 // ══════════════════════════════════════
 function renderHistory() {
-  const fmtH = h => h>=1 ? `${Math.floor(h)}h ${Math.round((h%1)*60)}m` : `${Math.round(h*60)}m`;
-  // Show current month adelantos
-  const histCard = document.getElementById('histAdelantoCard');
-  const histList = document.getElementById('histAdelantoList');
-  const histTotal = document.getElementById('histAdelantoTotal');
-  const month = getCurrentMonth();
-  const monthAds = getMonthAdelantos(month);
-  if (histCard && monthAds.length > 0) {
-    histCard.style.display = 'block';
-    histTotal.textContent = `${config.currency}${getMonthAdelantoTotal(month).toFixed(2)}`;
-    histList.innerHTML = monthAds.map(a => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--border)">
-        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">${escHtml(a.label)}</span>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--warn)">${config.currency}${a.amount.toFixed(2)}</span>
-          <button style="background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 4px" onclick="removeAdelanto(${a.id});renderHistory()">✕</button>
-        </div>
-      </div>`).join('');
-  } else if (histCard) {
-    histCard.style.display = 'none';
-  }
   const list = document.getElementById('historyList');
   if (!entries.length) { list.innerHTML=`<div class="empty"><div class="empty-icon">📋</div>${T('noRecords')}</div>`; return; }
+  const fmtH = h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
   list.innerHTML = entries.map(e => {
     const pendingTickets = (e.tickets||[]).filter(t=>!t.paid);
     const pendingAmt = pendingTickets.reduce((s,t)=>s+t.amount,0);
@@ -2168,7 +1713,7 @@ function renderHistory() {
     const diaLibreBadge = (!e.isFestivo && e.isDiaLibre) ? `<span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖</span>` : '';
     const nightBadge = (e.nightHours>0) ? `<span class="entry-chip" style="color:var(--nocturno,#6c9fff);border-color:var(--nocturno,#6c9fff)">🌙 ${fmtH(e.nightHours)}</span>` : '';
     const kmBadge = e.kmCount>0 ? `<span class="entry-chip">🚗 ${e.kmCount}km</span>` : '';
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" data-entry-id="${e.id}" onclick="openModal('${e.id}')">
+    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
@@ -2180,8 +1725,6 @@ function renderHistory() {
       </div>
     </div>`;
   }).join('');
-  // Wire swipe gestures after DOM update
-  requestAnimationFrame(addSwipeListeners);
 }
 
 function formatDate(ds) {
@@ -2256,50 +1799,8 @@ function toggleModalTicketPaid(entryId, ticketIdx) {
 }
 
 function closeModal() { document.getElementById('entryModal').classList.remove('open'); currentModalId=null; }
-
-function editCurrentEntry() {
-  const e = entries.find(x => x.id === currentModalId);
-  if (!e) return;
-  closeModal();
-  // Switch to registro tab
-  switchTab('registro', document.getElementById('nav-registro'));
-  // Pre-fill form
-  document.getElementById('fieldDate').value  = e.date;
-  document.getElementById('fieldStart').value = e.start;
-  document.getElementById('fieldEnd').value   = e.end;
-  document.getElementById('fieldDesc').value  = e.desc || '';
-  // Break
-  breakMinutes = e.breakMin || 0;
-  updateBreakDisplay(); updateChipSel();
-  // Festivo
-  document.getElementById('festivoToggle').checked = !!e.isFestivo;
-  onFestivoChange();
-  // Km
-  if (e.kmCount > 0 && config.kmEnabled) {
-    document.getElementById('kmToggle').checked = true;
-    draftKm = e.kmCount;
-    toggleKm(true); updateKmDisplay();
-  }
-  // Tickets
-  if (e.tickets && e.tickets.length) {
-    draftTickets = e.tickets.map(t => ({...t, photos: t.photos||[]}));
-    document.getElementById('ticketsToggle').checked = true;
-    toggleTickets(true);
-    renderDraftTickets();
-  }
-  // Remove entry so saving creates a fresh one (not duplicate)
-  entries = entries.filter(x => x.id !== currentModalId);
-  localStorage.setItem('tfc_entries', JSON.stringify(entries));
-  document.getElementById('previewCard').style.display = 'none';
-  // Scroll to top of form
-  document.getElementById('shiftCard').scrollIntoView({behavior:'smooth', block:'start'});
-  showToast(currentLang==='en'?'✏️ Editing — save to confirm':'✏️ Editando — guarda para confirmar');
-}
-
-async function deleteCurrentEntry() {
-  if (!currentModalId) return;
-  const ok = await showConfirm(T('deleteShift')+'?', '⚠️', currentLang==='en'?'Delete':'Eliminar');
-  if (!ok) return;
+function deleteCurrentEntry() {
+  if (!currentModalId||!confirm(T('deleteShift')+'?')) return;
   entries=entries.filter(e=>e.id!==currentModalId);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
   closeModal(); renderHistory(); renderSummary(currentPeriod); showToast(T('deleted'));
@@ -2384,37 +1885,12 @@ function renderSummary(period) {
   document.getElementById('sumHours').textContent=fmtH(calcH);
   document.getElementById('sumExtra').textContent=fmtH(eh);
   document.getElementById('sumEarn').textContent=`${config.currency}${Math.round(tp)}`;
-  const avgEl = document.getElementById('sumAvg');
-  if (avgEl) avgEl.textContent = filtered.length > 0 ? `${config.currency}${(tp/filtered.length).toFixed(0)}` : '—';
-  // Progress bar: total hours vs threshold * shifts
-  const progressWrap = document.getElementById('hoursProgressWrap');
-  const progressFill = document.getElementById('hoursProgressFill');
-  const progressLabel = document.getElementById('hoursProgressLabel');
-  if (progressWrap && filtered.length > 0) {
-    progressWrap.style.display = 'block';
-    const thresholdTotal = config.threshold * filtered.length;
-    const pct = Math.min((calcH / thresholdTotal) * 100, 100);
-    const isOver = calcH > thresholdTotal;
-    progressFill.style.width = pct + '%';
-    progressFill.classList.toggle('over', isOver);
-    progressLabel.textContent = `${fmtH(calcH)} / ${fmtH(thresholdTotal)}`;
-  } else if (progressWrap) {
-    progressWrap.style.display = 'none';
-  }
-  const np2 = filtered.reduce((s,e)=>s+(e.nightPay||0),0);
   document.getElementById('sumNormalPay').textContent=`${config.currency}${np.toFixed(2)}`;
   document.getElementById('sumExtraPay').textContent=`${config.currency}${ep.toFixed(2)}`;
   document.getElementById('sumFestivoPay').textContent=`${config.currency}${fp.toFixed(2)}`;
   document.getElementById('sumDiaLibrePay').textContent=`${config.currency}${dp.toFixed(2)}`;
-  document.getElementById('sumNightPay').textContent=`${config.currency}${np2.toFixed(2)}`;
   document.getElementById('sumKmPay').textContent=`${config.currency}${kp.toFixed(2)}`;
-  const kmStatEl = document.getElementById('sumKmStat');
-  if (kmStatEl) { const totKm2=filtered.reduce((s,e)=>s+(e.kmCount||0),0); kmStatEl.textContent=totKm2>0?`🚗 ${totKm2} km`:''; kmStatEl.style.display=totKm2>0?'block':'none'; }
   document.getElementById('sumPendingTickets').textContent=`${config.currency}${pt.toFixed(2)}`;
-  // Show ALL rows, regardless of value
-  const showRow=(id,val)=>{const el=document.getElementById(id);if(el)el.style.display='flex';};
-  showRow('sumRowNormal',np); showRow('sumRowExtra',ep); showRow('sumRowFestivo',fp);
-  showRow('sumRowDiaLibre',dp); showRow('sumRowNight',np2); showRow('sumRowKm',kp); showRow('sumRowTickets',pt);
   // Adelantos: for month/mes_anterior, show that period's adelantos; for others show current month
   let adelantoMonth = getCurrentMonth();
   if (period === 'mes') {
@@ -2424,9 +1900,7 @@ function renderSummary(period) {
     adelantoMonth = `${pickerYear}-${String(pickerMonth+1).padStart(2,'0')}`;
   }
   const adelantoTotal = (period === 'dia' || period === 'semana' || period === 'todo') ? 0 : getMonthAdelantoTotal(adelantoMonth);
-  document.getElementById('sumAdelanto').textContent = `— ${config.currency}${adelantoTotal.toFixed(2)}`;
-  const adelantoRow = document.getElementById('sumRowAdelanto');
-  if (adelantoRow) adelantoRow.style.display = 'flex';
+  document.getElementById('sumAdelanto').textContent = adelantoTotal > 0 ? `— ${config.currency}${adelantoTotal.toFixed(2)}` : `${config.currency}0.00`;
   document.getElementById('sumTotal').textContent=`${config.currency}${(tp - adelantoTotal).toFixed(2)}`;
 
   const ct=document.getElementById('periodEntries');
@@ -2672,41 +2146,12 @@ async function exportPDF() {
 
   // ══ FOOTER ═══════════════════════════════════════════════════════════
   doc.setFontSize(6.5); doc.setTextColor(...pal.muted);
-  doc.text(`Time for Chamba v9.5  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
+  doc.text(`Time for Chamba v9.3  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
 
   const filename = `chamba_${periodLabel.replace(/[\s/]/g,'_')}_${now.getFullYear()}.pdf`;
   doc.save(filename);
 }
 
-
-
-// ══════════════════════════════════════
-//  PDF CONFIG
-// ══════════════════════════════════════
-function savePdfConfig() {
-  pdfConfig.fullName = (document.getElementById('cfgPdfFullName').value || '').trim();
-  pdfConfig.docNum   = (document.getElementById('cfgPdfDocNum').value   || '').trim();
-  pdfConfig.company  = (document.getElementById('cfgPdfCompany').value  || '').trim();
-  const checked = document.querySelector('input[name="pdfStyle"]:checked');
-  pdfConfig.style = checked ? checked.value : 'app';
-  localStorage.setItem('tfc_pdfcfg', JSON.stringify(pdfConfig));
-  showToast(T('configSaved'), 'success');
-}
-
-function loadPdfConfigUI() {
-  const fn = document.getElementById('cfgPdfFullName');
-  const dn = document.getElementById('cfgPdfDocNum');
-  const co = document.getElementById('cfgPdfCompany');
-  if (fn) fn.value = pdfConfig.fullName || '';
-  if (dn) dn.value = pdfConfig.docNum   || '';
-  if (co) co.value = pdfConfig.company  || '';
-  const bwEl  = document.getElementById('pdfStyleBW');
-  const appEl = document.getElementById('pdfStyleApp');
-  if (bwEl && appEl) {
-    bwEl.checked  = pdfConfig.style === 'bw';
-    appEl.checked = pdfConfig.style !== 'bw';
-  }
-}
 
 // ══════════════════════════════════════
 //  CONFIG
@@ -2737,28 +2182,6 @@ function saveConfig() {
   if (newName) { localStorage.setItem('tfc_name', newName); applyGreeting(newName); }
   showToast(T('configSaved'),'success');
   renderHistory(); renderSummary(currentPeriod);
-}
-
-
-// ══════════════════════════════════════
-//  CUSTOM CONFIRM DIALOG
-// ══════════════════════════════════════
-let _confirmResolve = null;
-
-function showConfirm(msg, title='', okLabel='', cancelLabel='') {
-  return new Promise(resolve => {
-    _confirmResolve = resolve;
-    document.getElementById('confirmMsg').textContent = msg;
-    document.getElementById('confirmTitle').textContent = title || (currentLang==='en'?'Confirm':'Confirmar');
-    document.getElementById('confirmOk').textContent = okLabel || (currentLang==='en'?'Delete':'Eliminar');
-    document.getElementById('confirmCancel').textContent = cancelLabel || (currentLang==='en'?'Cancel':'Cancelar');
-    document.getElementById('confirmOverlay').classList.add('open');
-  });
-}
-
-function resolveConfirm(value) {
-  document.getElementById('confirmOverlay').classList.remove('open');
-  if (_confirmResolve) { _confirmResolve(value); _confirmResolve = null; }
 }
 
 // ══════════════════════════════════════
@@ -2850,15 +2273,90 @@ function notifInit() {
   if (enabled&&perm==='granted') notifScheduleDaily();
 }
 
-// ══════════════════════════════════════
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(()=>{ notifInit(); }).catch(()=>{ notifInit(); });
 
-// Bootstrap: ejecutar init cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
+// ══════════════════════════════════════
+//  FIREBASE SYNC
+//  Base de datos compartida empresa
+// ══════════════════════════════════════
+const FB_CONFIG = {
+  apiKey: "AIzaSyD-placeholder-changeThis",
+  authDomain: "timeforchamba.firebaseapp.com",
+  databaseURL: "https://timeforchamba-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "timeforchamba",
+};
+let fbApp = null, fbDb = null, fbSyncEnabled = false;
+
+function fbInit() {
+  try {
+    if (!firebase.apps.length) {
+      fbApp = firebase.initializeApp(FB_CONFIG);
+    } else {
+      fbApp = firebase.apps[0];
+    }
+    fbDb = firebase.database(fbApp);
+    fbSyncEnabled = true;
+    console.log('[TFC] Firebase conectado');
+  } catch(e) {
+    console.warn('[TFC] Firebase no disponible, modo offline:', e.message);
+    fbSyncEnabled = false;
+  }
 }
+
+function fbEmployeeKey(name) {
+  // Sanitize name for Firebase key: no spaces, dots, #, $, [, ]
+  return (name || 'unknown').toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9_]/g, '_')
+    .replace(/_+/g, '_')
+    .substring(0, 40);
+}
+
+function fbSyncEntry(entry) {
+  if (!fbSyncEnabled || !fbDb) return;
+  const name = localStorage.getItem('tfc_name') || 'unknown';
+  const empKey = fbEmployeeKey(name);
+  // Strip photos from sync (too large for DB)
+  const syncEntry = {...entry};
+  if (syncEntry.tickets) {
+    syncEntry.tickets = syncEntry.tickets.map(t => ({...t, photos: []}));
+  }
+  const ref = fbDb.ref(`empleados/${empKey}/turnos/${entry.id}`);
+  ref.set({
+    ...syncEntry,
+    _employeeName: name,
+    _employeeKey: empKey,
+    _syncedAt: Date.now(),
+    _currency: config.currency,
+    _rate: config.rate
+  }).catch(e => console.warn('[TFC] Sync error:', e.message));
+
+  // Also update employee profile
+  fbDb.ref(`empleados/${empKey}/perfil`).set({
+    nombre: name,
+    key: empKey,
+    ultimaSync: Date.now(),
+    moneda: config.currency,
+    turnosTotal: entries.length
+  }).catch(()=>{});
+}
+
+function fbDeleteEntry(entryId) {
+  if (!fbSyncEnabled || !fbDb) return;
+  const name = localStorage.getItem('tfc_name') || 'unknown';
+  const empKey = fbEmployeeKey(name);
+  fbDb.ref(`empleados/${empKey}/turnos/${entryId}`).remove().catch(()=>{});
+}
+
+function fbSyncAllEntries() {
+  if (!fbSyncEnabled || !fbDb) return;
+  entries.forEach(e => fbSyncEntry(e));
+}
+
+// ══════════════════════════════════════
+fbInit();
+init();
+fbSyncAllEntries();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(()=>{ notifInit(); }).catch(()=>{ notifInit(); });
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
