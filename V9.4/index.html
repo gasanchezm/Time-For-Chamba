@@ -8,6 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Time for Chamba">
 <link rel="manifest" href="manifest.json">
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <title>Time for Chamba</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -302,10 +304,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* night toggle blue */
 #cfgNightEnabled:checked + .toggle-track { background: var(--nocturno, #6c9fff) !important; }
-/* domingo toggle yellow */
-#domingoToggle:checked + .toggle-track { background: var(--warn) !important; }
-/* domingos accordion toggle */
-.domingo-toggle input:checked + .toggle-track { background: var(--warn) !important; }
 /* adelanto toggle orange */
 #adelantoToggle:checked + .toggle-track { background: var(--warn) !important; }
 
@@ -444,19 +442,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         </div>
         <label class="toggle festivo-toggle">
           <input type="checkbox" id="festivoToggle" onchange="onFestivoChange()">
-          <div class="toggle-track"></div>
-          <div class="toggle-thumb"></div>
-        </label>
-      </div>
-
-      <!-- DOMINGO TOGGLE -->
-      <div class="toggle-row">
-        <div class="toggle-info">
-          <div class="toggle-title">☀️ <span data-t="domingoLabel"></span></div>
-          <div class="toggle-sub" data-t="domingoSub"></div>
-        </div>
-        <label class="toggle" style="--tog-color:#f5c542">
-          <input type="checkbox" id="domingoToggle" onchange="onDomingoChange()">
           <div class="toggle-track"></div>
           <div class="toggle-thumb"></div>
         </label>
@@ -635,7 +620,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="breakdown-row" id="sumRowNormal"><span class="breakdown-label" data-t="normalPay"></span><span class="breakdown-value" id="sumNormalPay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowExtra"><span class="breakdown-label" data-t="extraPay"></span><span class="breakdown-value orange" id="sumExtraPay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowFestivo"><span class="breakdown-label" data-t="festivoPay"></span><span class="breakdown-value festivo" id="sumFestivoPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowDomingo"><span class="breakdown-label" data-t="domingoPay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDomingoPay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowDiaLibre"><span class="breakdown-label" data-t="diaLibrePay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDiaLibrePay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowNight"><span class="breakdown-label" data-t="nightPay"></span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)" id="sumNightPay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowKm"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
@@ -721,56 +705,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="setting-row">
           <div><div class="setting-name" data-t="festivoOvertimeRate"></div><div class="setting-desc" data-t="festivoOvertimeRateDesc"></div></div>
           <input type="number" class="setting-input" id="cfgFestivoOvertimeRate" value="100" min="0" step="0.5">
-        </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ACCORDION: DOMINGOS ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accDomingo',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">☀️</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryDomingo"></div><div class="cfg-acc-sub" data-t="domingoRates"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accDomingo">
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="domingoNormalRate"></div><div class="setting-desc" data-t="domingoNormalRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgDomingoRate" value="75" min="0" step="0.5">
-        </div>
-        <div class="setting-row">
-          <div><div class="setting-name" data-t="domingoOvertimeRate"></div><div class="setting-desc" data-t="domingoOvertimeRateDesc"></div></div>
-          <input type="number" class="setting-input" id="cfgDomingoOvertimeRate" value="100" min="0" step="0.5">
-        </div>
-        <!-- Regla 5 primeras horas -->
-        <div class="setting-row">
-          <div>
-            <div class="setting-name" data-t="domingoReglaPrimeras"></div>
-            <div class="setting-desc" data-t="domingoReglaPrimerasDesc"></div>
-          </div>
-          <label class="toggle domingo-toggle">
-            <input type="checkbox" id="cfgDomingoReglaEnabled" onchange="onDomingoReglaChange()">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-        <div id="cfgDomingoReglaDetails" style="display:none">
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="domingoThreshold"></div><div class="setting-desc" data-t="domingoThresholdDesc"></div></div>
-            <input type="number" class="setting-input" id="cfgDomingoThreshold" value="5" min="1" max="12" step="0.5">
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="domingoRateFirst"></div><div class="setting-desc" data-t="domingoRateFirstDesc"></div></div>
-            <input type="number" class="setting-input" id="cfgDomingoRateFirst" value="75" min="0" step="0.5">
-          </div>
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="domingoRateAfter"></div><div class="setting-desc" data-t="domingoRateAfterDesc"></div></div>
-            <input type="number" class="setting-input" id="cfgDomingoRateAfter" value="100" min="0" step="0.5">
-          </div>
         </div>
         <div class="setting-row" style="border-bottom:none;padding-bottom:0">
           <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
@@ -996,15 +930,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.3</span></div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.5</span></div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- BOTTOM NAV -->
 
   <!-- ═══ GALERÍA ═══ -->
   <div id="page-galeria" class="page">
@@ -1042,7 +973,9 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <!-- Gallery grid -->
     <div id="galleryGrid"></div>
   </div>
+</div>
 
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-registro" onclick="switchTab('registro',this)">
     <div class="nav-icon">⏱</div><div class="nav-label" data-t="tabRecord"></div><div class="nav-dot"></div>
@@ -1145,7 +1078,7 @@ const STRINGS = {
     live:'en vivo', shiftInfo:'Información del Turno', date:'Fecha', entry:'Entrada', exit:'Salida',
     breakTime:'Tiempo de Pausa', noBreak:'Sin pausa', hour:'hora', description:'Descripción',
     descPlaceholder:'¿Qué hiciste hoy?',
-    festivoLabel:'Día Festivo', festivoSub:'Tarifa especial para días festivos', festivoDay:'Día Festivo', festivoRates:'Tarifas Días Festivos',
+    festivoLabel:'Día Festivo / Domingo', festivoSub:'Tarifa especial por festivo o domingo', festivoDay:'Festivo / Domingo', festivoRates:'Tarifas Festivo / Domingo',
     festivoNormalRate:'Tarifa festivo / hora', festivoNormalRateDesc:'Primeras N horas en festivo',
     festivoOvertimeRate:'Extra festivo / hora', festivoOvertimeRateDesc:'Horas extra en festivo',
     festivoPay:'Pago festivo', festivoNormalHours:'Horas normales (festivo)', festivoExtraHours:'Horas extra (festivo)',
@@ -1160,7 +1093,7 @@ const STRINGS = {
     diaLibreRates:'Tarifas Día Libre',
     diaLibrePay:'Pago día libre', diaLibreDay:'Día Libre',
     monday:'Lunes', tuesday:'Martes', wednesday:'Miércoles', thursday:'Jueves', friday:'Viernes', saturday:'Sábado',
-    onlyExtrasLabel:'Solo horas extras', onlyExtrasDesc:'Al activar, solo se registran y muestran las horas trabajadas después del umbral normal', cfgCategoryGeneral:'General', cfgCategoryRates:'Tarifas y Horas', cfgCategoryFestivo:'Días Festivos', cfgCategoryNocturno:'Horas Nocturnas', cfgCategoryKm:'Kilómetros', cfgCategoryDiaLibre:'Día Libre', cfgCategoryOpciones:'Opciones', cfgCategoryPersonal:'Personal',
+    onlyExtrasLabel:'Solo horas extras', onlyExtrasDesc:'Al activar, solo se registran y muestran las horas trabajadas después del umbral normal', cfgCategoryGeneral:'General', cfgCategoryRates:'Tarifas y Horas', cfgCategoryFestivo:'Festivos y Domingos', cfgCategoryNocturno:'Horas Nocturnas', cfgCategoryKm:'Kilómetros', cfgCategoryDiaLibre:'Día Libre', cfgCategoryOpciones:'Opciones', cfgCategoryPersonal:'Personal',
     ticketsLabel:'Tickets por Entregar', ticketsSub:'Gastos pagados por la empresa',
     ticketDesc:'Concepto', ticketDescPh:'Ej: Gasolina, Comida...', amount:'Monto', add:'+ ADD',
     noTickets:'Sin tickets añadidos', pendingTotal:'Total pendiente',
@@ -1215,15 +1148,6 @@ const STRINGS = {
     galleryAdd:'Añadir foto', galleryDesc:'Descripción', galleryDescPh:'¿Qué es esta foto?',
     galleryCategory:'Categoría', galleryUpload:'📷 Subir',
     galleryEmpty:'No hay fotos en esta categoría', galleryEmptyAll:'La galería está vacía',
-    domingoLabel:'Domingo', domingoSub:'Tarifa especial para domingos', domingoDay:'Domingo',
-    domingoRates:'Tarifas Domingo', cfgCategoryDomingo:'Domingos',
-    domingoNormalRate:'Tarifa domingo / hora', domingoNormalRateDesc:'Horas normales en domingo',
-    domingoOvertimeRate:'Extra domingo / hora', domingoOvertimeRateDesc:'Horas extra en domingo',
-    domingoPay:'Pago domingo',
-    domingoReglaPrimeras:'Regla primeras horas', domingoReglaPrimerasDesc:'Las primeras N horas tienen precio diferente',
-    domingoThreshold:'Umbral (horas)', domingoThresholdDesc:'Horas antes del cambio de tarifa en domingo',
-    domingoRateFirst:'Tarifa primeras horas', domingoRateFirstDesc:'Hasta el umbral de horas',
-    domingoRateAfter:'Tarifa horas adicionales', domingoRateAfterDesc:'Después del umbral en domingo',
     galleryDeleteConfirm:'¿Eliminar esta foto?',
     backupExport:'Exportar datos (JSON)', backupImport:'Importar datos', backupSuccess:'✅ Datos importados correctamente', backupError:'❌ Archivo inválido', backupConfirmImport:'Esto reemplazará todos tus datos actuales. ¿Continuar?',
     pdfConfigTitle:'Configuración del PDF', pdfFullName:'Nombre completo', pdfDocNum:'Nº de documento',
@@ -1234,7 +1158,7 @@ const STRINGS = {
     live:'live', shiftInfo:'Shift Information', date:'Date', entry:'Clock In', exit:'Clock Out',
     breakTime:'Break Time', noBreak:'No break', hour:'hour', description:'Description',
     descPlaceholder:"What did you do today?",
-    festivoLabel:'Public Holiday', festivoSub:'Special rate for public holidays', festivoDay:'Public Holiday', festivoRates:'Holiday Rates',
+    festivoLabel:'Holiday / Sunday', festivoSub:'Special rate for holidays and Sundays', festivoDay:'Holiday / Sunday', festivoRates:'Holiday / Sunday Rates',
     festivoNormalRate:'Holiday rate / hour', festivoNormalRateDesc:'First N hours on holiday',
     festivoOvertimeRate:'Holiday overtime / hour', festivoOvertimeRateDesc:'Extra hours on holiday',
     festivoPay:'Holiday pay', festivoNormalHours:'Regular hours (holiday)', festivoExtraHours:'Overtime (holiday)',
@@ -1249,7 +1173,7 @@ const STRINGS = {
     diaLibreRates:'Day Off Rates',
     diaLibrePay:'Day off pay', diaLibreDay:'Day Off',
     monday:'Monday', tuesday:'Tuesday', wednesday:'Wednesday', thursday:'Thursday', friday:'Friday', saturday:'Saturday',
-    onlyExtrasLabel:'Only overtime', onlyExtrasDesc:'When active, only hours worked after the normal threshold are recorded and shown', cfgCategoryGeneral:'General', cfgCategoryRates:'Rates & Hours', cfgCategoryFestivo:'Public Holidays', cfgCategoryNocturno:'Night Hours', cfgCategoryKm:'Kilometers', cfgCategoryDiaLibre:'Day Off', cfgCategoryOpciones:'Options', cfgCategoryPersonal:'Personal',
+    onlyExtrasLabel:'Only overtime', onlyExtrasDesc:'When active, only hours worked after the normal threshold are recorded and shown', cfgCategoryGeneral:'General', cfgCategoryRates:'Rates & Hours', cfgCategoryFestivo:'Holidays & Sundays', cfgCategoryNocturno:'Night Hours', cfgCategoryKm:'Kilometers', cfgCategoryDiaLibre:'Day Off', cfgCategoryOpciones:'Options', cfgCategoryPersonal:'Personal',
     ticketsLabel:'Tickets to Submit', ticketsSub:'Company-paid expenses',
     ticketDesc:'Description', ticketDescPh:'e.g. Gas, Food...', amount:'Amount', add:'+ ADD',
     noTickets:'No tickets added', pendingTotal:'Pending total',
@@ -1304,15 +1228,6 @@ const STRINGS = {
     galleryAdd:'Add photo', galleryDesc:'Description', galleryDescPh:'What is this photo?',
     galleryCategory:'Category', galleryUpload:'📷 Upload',
     galleryEmpty:'No photos in this category', galleryEmptyAll:'Gallery is empty',
-    domingoLabel:'Sunday', domingoSub:'Special rate for Sundays', domingoDay:'Sunday',
-    domingoRates:'Sunday Rates', cfgCategoryDomingo:'Sundays',
-    domingoNormalRate:'Sunday rate / hour', domingoNormalRateDesc:'Regular hours on Sunday',
-    domingoOvertimeRate:'Sunday overtime / hour', domingoOvertimeRateDesc:'Extra hours on Sunday',
-    domingoPay:'Sunday pay',
-    domingoReglaPrimeras:'First-hours rule', domingoReglaPrimerasDesc:'First N hours have a different rate',
-    domingoThreshold:'Threshold (hours)', domingoThresholdDesc:'Hours before rate change on Sunday',
-    domingoRateFirst:'First-hours rate', domingoRateFirstDesc:'Up to threshold on Sundays',
-    domingoRateAfter:'Additional hours rate', domingoRateAfterDesc:'After threshold on Sundays',
     galleryDeleteConfirm:'Delete this photo?',
     backupExport:'Export data (JSON)', backupImport:'Import data', backupSuccess:'✅ Data imported successfully', backupError:'❌ Invalid file', backupConfirmImport:'This will replace all your current data. Continue?',
     pdfConfigTitle:'PDF Configuration', pdfFullName:'Full name', pdfDocNum:'Document number',
@@ -1355,10 +1270,8 @@ function addAdelanto() {
   const label = document.getElementById('adelantoLabelInput').value.trim();
   const amt   = parseFloat(document.getElementById('adelantoAmtInput').value) || 0;
   if (!label && amt <= 0) { showToast(T('fillFields'), 'error'); return; }
-  // Use the shift date to assign to the correct month, not today's month
-  const shiftDate = document.getElementById('fieldDate').value;
-  const month = shiftDate ? shiftDate.slice(0, 7) : getCurrentMonth(); // "YYYY-MM"
-  adelantos.push({ id: Date.now()+Math.random(), month, label: label || T('adelantoLabel'), amount: amt, addedDate: shiftDate || new Date().toISOString().split('T')[0] });
+  const month = getCurrentMonth();
+  adelantos.push({ id: Date.now()+Math.random(), month, label: label || T('adelantoLabel'), amount: amt });
   localStorage.setItem('tfc_adelantos', JSON.stringify(adelantos));
   document.getElementById('adelantoLabelInput').value = '';
   document.getElementById('adelantoAmtInput').value = '';
@@ -1472,7 +1385,7 @@ function addSwipeListeners() {
 // ══════════════════════════════════════
 function exportBackup() {
   const backup = {
-    version: '9.5',
+    version: '9.3',
     exportedAt: new Date().toISOString(),
     config, entries, adelantos, pdfConfig, galleryPhotos
   };
@@ -1700,7 +1613,6 @@ function onNightEnabledChange() {
 let config = {
   currency:'$', rate:50, overtimeRate:75, threshold:8,
   festivoRate:75, festivoOvertimeRate:100,
-  domingoRate:75, domingoOvertimeRate:100, domingoReglaEnabled:false, domingoThreshold:5, domingoRateFirst:75, domingoRateAfter:100,
   kmEnabled:false, kmRate:0.20,
   diaLibreEnabled:false, diaLibre:6, diaLibreRate:60, diaLibreOvertimeRate:90,
   onlyExtras:false,
@@ -1713,7 +1625,6 @@ let entries = [];
 let previewData = null;
 let currentModalId = null;
 let currentPeriod = 'dia';
-let editingEntryId = null;
 let breakMinutes = 0;
 let selectedWelcomeLang = 'es';
 let draftTickets = [];
@@ -1819,13 +1730,6 @@ function loadConfigUI() {
   document.getElementById('cfgThreshold').value = config.threshold;
   document.getElementById('cfgFestivoRate').value = config.festivoRate;
   document.getElementById('cfgFestivoOvertimeRate').value = config.festivoOvertimeRate;
-  document.getElementById('cfgDomingoRate').value = config.domingoRate;
-  document.getElementById('cfgDomingoOvertimeRate').value = config.domingoOvertimeRate;
-  document.getElementById('cfgDomingoReglaEnabled').checked = !!config.domingoReglaEnabled;
-  document.getElementById('cfgDomingoThreshold').value = config.domingoThreshold || 5;
-  document.getElementById('cfgDomingoRateFirst').value = config.domingoRateFirst || 75;
-  document.getElementById('cfgDomingoRateAfter').value = config.domingoRateAfter || 100;
-  document.getElementById('cfgDomingoReglaDetails').style.display = config.domingoReglaEnabled ? 'block' : 'none';
   document.getElementById('cfgKmEnabled').checked = config.kmEnabled;
   document.getElementById('cfgKmRate').value = config.kmRate;
   document.getElementById('cfgKmRateRow').style.display = config.kmEnabled ? 'flex' : 'none';
@@ -1870,11 +1774,6 @@ function startClock() {
 //  TABS
 // ══════════════════════════════════════
 function switchTab(tab, btn) {
-  // If switching away from registro while editing, cancel the edit
-  if (tab !== 'registro' && editingEntryId !== null) {
-    editingEntryId = null;
-    showToast(currentLang==='en'?'Edit cancelled':'Edición cancelada');
-  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
@@ -1910,32 +1809,7 @@ function updateChipSel(activeEl) {
 function onFestivoChange() {
   const isOn = document.getElementById('festivoToggle').checked;
   const card = document.getElementById('shiftCard');
-  if (isOn) {
-    card.classList.add('festivo-top');
-    // Mutually exclusive: turn off domingo
-    document.getElementById('domingoToggle').checked = false;
-    card.classList.remove('domingo-top');
-  } else {
-    card.classList.remove('festivo-top');
-  }
-}
-
-function onDomingoChange() {
-  const isOn = document.getElementById('domingoToggle').checked;
-  const card = document.getElementById('shiftCard');
-  if (isOn) {
-    card.classList.add('domingo-top');
-    // Mutually exclusive: turn off festivo
-    document.getElementById('festivoToggle').checked = false;
-    card.classList.remove('festivo-top');
-  } else {
-    card.classList.remove('domingo-top');
-  }
-}
-
-function onDomingoReglaChange() {
-  const en = document.getElementById('cfgDomingoReglaEnabled').checked;
-  document.getElementById('cfgDomingoReglaDetails').style.display = en ? 'block' : 'none';
+  if (isOn) { card.classList.add('festivo-top'); } else { card.classList.remove('festivo-top'); }
 }
 
 // ══════════════════════════════════════
@@ -2086,7 +1960,6 @@ function calcAndPreview() {
   const end     = document.getElementById('fieldEnd').value;
   const desc    = document.getElementById('fieldDesc').value.trim();
   const isFestivo = document.getElementById('festivoToggle').checked;
-  const isDomingo = document.getElementById('domingoToggle').checked;
   const kmOn    = document.getElementById('kmToggle').checked;
 
   if (!date||!start||!end) { showToast(T('fillFields'),'error'); return; }
@@ -2135,31 +2008,10 @@ function calcAndPreview() {
   const selectedDow = new Date(date + 'T12:00:00').getDay();
   const isDiaLibre  = config.diaLibreEnabled && selectedDow === config.diaLibre;
 
-  // Determine day type: Festivo > Domingo (toggle) > Día Libre > Normal
-  // isDomingo is manually toggled; festivo also manually toggled (they're mutually exclusive)
   let rateNormal, rateExtra;
-  let domingoReglaActive = false;
-  if (isFestivo) {
-    rateNormal = config.festivoRate;
-    rateExtra  = config.festivoOvertimeRate;
-  } else if (isDomingo) {
-    // If the "5 first hours rule" is enabled, apply it
-    if (config.domingoReglaEnabled) {
-      domingoReglaActive = true;
-      // rateNormal/rateExtra will be overridden per-bucket below
-      rateNormal = config.domingoRateFirst;
-      rateExtra  = config.domingoRateAfter;
-    } else {
-      rateNormal = config.domingoRate;
-      rateExtra  = config.domingoOvertimeRate;
-    }
-  } else if (isDiaLibre) {
-    rateNormal = config.diaLibreRate;
-    rateExtra  = config.diaLibreOvertimeRate;
-  } else {
-    rateNormal = config.rate;
-    rateExtra  = config.overtimeRate;
-  }
+  if (isFestivo)        { rateNormal = config.festivoRate;   rateExtra = config.festivoOvertimeRate; }
+  else if (isDiaLibre)  { rateNormal = config.diaLibreRate;  rateExtra = config.diaLibreOvertimeRate; }
+  else                  { rateNormal = config.rate;           rateExtra = config.overtimeRate; }
 
   // Night hours are billed at nightRate (replaces rateNormal/rateExtra for those hours)
   const rateNight = config.nightEnabled ? config.nightRate : rateNormal;
@@ -2171,38 +2023,26 @@ function calcAndPreview() {
   const billedDayExtra     = dayExtra;
   const billedNightExtra   = nightExtra;
 
-  let normalDayPay, extraDayPay;
-  if (domingoReglaActive) {
-    // Domingo regla: hours are counted in order (normal first, then extra).
-    // First `thresh` total hours → domingoRateFirst
-    // Remaining hours          → domingoRateAfter
-    // Example: 7h worked, thresh=5 → first 5h at rateFirst, 2h at rateAfter
-    const thresh = config.domingoThreshold || 5;
-    // Normal hours portion: how many fall within [0, thresh) and [thresh, ∞)
-    const normalFirstPay = Math.min(billedDayNormal, thresh)                           * config.domingoRateFirst;
-    const normalAfterPay = Math.max(0, billedDayNormal - thresh)                       * config.domingoRateAfter;
-    // Extra hours start after all normal hours have been counted
-    const extraFirstPay  = Math.min(billedDayExtra, Math.max(0, thresh - billedDayNormal)) * config.domingoRateFirst;
-    const extraAfterPay  = Math.max(0, billedDayExtra - Math.max(0, thresh - billedDayNormal)) * config.domingoRateAfter;
-    normalDayPay = normalFirstPay + normalAfterPay;
-    extraDayPay  = extraFirstPay  + extraAfterPay;
-  } else {
-    normalDayPay = billedDayNormal * rateNormal;
-    extraDayPay  = billedDayExtra  * rateExtra;
-  }
-
+  const normalDayPay   = billedDayNormal   * rateNormal;
+  const extraDayPay    = billedDayExtra    * rateExtra;
   const nightNormalPay = billedNightNormal * rateNight;
-  const nightExtraPay  = billedNightExtra  * rateNight;
+  const nightExtraPay  = billedNightExtra  * rateNight;  // extra hours at night still at nightRate
   const nightPay       = nightNormalPay + nightExtraPay;
 
+  // Aggregates for display:
+  // normalHours/extraHours = total hours in each bucket (day + night combined)
+  // normalPay/extraPay = DAY-ONLY pay (night hours shown separately)
+  // nightPay = all night hours billed at nightRate (replaces their day rate)
   const normalHours = billedDayNormal + billedNightNormal;
   const extraHours  = billedDayExtra  + billedNightExtra;
+  // normalPay/extraPay are DAY-ONLY so summary doesn't double-count night
   const normalPay   = normalDayPay;
   const extraPay    = extraDayPay;
 
   const kmCount  = kmOn ? draftKm : 0;
   const kmPay    = kmCount * config.kmRate;
   const pendingTicketAmt = draftTickets.filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
+  // Total = day-normal + day-extra + all-night + km + tickets
   const totalPay = normalDayPay + extraDayPay + nightPay + kmPay + pendingTicketAmt;
 
   previewData = {
@@ -2211,7 +2051,7 @@ function calcAndPreview() {
     nightHours, nightNormal, nightExtra,
     normalPay, extraPay, nightPay,
     totalPay, tickets: [...draftTickets], id: Date.now(),
-    isFestivo, isDomingo, isDiaLibre, kmCount, kmPay,
+    isFestivo, isDiaLibre, kmCount, kmPay,
     onlyExtrasMode: config.onlyExtras
   };
 
@@ -2220,9 +2060,7 @@ function calcAndPreview() {
 
   // Badges
   document.getElementById('festivoBadgePreview').style.display = isFestivo ? 'block' : 'none';
-  document.getElementById('diaLibreBadgePreview').style.display = (!isFestivo && !isDomingo && isDiaLibre) ? 'block' : 'none';
-  const domBadge = document.getElementById('domingoBadgePreview');
-  if (domBadge) domBadge.style.display = (!isFestivo && isDomingo) ? 'block' : 'none';
+  document.getElementById('diaLibreBadgePreview').style.display = (!isFestivo && isDiaLibre) ? 'block' : 'none';
 
   // Hours breakdown
   if (config.onlyExtras) {
@@ -2275,11 +2113,6 @@ function calcAndPreview() {
 
 function saveEntry() {
   if (!previewData) return;
-  // If editing an existing entry, remove the old one first
-  if (editingEntryId !== null) {
-    entries = entries.filter(x => x.id !== editingEntryId);
-    editingEntryId = null;
-  }
   entries.unshift(previewData);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
   syncTicketPhotosToGallery(previewData);
@@ -2290,11 +2123,9 @@ function saveEntry() {
   document.getElementById('fieldDesc').value='';
   document.getElementById('ticketsToggle').checked=false;
   document.getElementById('festivoToggle').checked=false;
-  document.getElementById('domingoToggle').checked=false;
   document.getElementById('kmToggle').checked=false;
   document.getElementById('adelantoToggle').checked=false;
   toggleAdelanto(false);
-  document.getElementById('shiftCard').classList.remove('festivo-top','domingo-top');
   document.getElementById('shiftCard').classList.remove('festivo-top');
   toggleTickets(false); toggleKm(false);
   draftTickets=[]; draftKm=0; updateKmDisplay();
@@ -2336,9 +2167,8 @@ function renderHistory() {
     const festivoBadge = e.isFestivo ? `<span class="festivo-chip">🎉</span>` : '';
     const diaLibreBadge = (!e.isFestivo && e.isDiaLibre) ? `<span class="festivo-chip" style="border-color:var(--warn);color:var(--warn);background:rgba(245,197,66,.1)">🏖</span>` : '';
     const nightBadge = (e.nightHours>0) ? `<span class="entry-chip" style="color:var(--nocturno,#6c9fff);border-color:var(--nocturno,#6c9fff)">🌙 ${fmtH(e.nightHours)}</span>` : '';
-    const domingoBadge=(!e.isFestivo&&e.isDomingo)?`<span style="padding:1px 7px;font-size:9px;background:rgba(245,197,66,.12);border:1px solid var(--warn);color:var(--warn);border-radius:20px;font-family:'DM Mono',monospace">☀️</span>`:'';
     const kmBadge = e.kmCount>0 ? `<span class="entry-chip">🚗 ${e.kmCount}km</span>` : '';
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDomingo?'domingo-entry':e.isDiaLibre?'diaLibre-entry':''}" data-entry-id="${e.id}" onclick="openModal('${e.id}')">
+    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" data-entry-id="${e.id}" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
@@ -2346,7 +2176,7 @@ function renderHistory() {
         <span class="entry-chip">▶ ${e.start}</span>
         <span class="entry-chip">■ ${e.end}</span>
         ${e.extraHours>0?`<span class="entry-chip" style="color:var(--accent2);border-color:var(--accent2)">+${fmtH(e.extraHours)}</span>`:''}
-        ${nightBadge}${kmBadge}${festivoBadge}${domingoBadge}${diaLibreBadge}${ticketBadge}
+        ${nightBadge}${kmBadge}${festivoBadge}${diaLibreBadge}${ticketBadge}
       </div>
     </div>`;
   }).join('');
@@ -2397,7 +2227,7 @@ function openModal(id) {
 
   document.getElementById('modalTitle').textContent = formatDate(e.date);
   document.getElementById('modalContent').innerHTML = `
-    ${festivoLine}${domingoLine}${diaLibreLine}
+    ${festivoLine}${diaLibreLine}
     <div class="breakdown-row"><span class="breakdown-label">${T('entry')}</span><span class="breakdown-value">${e.start}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('exit')}</span><span class="breakdown-value">${e.end}</span></div>
     <div class="breakdown-row"><span class="breakdown-label">${T('breakTime')}</span><span class="breakdown-value">${e.breakMin} min</span></div>
@@ -2441,11 +2271,9 @@ function editCurrentEntry() {
   // Break
   breakMinutes = e.breakMin || 0;
   updateBreakDisplay(); updateChipSel();
-  // Restore festivo and domingo toggles
+  // Festivo
   document.getElementById('festivoToggle').checked = !!e.isFestivo;
-  document.getElementById('domingoToggle').checked = !!e.isDomingo;
   onFestivoChange();
-  onDomingoChange();
   // Km
   if (e.kmCount > 0 && config.kmEnabled) {
     document.getElementById('kmToggle').checked = true;
@@ -2459,8 +2287,9 @@ function editCurrentEntry() {
     toggleTickets(true);
     renderDraftTickets();
   }
-  // Mark entry as being edited — don't delete yet (user might cancel)
-  editingEntryId = currentModalId;
+  // Remove entry so saving creates a fresh one (not duplicate)
+  entries = entries.filter(x => x.id !== currentModalId);
+  localStorage.setItem('tfc_entries', JSON.stringify(entries));
   document.getElementById('previewCard').style.display = 'none';
   // Scroll to top of form
   document.getElementById('shiftCard').scrollIntoView({behavior:'smooth', block:'start'});
@@ -2546,7 +2375,6 @@ function renderSummary(period) {
   const np=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.normalPay:0),0);
   const ep=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.extraPay:0),0);
   const fp=filtered.reduce((s,e)=>s+(e.isFestivo?e.normalPay+e.extraPay:0),0);
-  const dop=filtered.reduce((s,e)=>s+(e.isDomingo&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
   const dp=filtered.reduce((s,e)=>s+(e.isDiaLibre&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
   const kp=filtered.reduce((s,e)=>s+(e.kmPay||0),0);
   const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
@@ -2577,17 +2405,16 @@ function renderSummary(period) {
   document.getElementById('sumNormalPay').textContent=`${config.currency}${np.toFixed(2)}`;
   document.getElementById('sumExtraPay').textContent=`${config.currency}${ep.toFixed(2)}`;
   document.getElementById('sumFestivoPay').textContent=`${config.currency}${fp.toFixed(2)}`;
-  const sumDomEl=document.getElementById('sumDomingoPay'); if(sumDomEl) sumDomEl.textContent=`${config.currency}${dop.toFixed(2)}`;
   document.getElementById('sumDiaLibrePay').textContent=`${config.currency}${dp.toFixed(2)}`;
   document.getElementById('sumNightPay').textContent=`${config.currency}${np2.toFixed(2)}`;
   document.getElementById('sumKmPay').textContent=`${config.currency}${kp.toFixed(2)}`;
   const kmStatEl = document.getElementById('sumKmStat');
   if (kmStatEl) { const totKm2=filtered.reduce((s,e)=>s+(e.kmCount||0),0); kmStatEl.textContent=totKm2>0?`🚗 ${totKm2} km`:''; kmStatEl.style.display=totKm2>0?'block':'none'; }
   document.getElementById('sumPendingTickets').textContent=`${config.currency}${pt.toFixed(2)}`;
-  // Hide zero-value rows
-  const showRow=(id,val)=>{const el=document.getElementById(id);if(el)el.style.display=val>0?'flex':'none';};
+  // Show ALL rows, regardless of value
+  const showRow=(id,val)=>{const el=document.getElementById(id);if(el)el.style.display='flex';};
   showRow('sumRowNormal',np); showRow('sumRowExtra',ep); showRow('sumRowFestivo',fp);
-  showRow('sumRowDomingo',dop); showRow('sumRowDiaLibre',dp); showRow('sumRowNight',np2); showRow('sumRowKm',kp); showRow('sumRowTickets',pt);
+  showRow('sumRowDiaLibre',dp); showRow('sumRowNight',np2); showRow('sumRowKm',kp); showRow('sumRowTickets',pt);
   // Adelantos: for month/mes_anterior, show that period's adelantos; for others show current month
   let adelantoMonth = getCurrentMonth();
   if (period === 'mes') {
@@ -2599,7 +2426,7 @@ function renderSummary(period) {
   const adelantoTotal = (period === 'dia' || period === 'semana' || period === 'todo') ? 0 : getMonthAdelantoTotal(adelantoMonth);
   document.getElementById('sumAdelanto').textContent = `— ${config.currency}${adelantoTotal.toFixed(2)}`;
   const adelantoRow = document.getElementById('sumRowAdelanto');
-  if (adelantoRow) adelantoRow.style.display = adelantoTotal > 0 ? 'flex' : 'none';
+  if (adelantoRow) adelantoRow.style.display = 'flex';
   document.getElementById('sumTotal').textContent=`${config.currency}${(tp - adelantoTotal).toFixed(2)}`;
 
   const ct=document.getElementById('periodEntries');
@@ -2607,7 +2434,7 @@ function renderSummary(period) {
   const fmtHh=h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
   ct.innerHTML=filtered.slice(0,15).map(e=>{
     const pendingAmt=(e.tickets||[]).filter(t=>!t.paid).reduce((s,t)=>s+t.amount,0);
-    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDomingo?'domingo-entry':e.isDiaLibre?'diaLibre-entry':''}" data-entry-id="${e.id}" onclick="openModal('${e.id}')">
+    return `<div class="entry-card ${e.isFestivo?'festivo-entry':e.isDiaLibre?'diaLibre-entry':''}" onclick="openModal('${e.id}')">
       <div class="entry-top"><div class="entry-date">${formatDate(e.date)}</div><div class="entry-earn">${config.currency}${e.totalPay.toFixed(2)}</div></div>
       <div class="entry-desc">${escHtml(e.desc)||T('noDesc')}</div>
       <div class="entry-meta">
@@ -2773,7 +2600,6 @@ async function exportPDF() {
     { label: T('normalPay'),    val: fmt2(np),   col: pal.text   },
     { label: T('extraPay'),     val: fmt2(ep),   col: orange     },
     { label: T('festivoPay'),   val: fmt2(fp),   col: festivo    },
-    { label: T('domingoPay'),   val: fmt2(filtered.reduce((s,e)=>s+(e.isDomingo&&!e.isFestivo?e.normalPay+e.extraPay:0),0)), col: warn },
     { label: T('diaLibrePay'),  val: fmt2(dpp),  col: warn       },
     { label: T('nightPay'),     val: fmt2(ntp),  col: night      },
     { label: `${T('kmPay')} (${totKm} km)`, val: fmt2(kp), col: pal.muted },
@@ -2826,8 +2652,8 @@ async function exportPDF() {
       cy = 14;
     }
     if (idx%2 === 0) { doc.setFillColor(...pal.surface); doc.rect(14, cy-3.5, W-28, 7.5, 'F'); }
-    const dayType  = e.isFestivo ? 'FEST' : e.isDomingo ? 'DOM' : e.isDiaLibre ? 'LIBRE' : '-';
-    const dayTCol  = e.isFestivo ? festivo : e.isDomingo ? warn : e.isDiaLibre ? warn : pal.muted;
+    const dayType  = e.isFestivo ? 'FEST' : e.isDiaLibre ? 'LIBRE' : '-';
+    const dayTCol  = e.isFestivo ? festivo : e.isDiaLibre ? warn : pal.muted;
     doc.setFontSize(7); doc.setTextColor(...pal.text);
     doc.text(formatDate(e.date), 18, cy);
     doc.text(e.start, 56, cy);
@@ -2890,14 +2716,8 @@ function saveConfig() {
   config.rate             = parseFloat(document.getElementById('cfgRate').value) ?? 0; config.rate = isNaN(config.rate) ? 0 : config.rate;
   config.overtimeRate     = parseFloat(document.getElementById('cfgOvertimeRate').value) ?? 0; config.overtimeRate = isNaN(config.overtimeRate) ? 0 : config.overtimeRate;
   config.threshold        = parseFloat(document.getElementById('cfgThreshold').value)||8;
-  config.festivoRate         = parseFloat(document.getElementById('cfgFestivoRate').value)||0;
-  config.festivoOvertimeRate = parseFloat(document.getElementById('cfgFestivoOvertimeRate').value)||0;
-  config.domingoRate         = parseFloat(document.getElementById('cfgDomingoRate').value)||0;
-  config.domingoOvertimeRate = parseFloat(document.getElementById('cfgDomingoOvertimeRate').value)||0;
-  config.domingoReglaEnabled = document.getElementById('cfgDomingoReglaEnabled').checked;
-  config.domingoThreshold    = parseFloat(document.getElementById('cfgDomingoThreshold').value)||5;
-  config.domingoRateFirst    = parseFloat(document.getElementById('cfgDomingoRateFirst').value)||0;
-  config.domingoRateAfter    = parseFloat(document.getElementById('cfgDomingoRateAfter').value)||0;
+  config.festivoRate      = parseFloat(document.getElementById('cfgFestivoRate').value) ?? 0; config.festivoRate = isNaN(config.festivoRate) ? 0 : config.festivoRate;
+  config.festivoOvertimeRate = parseFloat(document.getElementById('cfgFestivoOvertimeRate').value) ?? 0; config.festivoOvertimeRate = isNaN(config.festivoOvertimeRate) ? 0 : config.festivoOvertimeRate;
   config.kmEnabled        = document.getElementById('cfgKmEnabled').checked;
   config.kmRate           = parseFloat(document.getElementById('cfgKmRate').value)||0.20;
   config.diaLibreEnabled  = document.getElementById('cfgDiaLibreEnabled').checked;
@@ -3031,15 +2851,15 @@ function notifInit() {
 }
 
 // ══════════════════════════════════════
-// Immediate clock display
-(function() {
-  var pad = function(v) { return String(v).padStart(2,'0'); };
-  var el = document.getElementById('liveClock');
-  if (el) { var n = new Date(); el.textContent = pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds()); }
-})();
-
-init();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').then(()=>{ notifInit(); }).catch(()=>{ notifInit(); });
+
+// Bootstrap: ejecutar init cuando el DOM esté listo
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
