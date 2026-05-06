@@ -933,40 +933,17 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <button class="btn btn-secondary btn-sm" onclick="document.getElementById('backupFileInput').click()">⬆ JSON</button>
         </div>
         <input type="file" id="backupFileInput" accept=".json" style="display:none" onchange="importBackup(event)">
-        <!-- NOTIFICACIONES -->
-        <div class="setting-row" style="border-top:1px solid var(--border);padding-top:13px;margin-top:4px">
-          <div style="flex:1;min-width:0">
+        <div class="setting-row" style="border-bottom:none">
+          <div>
             <div class="setting-name" data-t="notifTitle"></div>
             <div class="setting-desc" data-t="notifDesc"></div>
-            <div id="notifStatus" style="font-family:'DM Mono',monospace;font-size:10px;margin-top:5px;color:var(--muted)"></div>
+            <div id="notifStatus" style="font-family:'DM Mono',monospace;font-size:10px;margin-top:4px;color:var(--muted)"></div>
           </div>
           <label class="toggle">
             <input type="checkbox" id="notifToggle" onchange="toggleNotifications(this.checked)">
             <div class="toggle-track"></div>
             <div class="toggle-thumb"></div>
           </label>
-        </div>
-        <!-- Detalles notif (solo visible cuando activo) -->
-        <div id="notifDetails" style="display:none;margin-top:6px">
-          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px">
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px" data-t="notifTimeTitle"></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
-                <input type="checkbox" id="notifMorning" checked style="accent-color:var(--accent);width:16px;height:16px">
-                <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text)" data-t="notifTimeMorning"></span>
-              </label>
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
-                <input type="checkbox" id="notifAfternoon" checked style="accent-color:var(--accent);width:16px;height:16px">
-                <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text)" data-t="notifTimeAfternoon"></span>
-              </label>
-              <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
-                <input type="checkbox" id="notifEvening" checked style="accent-color:var(--accent);width:16px;height:16px">
-                <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text)" data-t="notifTimeEvening"></span>
-              </label>
-            </div>
-          </div>
-          <button class="btn btn-secondary" onclick="notifSendTest()" style="padding:10px;font-size:12px;letter-spacing:1px;font-family:'DM Mono',monospace" data-t="notifTestBtn"></button>
-          <div id="notifIosHint" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.3);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;color:#ff9f0a;line-height:1.5" data-t="notifIosHint"></div>
         </div>
       </div>
     </div>
@@ -1019,7 +996,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.6</span></div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.3</span></div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -1204,9 +1181,7 @@ const STRINGS = {
     themeTitle:'Tema visual', preferences:'Preferencias', about:'Acerca de', aboutDesc:'Registro de turnos · Tarifas: normal, extra, festivo, nocturno, día libre · Kilómetros · Tickets con fotos · Adelantos sobre extras · PDF personalizable (colores / blanco y negro) · 6 temas visuales · Notificaciones · PWA instalable',
     tabRecord:'Registro', tabSummary:'Resumen', tabHistory:'Historial', tabConfig:'Config',
     deleteShift:'Eliminar Turno', close:'Cerrar',
-    saved:'¡Turno guardado! 💪', savedEdit:'¡Turno actualizado! ✏️',
-    duplicateDate:'Ya existe un turno para esta fecha', duplicateDateReplace:'¿Reemplazar el turno existente?',
-    duplicateReplace:'Reemplazar', duplicateKeepBoth:'Guardar ambos', deleted:'Turno eliminado', cleared:'Historial borrado',
+    saved:'¡Turno guardado! 💪', deleted:'Turno eliminado', cleared:'Historial borrado',
     configSaved:'¡Config guardada! ✅', invalidTime:'El tiempo trabajado es inválido',
     fillFields:'Completa fecha, entrada y salida',
     noDesc:'Sin descripción', noRecords:'No hay registros aún.', noRecordsPeriod:'Sin registros en este periodo.',
@@ -1220,13 +1195,14 @@ const STRINGS = {
     ticket:'Ticket', tickets:'Tickets',
     noBreakChip:'Sin pausa',
     prevMonth:'Mes Anterior', chooseMonth:'Elegir Mes',
-    notifTitle:'Recordatorios inteligentes', notifDesc:'Lun–Sáb — mañana, tarde y noche si no has registrado horas',
-    notifOn:'🔔 Activo', notifOff:'🔕 Desactivado', notifDenied:'Bloqueado — actívalo en ajustes del sistema',
-    notifAsk:'Toca para activar los recordatorios',
-    notifTimeTitle:'Horario de avisos',
-    notifTimeMorning:'Mañana (9:00)', notifTimeAfternoon:'Tarde (14:00)', notifTimeEvening:'Noche (20:00)',
-    notifTestBtn:'Enviar prueba ahora',
-    notifIosHint:'En iPhone: ve a Ajustes → Safari/Chrome → Notificaciones → Permitir',
+    notifTitle:'Recordatorio diario', notifDesc:'Lun–Sáb a las 8:00 PM si no registraste horas',
+    notifOn:'🔔 Activo', notifOff:'🔕 Desactivado', notifDenied:'Bloqueado por el sistema',
+    notifAsk:'Activa para recibir recordatorios',
+    notifMsgTitle:'¡Hora de chambear! 💪',
+    notifMsgBody0:'Oye {name}, parece que hoy no registraste tus horas. ¡No dejes que se te olvide lo que te ganaste!',
+    notifMsgBody1:'¡{name}, aún puedes registrar tu turno de hoy! Tu cartera te lo agradecerá. 🤑',
+    notifMsgBody2:'Hey {name} 👋 Solo un recordatorio para apuntar tus horas de hoy antes de que se te olvide.',
+    notifMsgBody3:'¡{name}! El día casi termina y tus horas siguen sin registrarse. ¡Venga, son 30 segundos! ⏱',
     addPhoto:'+ Foto', exportPDF:'Exportar PDF del periodo',
     pdfTitle:'Resumen de Turnos', pdfGenerating:'Generando PDF…',
     addTicketPhoto:'Añadir foto al ticket',
@@ -1294,9 +1270,7 @@ const STRINGS = {
     themeTitle:'Visual theme', preferences:'Preferences', about:'About', aboutDesc:'Shift tracking · Rates: normal, overtime, holiday, night, day-off · Kilometers · Tickets with photos · Advances on overtime · Customisable PDF (colour / B&W) · 6 visual themes · Notifications · Installable PWA',
     tabRecord:'Record', tabSummary:'Summary', tabHistory:'History', tabConfig:'Config',
     deleteShift:'Delete Shift', close:'Close',
-    saved:'Shift saved! 💪', savedEdit:'Shift updated! ✏️',
-    duplicateDate:'A shift already exists for this date', duplicateDateReplace:'Replace the existing shift?',
-    duplicateReplace:'Replace', duplicateKeepBoth:'Keep both', deleted:'Shift deleted', cleared:'History cleared',
+    saved:'Shift saved! 💪', deleted:'Shift deleted', cleared:'History cleared',
     configSaved:'Config saved! ✅', invalidTime:'Worked time is invalid',
     fillFields:'Fill in date, clock in and clock out',
     noDesc:'No description', noRecords:'No records yet.', noRecordsPeriod:'No records for this period.',
@@ -1310,13 +1284,14 @@ const STRINGS = {
     ticket:'Ticket', tickets:'Tickets',
     noBreakChip:'No break',
     prevMonth:'Prev Month', chooseMonth:'Pick Month',
-    notifTitle:'Smart reminders', notifDesc:'Mon–Sat — morning, afternoon and evening if hours not logged',
-    notifOn:'🔔 Active', notifOff:'🔕 Disabled', notifDenied:'Blocked — enable in system settings',
-    notifAsk:'Tap to enable reminders',
-    notifTimeTitle:'Reminder schedule',
-    notifTimeMorning:'Morning (9:00)', notifTimeAfternoon:'Afternoon (14:00)', notifTimeEvening:'Evening (20:00)',
-    notifTestBtn:'Send test now',
-    notifIosHint:'On iPhone: go to Settings → Safari/Chrome → Notifications → Allow',
+    notifTitle:'Daily reminder', notifDesc:'Mon–Sat at 8:00 PM if you forgot to log hours',
+    notifOn:'🔔 Active', notifOff:'🔕 Disabled', notifDenied:'Blocked by system',
+    notifAsk:'Enable to receive reminders',
+    notifMsgTitle:"Time to log your hours! 💪",
+    notifMsgBody0:"Hey {name}, looks like you haven't logged today's hours yet. Don't let your hard work go unrecorded!",
+    notifMsgBody1:"{name}, you can still log today's shift! Your wallet will thank you. 🤑",
+    notifMsgBody2:"Hey {name} 👋 Just a quick nudge to log your hours before the day slips away.",
+    notifMsgBody3:"{name}! The day's almost over and your hours are still unlogged. It only takes 30 seconds! ⏱",
     addPhoto:'+ Photo', exportPDF:'Export period PDF',
     pdfTitle:'Shift Summary', pdfGenerating:'Generating PDF…',
     addTicketPhoto:'Add photo to ticket',
@@ -1497,7 +1472,7 @@ function addSwipeListeners() {
 // ══════════════════════════════════════
 function exportBackup() {
   const backup = {
-    version: '9.3',
+    version: '9.5',
     exportedAt: new Date().toISOString(),
     config, entries, adelantos, pdfConfig, galleryPhotos
   };
@@ -1755,7 +1730,7 @@ function init() {
   const sc = localStorage.getItem('tfc_config');
   if (sc) config = {...config, ...JSON.parse(sc)};
   const se = localStorage.getItem('tfc_entries');
-  if (se) { entries = JSON.parse(se); sortEntries(); }
+  if (se) entries = JSON.parse(se);
   const sp = localStorage.getItem('tfc_pdfcfg');
   if (sp) pdfConfig = {...pdfConfig, ...JSON.parse(sp)};
   const sa = localStorage.getItem('tfc_adelantos');
@@ -1866,7 +1841,6 @@ function loadConfigUI() {
   document.getElementById('cfgName').value = localStorage.getItem('tfc_name') || '';
   renderThemesGrid();
   loadPdfConfigUI();
-  applyNotifPrefsToUI();
 }
 
 function setToday() {
@@ -2299,53 +2273,17 @@ function calcAndPreview() {
   document.getElementById('previewCard').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-
-function sortEntries() {
-  entries.sort((a, b) => {
-    // Primary: date descending
-    if (b.date !== a.date) return b.date.localeCompare(a.date);
-    // Secondary: start time descending
-    return (b.start||'').localeCompare(a.start||'');
-  });
-}
-
-async function saveEntry() {
+function saveEntry() {
   if (!previewData) return;
-
-  // Check for duplicate date (excluding the entry currently being edited)
-  const duplicate = entries.find(e =>
-    e.date === previewData.date && e.id !== editingEntryId
-  );
-  if (duplicate) {
-    const replace = await showConfirm(
-      T('duplicateDateReplace'),
-      T('duplicateDate'),
-      T('duplicateReplace'),
-      T('duplicateKeepBoth')
-    );
-    if (replace) {
-      // Remove the existing duplicate before saving
-      entries = entries.filter(e => e.id !== duplicate.id);
-    }
-    // If false (Keep both), just continue adding — user chose to keep both
-  }
-
-  // Remove the entry being edited (if any)
+  // If editing an existing entry, remove the old one first
   if (editingEntryId !== null) {
     entries = entries.filter(x => x.id !== editingEntryId);
     editingEntryId = null;
   }
-
-  // Add and sort by date descending
-  entries.push(previewData);
-  sortEntries();
+  entries.unshift(previewData);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
   syncTicketPhotosToGallery(previewData);
-
-  const wasEditing = editingEntryId === null && duplicate === undefined ? false : true;
-  showToast(T('saved'), 'success');
-
-  // Reset form
+  showToast(T('saved'),'success');
   document.getElementById('previewCard').style.display='none';
   document.getElementById('fieldStart').value='';
   document.getElementById('fieldEnd').value='';
@@ -2356,8 +2294,8 @@ async function saveEntry() {
   document.getElementById('kmToggle').checked=false;
   document.getElementById('adelantoToggle').checked=false;
   toggleAdelanto(false);
-  const card = document.getElementById('shiftCard');
-  card.classList.remove('festivo-top','domingo-top');
+  document.getElementById('shiftCard').classList.remove('festivo-top','domingo-top');
+  document.getElementById('shiftCard').classList.remove('festivo-top');
   toggleTickets(false); toggleKm(false);
   draftTickets=[]; draftKm=0; updateKmDisplay();
   setBreak(0); setToday(); previewData=null;
@@ -2521,20 +2459,19 @@ function editCurrentEntry() {
     toggleTickets(true);
     renderDraftTickets();
   }
-  // Mark entry as being edited — it will be replaced when saveEntry() runs
+  // Mark entry as being edited — don't delete yet (user might cancel)
   editingEntryId = currentModalId;
   document.getElementById('previewCard').style.display = 'none';
-  // Scroll to form
+  // Scroll to top of form
   document.getElementById('shiftCard').scrollIntoView({behavior:'smooth', block:'start'});
-  showToast(currentLang==='en'
-    ? '✏️ Editing — press Calculate then Save'
-    : '✏️ Editando — presiona Calcular y luego Guardar');
+  showToast(currentLang==='en'?'✏️ Editing — save to confirm':'✏️ Editando — guarda para confirmar');
 }
 
 async function deleteCurrentEntry() {
   if (!currentModalId) return;
   const ok = await showConfirm(T('deleteShift')+'?', '⚠️', currentLang==='en'?'Delete':'Eliminar');
   if (!ok) return;
+  entries=entries.filter(e=>e.id!==currentModalId);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
   closeModal(); renderHistory(); renderSummary(currentPeriod); showToast(T('deleted'));
 }
@@ -2909,7 +2846,7 @@ async function exportPDF() {
 
   // ══ FOOTER ═══════════════════════════════════════════════════════════
   doc.setFontSize(6.5); doc.setTextColor(...pal.muted);
-  doc.text(`Time for Chamba v9.6  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
+  doc.text(`Time for Chamba v9.5  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
 
   const filename = `chamba_${periodLabel.replace(/[\s/]/g,'_')}_${now.getFullYear()}.pdf`;
   doc.save(filename);
@@ -3028,342 +2965,69 @@ function escHtml(str) {
 // ══════════════════════════════════════
 //  NOTIFICATIONS  (Lun–Sáb)
 // ══════════════════════════════════════
-// ══════════════════════════════════════
-//  NOTIFICATION SYSTEM v2 — iOS + Android
-// ══════════════════════════════════════
-let _notifTimers = {};        // { morning, afternoon, evening }
-const NOTIF_SLOTS = [
-  { key: 'morning',   hour: 9,  minHour: 0,  maxHour: 11 },
-  { key: 'afternoon', hour: 14, minHour: 12, maxHour: 17 },
-  { key: 'evening',   hour: 20, minHour: 18, maxHour: 23 },
-];
+let _notifTimer = null;
 
-// ── Message bank ─────────────────────────────────────────────────
-function getNotifMessages(slot, name) {
-  const lang = currentLang === 'en' ? 'en' : 'es';
-  const h = new Date().getHours();
-  const greeting = h < 12
-    ? (lang === 'en' ? 'Good morning' : 'Buenos días')
-    : h < 19
-    ? (lang === 'en' ? 'Good afternoon' : 'Buenas tardes')
-    : (lang === 'en' ? 'Good evening' : 'Buenas noches');
-
-  const banks = {
-    es: {
-      morning: [
-        { title: `${greeting}, ${name} ☀️`, body: '¿Ya apuntaste las horas de ayer? Mejor hacerlo mientras están frescas en la memoria.' },
-        { title: `${greeting}, ${name} 💼`, body: 'Nuevo día, nueva chamba. Recuerda registrar tus horas al acabar la jornada.' },
-        { title: `${greeting}, ${name} ⏰`, body: '¡A por el día! No olvides anotar todo lo que trabajes hoy para que no se escape ningún euro.' },
-        { title: `${greeting}, ${name} 🚀`, body: 'Empieza el día con buen pie: tus horas bien registradas = tu dinero bien cobrado.' },
-      ],
-      afternoon: [
-        { title: `${greeting}, ${name} ☕`, body: '¿Cómo va el turno? Si ya terminaste, son solo 30 segundos registrar tus horas.' },
-        { title: `${greeting}, ${name} ⏱`, body: `Llevas horas currando. ¿Las tienes anotadas? Entra y guárdalas en un momento.` },
-        { title: `${greeting}, ${name} 💪`, body: 'A mitad de día y sin registro aún. ¡Dale, que en dos toques está listo!' },
-        { title: `${greeting}, ${name} 📋`, body: 'Recuerda anotar tus kilómetros y tickets del día. Todo cuenta para el resumen.' },
-      ],
-      evening: [
-        { title: `${greeting}, ${name} 🌙`, body: '¡El día ya casi termina y tus horas siguen sin registrarse! Venga, son 30 segundos. ⏱' },
-        { title: `${greeting}, ${name} 💰`, body: 'Antes de cerrar el día: ¿ya guardaste lo que trabajaste hoy? No dejes que se te olvide lo que te ganaste.' },
-        { title: `${greeting}, ${name} 🌟`, body: 'Hora de cerrar el turno. Registra tus horas y descansa tranquilo sabiendo que todo está anotado.' },
-        { title: `${greeting}, ${name} ✅`, body: 'Último aviso del día. Si no registras ahora, mañana ya no recordarás los detalles exactos.' },
-      ],
-    },
-    en: {
-      morning: [
-        { title: `${greeting}, ${name} ☀️`, body: "Did you log yesterday's hours? Better do it while they're fresh in your memory." },
-        { title: `${greeting}, ${name} 💼`, body: "New day, new shift. Remember to log your hours when the day is done." },
-        { title: `${greeting}, ${name} ⏰`, body: "Let's go! Don't forget to note everything you work today so not a single cent slips away." },
-        { title: `${greeting}, ${name} 🚀`, body: "Start the day right: hours well logged = money well earned." },
-      ],
-      afternoon: [
-        { title: `${greeting}, ${name} ☕`, body: "How's the shift going? If you're done, logging your hours takes just 30 seconds." },
-        { title: `${greeting}, ${name} ⏱`, body: "You've been working hard. Are your hours saved? Jump in and log them real quick." },
-        { title: `${greeting}, ${name} 💪`, body: "Midday and no log yet. Come on, two taps and you're done!" },
-        { title: `${greeting}, ${name} 📋`, body: "Remember to add your km and tickets for today. Every detail counts at month-end." },
-      ],
-      evening: [
-        { title: `${greeting}, ${name} 🌙`, body: "Day's almost over and your hours are still unlogged! It only takes 30 seconds. ⏱" },
-        { title: `${greeting}, ${name} 💰`, body: "Before you close the day: did you log what you worked? Don't let your hard-earned money go unrecorded." },
-        { title: `${greeting}, ${name} 🌟`, body: "Time to close the shift. Log your hours and rest easy knowing everything is saved." },
-        { title: `${greeting}, ${name} ✅`, body: "Last reminder of the day. If you don't log now, tomorrow you won't remember the exact details." },
-      ],
-    },
-  };
-
-  const pool = banks[lang][slot] || banks[lang].evening;
-  // Pick based on day of week so message rotates across the week
-  const idx  = new Date().getDay() % pool.length;
-  return pool[idx];
-}
-
-// ── iOS detection ─────────────────────────────────────────────────
-function isIOS() {
-  return /iP(hone|od|ad)/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-}
-function isPWA() {
-  try {
-    return window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator && window.navigator.standalone === true);
-  } catch(e) { return false; }
-}
-
-// ── Status display ─────────────────────────────────────────────────
 function notifUpdateStatus() {
-  const el     = document.getElementById('notifStatus');
-  const toggle = document.getElementById('notifToggle');
-  const details= document.getElementById('notifDetails');
-  const iosHint= document.getElementById('notifIosHint');
-  if (!el || !toggle) return;
-
-  const enabled = localStorage.getItem('tfc_notif') === '1';
-  const hasAPI  = 'Notification' in window;
-  const perm    = hasAPI ? Notification.permission : 'denied';
-  const ios     = isIOS();
-  const pwa     = isPWA();
-
-  if (ios && !pwa) {
-    // iOS Safari without PWA installation — notifications not available
-    el.textContent = '📱 ' + (currentLang === 'en'
-      ? 'Install the app first: tap Share → Add to Home Screen'
-      : 'Instala la app primero: toca Compartir → Añadir a inicio');
-    el.style.color = 'var(--warn)';
-    toggle.checked = false;
-    toggle.disabled = true;
-    if (iosHint) iosHint.style.display = 'block';
-    if (details) details.style.display = 'none';
-    return;
-  }
-
-  if (perm === 'denied') {
-    el.textContent = T('notifDenied');
-    el.style.color = 'var(--danger)';
-    toggle.checked = false;
-    toggle.disabled = true;
-    if (details) details.style.display = 'none';
-  } else if (enabled && perm === 'granted') {
-    const slots = ['morning','afternoon','evening'].filter(s => {
-      const el2 = document.getElementById('notif' + s.charAt(0).toUpperCase() + s.slice(1));
-      return !el2 || el2.checked;
-    });
-    el.textContent = T('notifOn') + ' — ' + slots.length + ' ' + (currentLang === 'en' ? 'slots active' : 'franjas activas');
-    el.style.color = 'var(--success)';
-    toggle.checked = true;
-    toggle.disabled = false;
-    if (details) details.style.display = 'block';
-  } else {
-    el.textContent = enabled ? T('notifAsk') : T('notifOff');
-    el.style.color = 'var(--muted)';
-    toggle.checked = false;
-    toggle.disabled = false;
-    if (details) details.style.display = 'none';
-  }
+  const el=document.getElementById('notifStatus');
+  const toggle=document.getElementById('notifToggle');
+  if (!el||!toggle) return;
+  const enabled=localStorage.getItem('tfc_notif')==='1';
+  const perm='Notification' in window ? Notification.permission : 'denied';
+  if (perm==='denied') { el.textContent=T('notifDenied'); el.style.color='var(--danger)'; toggle.checked=false; toggle.disabled=true; }
+  else if (enabled&&perm==='granted') { el.textContent=T('notifOn'); el.style.color='var(--success)'; toggle.checked=true; toggle.disabled=false; }
+  else { el.textContent=enabled?T('notifAsk'):T('notifOff'); el.style.color='var(--muted)'; toggle.checked=false; toggle.disabled=false; }
 }
 
-// ── Request permission + enable ────────────────────────────────────
 async function toggleNotifications(on) {
-  const iosHint = document.getElementById('notifIosHint');
-
-  if (!on) {
-    localStorage.setItem('tfc_notif', '0');
-    Object.values(_notifTimers).forEach(t => clearTimeout(t));
-    _notifTimers = {};
-    notifUpdateStatus();
-    showToast(T('notifOff'));
-    return;
-  }
-
-  // iOS PWA — use a lighter check
-  if (isIOS() && !isPWA()) {
-    if (iosHint) iosHint.style.display = 'block';
-    document.getElementById('notifToggle').checked = false;
-    showToast(currentLang === 'en'
-      ? '📲 Add app to Home Screen first'
-      : '📲 Primero añade la app al inicio', 'error');
-    return;
-  }
-
-  if (!('Notification' in window)) {
-    showToast(currentLang === 'en'
-      ? 'Notifications not supported in this browser'
-      : 'Notificaciones no soportadas en este navegador', 'error');
-    document.getElementById('notifToggle').checked = false;
-    return;
-  }
-
-  let perm = Notification.permission;
-  if (perm === 'default') {
-    perm = await Notification.requestPermission();
-  }
-
-  if (perm === 'granted') {
-    localStorage.setItem('tfc_notif', '1');
-    saveNotifPrefs();
-    notifScheduleAll();
-    showToast(T('notifOn'), 'success');
-  } else {
-    localStorage.setItem('tfc_notif', '0');
-    document.getElementById('notifToggle').checked = false;
-    showToast(T('notifDenied'), 'error');
-  }
+  if (!on) { localStorage.setItem('tfc_notif','0'); clearTimeout(_notifTimer); _notifTimer=null; notifUpdateStatus(); showToast(T('notifOff')); return; }
+  if (!('Notification' in window)) { showToast('Tu navegador no soporta notificaciones',true); document.getElementById('notifToggle').checked=false; return; }
+  const perm=await Notification.requestPermission();
+  if (perm==='granted') { localStorage.setItem('tfc_notif','1'); notifScheduleDaily(); showToast(T('notifOn'),'success'); }
+  else { localStorage.setItem('tfc_notif','0'); document.getElementById('notifToggle').checked=false; showToast(T('notifDenied'),'error'); }
   notifUpdateStatus();
 }
 
-// ── Save which slots are enabled ───────────────────────────────────
-function saveNotifPrefs() {
-  const prefs = {
-    morning:   document.getElementById('notifMorning')?.checked ?? true,
-    afternoon: document.getElementById('notifAfternoon')?.checked ?? true,
-    evening:   document.getElementById('notifEvening')?.checked ?? true,
-  };
-  localStorage.setItem('tfc_notif_prefs', JSON.stringify(prefs));
-}
-
-function loadNotifPrefs() {
-  const raw = localStorage.getItem('tfc_notif_prefs');
-  if (!raw) return { morning: true, afternoon: true, evening: true };
-  try { return JSON.parse(raw); } catch { return { morning: true, afternoon: true, evening: true }; }
-}
-
-function applyNotifPrefsToUI() {
-  const prefs = loadNotifPrefs();
-  ['morning','afternoon','evening'].forEach(s => {
-    const el = document.getElementById('notif' + s.charAt(0).toUpperCase() + s.slice(1));
-    if (el) el.checked = prefs[s] !== false;
-    if (el) el.addEventListener('change', () => { saveNotifPrefs(); notifScheduleAll(); notifUpdateStatus(); });
-  });
-}
-
-// ── Helpers ────────────────────────────────────────────────────────
-function todayHasEntry() {
-  const t = new Date().toISOString().split('T')[0];
-  return entries.some(e => e.date === t);
-}
+function todayHasEntry() { const t=new Date().toISOString().split('T')[0]; return entries.some(e=>e.date===t); }
 
 function isWorkday() {
-  const d = new Date().getDay(); // 0=Sun
-  if (d === 0 || d > 6) return false;
-  if (config.diaLibreEnabled && d === config.diaLibre) return false;
+  const d=new Date().getDay(); // 0=Sun
+  // Lun–Sáb (1–6), excluyendo día libre si está configurado
+  if (d===0) return false; // Sunday never (unless festivo logged separately)
+  if (d<1||d>6) return false;
+  if (config.diaLibreEnabled && d===config.diaLibre) return false;
   return true;
 }
 
-function msUntilHour(hour, minute = 0) {
-  const now = new Date();
-  const target = new Date(now);
-  target.setHours(hour, minute, 0, 0);
-  let diff = target - now;
-  if (diff <= 0) diff += 24 * 60 * 60 * 1000; // next day
-  return diff;
+function msUntil8pm() {
+  const now=new Date(); const target=new Date(now); target.setHours(20,0,0,0);
+  let diff=target-now; if (diff<=0) diff+=24*60*60*1000; return diff;
 }
 
-// ── Fire a notification for a given slot ──────────────────────────
-function notifFire(slot) {
-  const enabled = localStorage.getItem('tfc_notif') === '1';
-  const perm    = 'Notification' in window ? Notification.permission : 'denied';
-  if (!enabled || perm !== 'granted') return;
-  if (!isWorkday() || todayHasEntry()) {
-    notifScheduleSlot(slot); // reschedule for tomorrow
-    return;
-  }
-
-  const prefs = loadNotifPrefs();
-  if (!prefs[slot]) {
-    notifScheduleSlot(slot);
-    return;
-  }
-
-  const name = localStorage.getItem('tfc_name') || (currentLang === 'en' ? 'Worker' : 'Chambeador');
-  const msg  = getNotifMessages(slot, name);
-
-  // Send via SW (works on Android + iOS PWA)
+function notifFire() {
+  const enabled=localStorage.getItem('tfc_notif')==='1';
+  const perm='Notification' in window ? Notification.permission : 'denied';
+  if (!enabled||perm!=='granted') return;
+  if (!isWorkday()) { notifScheduleDaily(); return; }
+  if (todayHasEntry()) { notifScheduleDaily(); return; }
+  const name=localStorage.getItem('tfc_name')||(currentLang==='en'?'Worker':'Chambeador');
+  const bodies=[T('notifMsgBody0'),T('notifMsgBody1'),T('notifMsgBody2'),T('notifMsgBody3')];
+  const body=bodies[Math.floor(Math.random()*bodies.length)].replace('{name}',name);
+  const title=T('notifMsgTitle');
   if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({
-      type: 'SHOW_REMINDER',
-      title: msg.title,
-      body:  msg.body,
-      slot,
-      badge: './icon-192.png',
-    });
+    navigator.serviceWorker.controller.postMessage({type:'SHOW_REMINDER',title,body});
   } else {
-    // Fallback for browsers without SW controller yet
-    try {
-      new Notification(msg.title, {
-        body:  msg.body,
-        icon:  './icon-192.png',
-        badge: './icon-192.png',
-        tag:   'chamba-' + slot,
-        renotify: true,
-        vibrate: [150, 80, 150],
-      });
-    } catch(e) { /* silently fail */ }
+    new Notification(title,{body,icon:'./icon-192.png',tag:'chamba-reminder'});
   }
-
-  notifScheduleSlot(slot); // schedule next occurrence (tomorrow same time)
+  notifScheduleDaily();
 }
 
-// ── Schedule a single slot ─────────────────────────────────────────
-function notifScheduleSlot(slot) {
-  clearTimeout(_notifTimers[slot]);
-  const slotDef = NOTIF_SLOTS.find(s => s.key === slot);
-  if (!slotDef) return;
-  const prefs = loadNotifPrefs();
-  if (!prefs[slot]) return; // slot disabled
-  _notifTimers[slot] = setTimeout(() => notifFire(slot), msUntilHour(slotDef.hour));
-}
+function notifScheduleDaily() { clearTimeout(_notifTimer); _notifTimer=setTimeout(notifFire,msUntil8pm()); }
 
-// ── Schedule all enabled slots ─────────────────────────────────────
-function notifScheduleAll() {
-  const prefs = loadNotifPrefs();
-  NOTIF_SLOTS.forEach(s => {
-    clearTimeout(_notifTimers[s.key]);
-    if (prefs[s.key]) {
-      _notifTimers[s.key] = setTimeout(() => notifFire(s.key), msUntilHour(s.hour));
-    }
-  });
-}
-
-// ── Send a test notification immediately ──────────────────────────
-async function notifSendTest() {
-  const perm = 'Notification' in window ? Notification.permission : 'denied';
-  if (perm !== 'granted') {
-    showToast(currentLang === 'en' ? 'Enable notifications first' : 'Activa las notificaciones primero', 'error');
-    return;
-  }
-  const name = localStorage.getItem('tfc_name') || (currentLang === 'en' ? 'Worker' : 'Chambeador');
-  const h    = new Date().getHours();
-  const slot = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
-  const msg  = getNotifMessages(slot, name);
-
-  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({
-      type: 'SHOW_REMINDER',
-      title: msg.title,
-      body:  msg.body,
-      slot,
-      badge: './icon-192.png',
-    });
-    showToast(currentLang === 'en' ? '🔔 Test sent!' : '🔔 ¡Prueba enviada!', 'success');
-  } else {
-    try {
-      new Notification(msg.title, {
-        body: msg.body, icon: './icon-192.png',
-        badge: './icon-192.png', tag: 'chamba-test', renotify: true,
-      });
-      showToast(currentLang === 'en' ? '🔔 Test sent!' : '🔔 ¡Prueba enviada!', 'success');
-    } catch(e) {
-      showToast(currentLang === 'en' ? 'Could not send test' : 'No se pudo enviar', 'error');
-    }
-  }
-}
-
-// ── Init ───────────────────────────────────────────────────────────
 function notifInit() {
-  applyNotifPrefsToUI();
   notifUpdateStatus();
-  const enabled = localStorage.getItem('tfc_notif') === '1';
-  const perm    = 'Notification' in window ? Notification.permission : 'denied';
-  if (enabled && perm === 'granted') notifScheduleAll();
+  const enabled=localStorage.getItem('tfc_notif')==='1';
+  const perm='Notification' in window ? Notification.permission : 'denied';
+  if (enabled&&perm==='granted') notifScheduleDaily();
 }
 
 // ══════════════════════════════════════
