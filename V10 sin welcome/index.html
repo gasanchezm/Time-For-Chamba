@@ -410,22 +410,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </head>
 <body data-theme="midnight">
 
-<!-- ══════════════ SPLASH ══════════════ -->
-<div id="splashScreen">
-  <div class="splash-logo">Time for<br>Chamba</div>
-  <div class="splash-sub">by Guillermo Sanchez</div>
-  <div class="splash-welcome">
-    <div class="splash-hi" id="splashHi">Bienvenido de vuelta</div>
-    <div class="splash-name" id="splashName">Cargando<span>...</span></div>
-  </div>
-  <div class="splash-dots">
-    <div class="splash-dot"></div>
-    <div class="splash-dot"></div>
-    <div class="splash-dot"></div>
-  </div>
-  <div class="splash-tagline" id="splashTagline">Registra · Controla · Cobra</div>
-</div>
-
 <!-- ══════════════ WELCOME ══════════════ -->
 <div id="welcomeScreen">
   <div class="w-logo">Time for<br>Chamba</div>
@@ -1201,54 +1185,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 //  i18n
 // ══════════════════════════════════════
 
-
-// ══════════════════════════════════════
-//  SPLASH SCREEN
-// ══════════════════════════════════════
-function showSplash() {
-  const splash    = document.getElementById('splashScreen');
-  const splashName = document.getElementById('splashName');
-  const splashHi   = document.getElementById('splashHi');
-  const splashTag  = document.getElementById('splashTagline');
-  if (!splash) return;
-
-  const name = localStorage.getItem('tfc_name');
-  const lang = localStorage.getItem('tfc_lang') || 'es';
-
-  // Personalise
-  if (name) {
-    splashName.innerHTML = name + '<span>!</span>';
-    splashHi.textContent = lang === 'en' ? 'Welcome back,' : 'Bienvenido de vuelta,';
-  } else {
-    splashName.innerHTML = 'Time for<span> Chamba</span>';
-    splashHi.textContent = lang === 'en' ? 'Hello 👋' : 'Hola 👋';
-  }
-
-  // Tagline rotation
-  const taglines_es = [
-    'Registra · Controla · Cobra',
-    'Tus horas, tu dinero 💪',
-    'Sin chambas sin cobrar 🤑',
-    '¡A darle! 🚀',
-  ];
-  const taglines_en = [
-    'Track · Control · Get paid',
-    'Your hours, your money 💪',
-    'No shifts unpaid 🤑',
-    "Let's go! 🚀",
-  ];
-  const tags = lang === 'en' ? taglines_en : taglines_es;
-  if (splashTag) splashTag.textContent = tags[new Date().getDay() % tags.length];
-
-  // Hide after 2 seconds
-  setTimeout(() => {
-    splash.classList.add('hiding');
-    setTimeout(() => {
-      splash.style.display = 'none';
-    }, 500);
-  }, 2000);
-}
-
 // ══════════════════════════════════════
 //  THEMES
 // ══════════════════════════════════════
@@ -1895,7 +1831,6 @@ let _ticketPhotoTarget = null;
 //  INIT
 // ══════════════════════════════════════
 function init() {
-  showSplash();
   // Theme
   applyTheme(localStorage.getItem('tfc_theme') || 'midnight');
   renderThemesGrid();
