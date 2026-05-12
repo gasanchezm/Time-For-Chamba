@@ -71,9 +71,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .byline{font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;animation:logoIn .5s .25s ease-out both}
 
 /* ── PAGES ── */
-.page{display:none;padding:8px 12px 4px;animation:fadeIn .25s ease}
+.page{display:none;padding:12px 12px 4px;animation:fadeIn .25s ease}
 .page.active{display:block}
-
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── BOTTOM NAV ── */
@@ -328,11 +327,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .gallery-item:hover .gallery-item-del{opacity:1}
 .gallery-add-card{background:var(--surface);border:1.5px dashed var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
 .gallery-add-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end}
-.gallery-upload-area{border:1.5px dashed var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--surface2)}
+.gallery-upload-area{border:1.5px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--surface2)}
 .gallery-upload-area:hover{border-color:var(--accent);background:var(--accent-dim)}
 .gallery-upload-icon{font-size:28px;margin-bottom:6px}
 .gallery-upload-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.5px}
-.gallery-empty{text-align:center;padding:16px 20px 8px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
+.gallery-empty{text-align:center;padding:40px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px}
 .gallery-cat-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-family:'DM Mono',monospace;font-size:9px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);margin-bottom:4px}
 
 /* ── CONFIRM DIALOG ── */
@@ -359,53 +358,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .hours-progress-bar{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
 .hours-progress-fill{height:100%;border-radius:4px;background:var(--accent);transition:width .4s cubic-bezier(.4,0,.2,1)}
 .hours-progress-fill.over{background:var(--accent2)}
-
-/* ── EDITING BANNER ── */
-#editingBanner{display:none;position:sticky;top:0;z-index:50;background:var(--accent);color:var(--accent-text,#0a0a0a);padding:10px 16px;margin:-12px -12px 12px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-#editingBanner.visible{display:flex}
-#editingBanner .banner-text{flex:1}
-#editingBanner .banner-cancel{background:rgba(0,0,0,.15);border:none;border-radius:6px;padding:5px 10px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;color:inherit;letter-spacing:.5px}
-/* ── MODAL ACTION BUTTONS ── */
-.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
-.modal-action-btn{padding:14px 10px;border:none;border-radius:12px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,opacity .12s}
-.modal-action-btn:active{transform:scale(.96);opacity:.85}
-.modal-action-edit{background:var(--accent);color:var(--accent-text,#0a0a0a)}
-.modal-action-delete{background:var(--surface2);border:1px solid var(--danger);color:var(--danger)}
-.modal-action-close{grid-column:1/-1;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:13px;letter-spacing:1px;font-family:'DM Mono',monospace;padding:11px}
-/* ── MODAL TOTAL HIGHLIGHT ── */
-.modal-total-row{background:var(--accent-dim,rgba(200,241,53,.1));border-radius:10px;padding:12px 14px;margin:10px 0 4px;display:flex;justify-content:space-between;align-items:center}
-.modal-total-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-.modal-total-value{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--accent);line-height:1}
-/* ── MODAL PHOTO GRID ── */
-.modal-photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.modal-photo-item{aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer}
-.modal-photo-item img{width:100%;height:100%;object-fit:cover;transition:transform .15s}
-.modal-photo-item:active img{transform:scale(.95)}
-
-/* ── SPLASH SCREEN ── */
-#splashScreen{position:fixed;inset:0;background:var(--bg);z-index:600;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;pointer-events:none}
-#splashScreen.hiding{animation:splashOut .5s cubic-bezier(.4,0,1,1) forwards}
-@keyframes splashOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.06)}}
-
-.splash-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,15vw,80px);letter-spacing:6px;line-height:.95;background:var(--logo-grad,linear-gradient(135deg,var(--accent) 0%,#9abf00 100%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;animation:splashLogo .6s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes splashLogo{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-
-.splash-sub{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:8px;animation:splashLogo .5s .15s ease both}
-
-.splash-welcome{margin-top:36px;text-align:center;animation:splashFade .6s .3s ease both}
-@keyframes splashFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.splash-hi{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-.splash-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,8vw,44px);letter-spacing:3px;color:var(--text);line-height:1}
-.splash-name span{color:var(--accent)}
-
-.splash-dots{display:flex;gap:7px;margin-top:40px;animation:splashFade .5s .5s ease both}
-.splash-dot{width:7px;height:7px;border-radius:50%;background:var(--border)}
-.splash-dot:nth-child(1){animation:dotPulse 1.2s .0s ease-in-out infinite}
-.splash-dot:nth-child(2){animation:dotPulse 1.2s .2s ease-in-out infinite}
-.splash-dot:nth-child(3){animation:dotPulse 1.2s .4s ease-in-out infinite}
-@keyframes dotPulse{0%,100%{background:var(--border);transform:scale(1)}50%{background:var(--accent);transform:scale(1.4)}}
-
-.splash-tagline{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-top:18px;opacity:.6;animation:splashFade .5s .7s ease both}
 </style>
 </head>
 <body data-theme="midnight">
@@ -1067,7 +1019,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v10.0</span></div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v9.6</span></div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -1088,20 +1040,24 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <button class="gallery-tab" onclick="selectGalleryTab('otro',this)" data-t="galleryOther"></button>
     </div>
 
-    <!-- Upload new photo — compact bar -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px">
-      <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center">
-        <input type="text" id="galleryDescInput" data-t-placeholder="galleryDescPh" maxlength="80"
-          style="background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;width:100%">
-        <select id="galleryCatInput"
-          style="background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;max-width:90px">
-          <option value="evento" data-t-opt="galleryEvents"></option>
-          <option value="ticket" data-t-opt="galleryTickets"></option>
-          <option value="presupuesto" data-t-opt="galleryBudgets"></option>
-          <option value="otro" data-t-opt="galleryOther"></option>
-        </select>
-        <button onclick="document.getElementById('galleryFileInput').click()"
-          style="height:38px;width:38px;background:var(--accent);border:none;border-radius:8px;color:var(--accent-text,#0a0a0a);font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">📷</button>
+    <!-- Upload new photo -->
+    <div class="gallery-add-card">
+      <div class="card-title" style="margin-bottom:10px"><span style="color:var(--accent)">+</span> <span data-t="galleryAdd"></span></div>
+      <div class="field" style="margin-bottom:8px">
+        <label data-t="galleryDesc"></label>
+        <input type="text" id="galleryDescInput" data-t-placeholder="galleryDescPh" maxlength="80">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:flex-end;margin-bottom:8px">
+        <div class="field" style="margin-bottom:0">
+          <label data-t="galleryCategory"></label>
+          <select id="galleryCatInput" class="field input" style="width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none;appearance:none">
+            <option value="evento" data-t-opt="galleryEvents"></option>
+            <option value="ticket" data-t-opt="galleryTickets"></option>
+            <option value="presupuesto" data-t-opt="galleryBudgets"></option>
+            <option value="otro" data-t-opt="galleryOther"></option>
+          </select>
+        </div>
+        <button class="ticket-add-btn" onclick="document.getElementById('galleryFileInput').click()" style="height:48px;padding:0 16px;align-self:flex-end" data-t="galleryUpload"></button>
       </div>
       <input type="file" id="galleryFileInput" accept="image/*,video/*" multiple style="display:none" onchange="onGalleryFilesSelected(event)">
     </div>
@@ -1132,27 +1088,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <div class="modal-overlay" id="entryModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-handle"></div>
-    <!-- Header: date + total -->
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
-      <div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px" data-t="viewShift"></div>
-        <div class="modal-title" id="modalTitle" style="margin-bottom:0">Turno</div>
-      </div>
-      <div id="modalDayBadge" style="margin-top:2px"></div>
-    </div>
-    <!-- Total highlight -->
-    <div class="modal-total-row">
-      <span class="modal-total-label" data-t="totalEarned"></span>
-      <span class="modal-total-value" id="modalTotalValue">$0</span>
-    </div>
-    <!-- Detail content -->
+    <div class="modal-title" id="modalTitle">Turno</div>
     <div id="modalContent"></div>
-    <!-- Action buttons -->
-    <div class="modal-actions">
-      <button class="modal-action-btn modal-action-edit" onclick="editCurrentEntry()">✏️ <span data-t="editShift"></span></button>
-      <button class="modal-action-btn modal-action-delete" onclick="deleteCurrentEntry()">🗑 <span data-t="deleteShift"></span></button>
-      <button class="modal-action-close" onclick="closeModal()" data-t="close"></button>
-    </div>
+    <hr class="divider">
+    <button class="btn btn-secondary" onclick="editCurrentEntry()" style="margin-bottom:8px" data-t="editShift"></button>
+    <button class="btn btn-danger" onclick="deleteCurrentEntry()" style="margin-bottom:8px" data-t="deleteShift"></button>
+    <button class="btn btn-secondary" onclick="closeModal()" data-t="close"></button>
   </div>
 </div>
 
@@ -1262,8 +1203,7 @@ const STRINGS = {
     saveConfig:'GUARDAR CONFIG',
     themeTitle:'Tema visual', preferences:'Preferencias', about:'Acerca de', aboutDesc:'Registro de turnos · Tarifas: normal, extra, festivo, nocturno, día libre · Kilómetros · Tickets con fotos · Adelantos sobre extras · PDF personalizable (colores / blanco y negro) · 6 temas visuales · Notificaciones · PWA instalable',
     tabRecord:'Registro', tabSummary:'Resumen', tabHistory:'Historial', tabConfig:'Config',
-    deleteShift:'Eliminar Turno', editShift:'Editar turno', close:'Cerrar',
-    viewShift:'Ver turno', shiftActions:'Acciones', shiftNotes:'Notas del turno', shiftPhotos:'Fotos adjuntas', editingBanner:'Editando — calcula y guarda para confirmar',
+    deleteShift:'Eliminar Turno', close:'Cerrar',
     saved:'¡Turno guardado! 💪', savedEdit:'¡Turno actualizado! ✏️',
     duplicateDate:'Ya existe un turno para esta fecha', duplicateDateReplace:'¿Reemplazar el turno existente?',
     duplicateReplace:'Reemplazar', duplicateKeepBoth:'Guardar ambos', deleted:'Turno eliminado', cleared:'Historial borrado',
@@ -1353,8 +1293,7 @@ const STRINGS = {
     saveConfig:'SAVE CONFIG',
     themeTitle:'Visual theme', preferences:'Preferences', about:'About', aboutDesc:'Shift tracking · Rates: normal, overtime, holiday, night, day-off · Kilometers · Tickets with photos · Advances on overtime · Customisable PDF (colour / B&W) · 6 visual themes · Notifications · Installable PWA',
     tabRecord:'Record', tabSummary:'Summary', tabHistory:'History', tabConfig:'Config',
-    deleteShift:'Delete Shift', editShift:'Edit shift', close:'Close',
-    viewShift:'View shift', shiftActions:'Actions', shiftNotes:'Shift notes', shiftPhotos:'Attached photos', editingBanner:'Editing — calculate and save to confirm',
+    deleteShift:'Delete Shift', close:'Close',
     saved:'Shift saved! 💪', savedEdit:'Shift updated! ✏️',
     duplicateDate:'A shift already exists for this date', duplicateDateReplace:'Replace the existing shift?',
     duplicateReplace:'Replace', duplicateKeepBoth:'Keep both', deleted:'Shift deleted', cleared:'History cleared',
@@ -1601,27 +1540,6 @@ function importBackup(event) {
     event.target.value = '';
   };
   reader.readAsText(file);
-}
-
-
-function toggleGalleryAdd() {
-  const form = document.getElementById('galleryAddForm');
-  const btn  = document.getElementById('galleryAddToggleBtn');
-  if (!form) return;
-  const isOpen = form.style.display !== 'none';
-  form.style.display = isOpen ? 'none' : 'block';
-  if (btn) {
-    btn.textContent = isOpen ? '+' : '✕';
-    btn.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(45deg)';
-    btn.style.background = isOpen ? 'var(--accent)' : 'var(--surface2)';
-    btn.style.color = isOpen ? 'var(--accent-text,#0a0a0a)' : 'var(--muted)';
-    btn.style.border = isOpen ? 'none' : '1px solid var(--border)';
-  }
-  // Translate select options when opening
-  if (!isOpen) {
-    document.querySelectorAll('#galleryCatInput [data-t-opt]')
-      .forEach(el => { el.textContent = T(el.getAttribute('data-t-opt')); });
-  }
 }
 
 // ══════════════════════════════════════
@@ -1978,17 +1896,15 @@ function startClock() {
 //  TABS
 // ══════════════════════════════════════
 function switchTab(tab, btn) {
-  // If switching away from registro while editing, cancel silently
+  // If switching away from registro while editing, cancel the edit
   if (tab !== 'registro' && editingEntryId !== null) {
     editingEntryId = null;
-    const banner = document.getElementById('editingBanner');
-    if (banner) banner.classList.remove('visible');
+    showToast(currentLang==='en'?'Edit cancelled':'Edición cancelada');
   }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
   (btn||document.getElementById('nav-'+tab)).classList.add('active');
-
   if (tab==='historial') renderHistory();
   if (tab==='resumen') renderSummary(currentPeriod);
   if (tab==='config') { loadConfigUI(); notifUpdateStatus(); renderAdelantoList(); }
@@ -2426,11 +2342,8 @@ async function saveEntry() {
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
   syncTicketPhotosToGallery(previewData);
 
-  const wasEditing = editingEntryId !== null;
-  showToast(wasEditing ? T('savedEdit') : T('saved'), 'success');
-  // Hide editing banner
-  const banner = document.getElementById('editingBanner');
-  if (banner) banner.classList.remove('visible');
+  const wasEditing = editingEntryId === null && duplicate === undefined ? false : true;
+  showToast(T('saved'), 'success');
 
   // Reset form
   document.getElementById('previewCard').style.display='none';
@@ -2517,109 +2430,50 @@ function formatDate(ds) {
 // ══════════════════════════════════════
 function openModal(id) {
   currentModalId = parseInt(id);
-  const e = entries.find(x => x.id === currentModalId);
-  if (!e) return;
+  const e = entries.find(x=>x.id===currentModalId); if (!e) return;
+  const fmtH = h=>h>=1?`${Math.floor(h)}h ${Math.round((h%1)*60)}m`:`${Math.round(h*60)}m`;
+  const fmt  = v=>`${config.currency}${v.toFixed(2)}`;
 
-  const fmtH = h => h >= 1 ? `${Math.floor(h)}h ${Math.round((h%1)*60)}m` : `${Math.round(h*60)}m`;
-  const fmt  = v => `${config.currency}${v.toFixed(2)}`;
-
-  // ── Header ────────────────────────────────────────────────────
-  document.getElementById('modalTitle').textContent = formatDate(e.date);
-  document.getElementById('modalTotalValue').textContent = fmt(e.totalPay);
-
-  // Day type badge
-  const badgeEl = document.getElementById('modalDayBadge');
-  if (badgeEl) {
-    if (e.isFestivo)       badgeEl.innerHTML = `<span class="type-badge festivo" style="font-size:11px">🎉 ${T('festivoDay')}</span>`;
-    else if (e.isDomingo)  badgeEl.innerHTML = `<span class="type-badge dia-libre" style="font-size:11px">☀️ ${T('domingoDay')}</span>`;
-    else if (e.isDiaLibre) badgeEl.innerHTML = `<span class="type-badge dia-libre" style="font-size:11px">🏖 ${T('diaLibreDay')}</span>`;
-    else                   badgeEl.innerHTML = '';
-  }
-
-  // ── Hours & Pay rows ──────────────────────────────────────────
-  const nightLine = (e.nightHours > 0 && e.nightPay > 0)
-    ? `<div class="breakdown-row"><span class="breakdown-label">🌙 ${T('nightHours')}</span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)">${fmtH(e.nightHours)} — ${fmt(e.nightPay)}</span></div>` : '';
-  const kmLine = e.kmCount > 0
-    ? `<div class="breakdown-row"><span class="breakdown-label">🚗 ${T('kmLine')}</span><span class="breakdown-value">${e.kmCount} km — ${fmt(e.kmPay||0)}</span></div>` : '';
-
-  // ── Description ───────────────────────────────────────────────
-  const descBlock = e.desc
-    ? `<div style="margin-top:12px;padding:10px 12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--border)">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px" data-t="shiftNotes"></div>
-        <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);line-height:1.7">${escHtml(e.desc)}</div>
-       </div>` : '';
-
-  // ── Tickets with photos ───────────────────────────────────────
-  let ticketsHtml = '';
+  let ticketsHtml='';
   if (e.tickets && e.tickets.length) {
-    // Collect all ticket photos for a unified photo grid
-    const allPhotos = e.tickets.flatMap(t => t.photos || []);
-    const photosGrid = allPhotos.length
-      ? `<div style="margin-top:10px">
-           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">📷 ${T('shiftPhotos')} (${allPhotos.length})</div>
-           <div class="modal-photos-grid">${allPhotos.map(p =>
-             `<div class="modal-photo-item" onclick="openPhotoViewer('${p}')">
-               <img src="${p}" alt="foto" loading="lazy">
-              </div>`
-           ).join('')}</div>
-         </div>` : '';
-
-    const ticketItems = e.tickets.map((t, i) => `
-      <div class="modal-ticket">
+    const items = e.tickets.map((t,i) => {
+      const photosHtml = t.photos&&t.photos.length ? `<div class="modal-ticket-photos">${t.photos.map(p=>`<img src="${p}" onclick="openPhotoViewer('${p}')" alt="foto">`).join('')}</div>` : '';
+      return `<div class="modal-ticket">
         <div class="modal-ticket-header">
           <span class="modal-ticket-label">${escHtml(t.label)}</span>
           <div class="modal-ticket-right">
-            <span class="modal-ticket-amt ${t.paid ? 'paid' : ''}">${config.currency}${t.amount.toFixed(2)}</span>
-            <button class="mark-paid-btn ${t.paid ? 'is-paid' : ''}"
-              onclick="toggleModalTicketPaid('${e.id}',${i})">
-              ${t.paid ? T('paid') : T('markPaid')}
-            </button>
+            <span class="modal-ticket-amt ${t.paid?'paid':''}">${config.currency}${t.amount.toFixed(2)}</span>
+            <button class="mark-paid-btn ${t.paid?'is-paid':''}" onclick="toggleModalTicketPaid('${e.id}',${i})">${t.paid?T('paid'):T('markPaid')}</button>
           </div>
         </div>
-      </div>`).join('');
-
-    ticketsHtml = `
-      <div class="modal-subtitle">🧾 ${T('ticketsLabel')}</div>
-      ${ticketItems}
-      ${photosGrid}`;
+        ${photosHtml}
+      </div>`;
+    }).join('');
+    ticketsHtml=`<div class="modal-subtitle">🧾 ${T('ticketsLabel')}</div>${items}`;
   }
 
-  // ── Build content ─────────────────────────────────────────────
+  const festivoLine = e.isFestivo ? `<div class="breakdown-row"><span class="breakdown-label">${T('festivoDay')}</span><span class="breakdown-value festivo">🎉 Sí</span></div>` : '';
+  const diaLibreLine = (!e.isFestivo && e.isDiaLibre) ? `<div class="breakdown-row"><span class="breakdown-label">${T('diaLibreDay')}</span><span class="breakdown-value" style="color:var(--warn)">🏖 Sí</span></div>` : '';
+  const nightLine = (e.nightHours>0&&e.nightPay>0) ? `<div class="breakdown-row"><span class="breakdown-label">🌙 ${T('nightHours')}</span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)">${fmtH(e.nightHours)} — ${fmt(e.nightPay)}</span></div>` : '';
+  const kmLine = e.kmCount>0 ? `<div class="breakdown-row"><span class="breakdown-label">${T('kmLine')}</span><span class="breakdown-value">${e.kmCount} km — ${fmt(e.kmPay||0)}</span></div>` : '';
+
+  document.getElementById('modalTitle').textContent = formatDate(e.date);
   document.getElementById('modalContent').innerHTML = `
-    <div class="breakdown-row">
-      <span class="breakdown-label">▶ ${T('entry')}</span>
-      <span class="breakdown-value">${e.start} → ${e.end}</span>
-    </div>
-    <div class="breakdown-row">
-      <span class="breakdown-label">⏸ ${T('breakTime')}</span>
-      <span class="breakdown-value">${e.breakMin} min</span>
-    </div>
-    <div class="breakdown-row">
-      <span class="breakdown-label">⏱ ${T('totalWorked')}</span>
-      <span class="breakdown-value accent">${fmtH(e.totalHours)}</span>
-    </div>
-    ${e.extraHours > 0 ? `<div class="breakdown-row">
-      <span class="breakdown-label">⚡ ${T('extraHours')}</span>
-      <span class="breakdown-value orange">${fmtH(e.extraHours)}</span>
-    </div>` : ''}
+    ${festivoLine}${domingoLine}${diaLibreLine}
+    <div class="breakdown-row"><span class="breakdown-label">${T('entry')}</span><span class="breakdown-value">${e.start}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('exit')}</span><span class="breakdown-value">${e.end}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('breakTime')}</span><span class="breakdown-value">${e.breakMin} min</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('totalWorked')}</span><span class="breakdown-value accent">${fmtH(e.totalHours)}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('normalHours')}</span><span class="breakdown-value">${fmtH(e.normalHours)}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('extraHours')}</span><span class="breakdown-value orange">${e.extraHours>0?fmtH(e.extraHours):'—'}</span></div>
     <hr class="divider">
-    <div class="breakdown-row">
-      <span class="breakdown-label">${T('normalPay')}</span>
-      <span class="breakdown-value">${fmt(e.normalPay)}</span>
-    </div>
-    ${e.extraHours > 0 ? `<div class="breakdown-row">
-      <span class="breakdown-label">${T('extraPay')}</span>
-      <span class="breakdown-value orange">${fmt(e.extraPay)}</span>
-    </div>` : ''}
+    <div class="breakdown-row"><span class="breakdown-label">${T('normalPay')}</span><span class="breakdown-value">${fmt(e.normalPay)}</span></div>
+    <div class="breakdown-row"><span class="breakdown-label">${T('extraPay')}</span><span class="breakdown-value orange">${e.extraHours>0?fmt(e.extraPay):'—'}</span></div>
     ${nightLine}${kmLine}
-    ${descBlock}
+    <div class="breakdown-row"><span class="breakdown-label">${T('totalEarned')}</span><span class="breakdown-value accent" style="font-size:20px;font-family:'Bebas Neue',sans-serif">${fmt(e.totalPay)}</span></div>
+    ${e.desc?`<hr class="divider"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.6">${escHtml(e.desc)}</div>`:''}
     ${ticketsHtml}
   `;
-
-  // Apply T() to any data-t inside modal content
-  document.getElementById('modalContent').querySelectorAll('[data-t]')
-    .forEach(el => { el.textContent = T(el.getAttribute('data-t')); });
-
   document.getElementById('entryModal').classList.add('open');
 }
 
@@ -2635,105 +2489,54 @@ function toggleModalTicketPaid(entryId, ticketIdx) {
 
 function closeModal() { document.getElementById('entryModal').classList.remove('open'); currentModalId=null; }
 
-
-function cancelEdit() {
-  editingEntryId = null;
-  document.getElementById('editingBanner').classList.remove('visible');
-  // Reset form to today
-  document.getElementById('fieldStart').value = '';
-  document.getElementById('fieldEnd').value = '';
-  document.getElementById('fieldDesc').value = '';
-  document.getElementById('previewCard').style.display = 'none';
-  document.getElementById('festivoToggle').checked = false;
-  document.getElementById('domingoToggle').checked = false;
-  document.getElementById('kmToggle').checked = false;
-  document.getElementById('ticketsToggle').checked = false;
-  document.getElementById('adelantoToggle').checked = false;
-  document.getElementById('shiftCard').classList.remove('festivo-top','domingo-top');
-  toggleTickets(false); toggleKm(false); toggleAdelanto(false);
-  draftTickets = []; draftKm = 0;
-  updateKmDisplay(); breakMinutes = 0; updateBreakDisplay(); updateChipSel();
-  setToday();
-  showToast(currentLang === 'en' ? 'Edit cancelled' : 'Edición cancelada');
-}
-
 function editCurrentEntry() {
   const e = entries.find(x => x.id === currentModalId);
   if (!e) return;
   closeModal();
-
   // Switch to registro tab
   switchTab('registro', document.getElementById('nav-registro'));
-
   // Pre-fill form
   document.getElementById('fieldDate').value  = e.date;
   document.getElementById('fieldStart').value = e.start;
   document.getElementById('fieldEnd').value   = e.end;
   document.getElementById('fieldDesc').value  = e.desc || '';
-
   // Break
   breakMinutes = e.breakMin || 0;
   updateBreakDisplay(); updateChipSel();
-
-  // Toggles
+  // Restore festivo and domingo toggles
   document.getElementById('festivoToggle').checked = !!e.isFestivo;
   document.getElementById('domingoToggle').checked = !!e.isDomingo;
   onFestivoChange();
   onDomingoChange();
-
   // Km
-  draftKm = 0;
   if (e.kmCount > 0 && config.kmEnabled) {
     document.getElementById('kmToggle').checked = true;
     draftKm = e.kmCount;
-    toggleKm(true);
-  } else {
-    document.getElementById('kmToggle').checked = false;
-    toggleKm(false);
+    toggleKm(true); updateKmDisplay();
   }
-  updateKmDisplay();
-
   // Tickets
-  draftTickets = [];
   if (e.tickets && e.tickets.length) {
-    draftTickets = e.tickets.map(t => ({ ...t, photos: t.photos || [] }));
+    draftTickets = e.tickets.map(t => ({...t, photos: t.photos||[]}));
     document.getElementById('ticketsToggle').checked = true;
     toggleTickets(true);
-  } else {
-    document.getElementById('ticketsToggle').checked = false;
-    toggleTickets(false);
+    renderDraftTickets();
   }
-  renderDraftTickets();
-
-  // Mark as editing — saveEntry() will replace this entry
+  // Mark entry as being edited — it will be replaced when saveEntry() runs
   editingEntryId = currentModalId;
   document.getElementById('previewCard').style.display = 'none';
-
-  // Show editing banner
-  const banner = document.getElementById('editingBanner');
-  if (banner) banner.classList.add('visible');
-
-  // Translate banner data-t elements
-  document.querySelectorAll('#editingBanner [data-t]')
-    .forEach(el => { el.textContent = T(el.getAttribute('data-t')); });
-
-  // Scroll form into view
-  setTimeout(() => {
-    document.getElementById('shiftCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  // Scroll to form
+  document.getElementById('shiftCard').scrollIntoView({behavior:'smooth', block:'start'});
+  showToast(currentLang==='en'
+    ? '✏️ Editing — press Calculate then Save'
+    : '✏️ Editando — presiona Calcular y luego Guardar');
 }
 
 async function deleteCurrentEntry() {
   if (!currentModalId) return;
-  const ok = await showConfirm(T('deleteShift') + '?', '⚠️',
-    currentLang === 'en' ? 'Delete' : 'Eliminar');
+  const ok = await showConfirm(T('deleteShift')+'?', '⚠️', currentLang==='en'?'Delete':'Eliminar');
   if (!ok) return;
-  entries = entries.filter(e => e.id !== currentModalId);
   localStorage.setItem('tfc_entries', JSON.stringify(entries));
-  closeModal();
-  renderHistory();
-  renderSummary(currentPeriod);
-  showToast(T('deleted'));
+  closeModal(); renderHistory(); renderSummary(currentPeriod); showToast(T('deleted'));
 }
 function clearAll() {
   entries=[]; localStorage.setItem('tfc_entries', JSON.stringify(entries));
@@ -3106,7 +2909,7 @@ async function exportPDF() {
 
   // ══ FOOTER ═══════════════════════════════════════════════════════════
   doc.setFontSize(6.5); doc.setTextColor(...pal.muted);
-  doc.text(`Time for Chamba v10.0  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
+  doc.text(`Time for Chamba v9.6  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
 
   const filename = `chamba_${periodLabel.replace(/[\s/]/g,'_')}_${now.getFullYear()}.pdf`;
   doc.save(filename);
