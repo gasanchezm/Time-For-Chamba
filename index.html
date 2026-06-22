@@ -2269,32 +2269,34 @@ function calcAndPreview() {
   let   endDt   = new Date(`${date}T${end}`);
   if (endDt <= startDt) endDt.setDate(endDt.getDate()+1);
 
-  // Total worked minutes (gross - break)
-  const workedMin  = (endDt - startDt) / 60000 - breakMinutes;
-  if (workedMin <= 0) { showToast(T('invalidTime'),'error'); return; }
-  const totalHours = workedMin / 60;
+  // Gross shift duration (no break deducted yet)
+  const grossMin   = (endDt - startDt) / 60000;
+  const grossHours = grossMin / 60;
 
   // ── NIGHT HOURS ───────────────────────────────────────────────────
-  // Night hours are NOT a supplement — they replace the normal/extra rate
-  // for those specific hours. We detect how many worked minutes fall in 22-06.
-  // Break is distributed proportionally (approximation).
+  // Calculated on the raw shift window — the break does NOT affect
+  // which clock minutes fall inside 22:00–06:00.
   let nightHours = 0;
   if (config.nightEnabled) {
-    // Night hours are calculated on the raw shift window (no break deduction).
-    // The break happens during the shift but doesn't move the clock window where
-    // night rates apply, so we count every minute of 22:00–06:00 the shift spans.
     const nightMinsGross = calcNightMinutes(startDt, endDt);
-    nightHours = Math.min(nightMinsGross / 60, totalHours);
+    nightHours = Math.min(nightMinsGross / 60, grossHours);
   }
 
-  // ── DAY HOURS ─────────────────────────────────────────────────────
-  // Day hours = total worked - night hours
-  const dayHours   = totalHours - nightHours;
+  // ── OVERTIME ──────────────────────────────────────────────────────
+  // Extra hours are also based on gross time — the break does NOT reduce overtime.
+  const extraHoursTotal  = Math.max(0, grossHours - config.threshold);
 
-  // Normal vs extra split applies to ALL worked hours (day + night):
-  // We split first by threshold, then determine how many of each bucket are night
-  const normalHoursTotal = Math.min(totalHours, config.threshold);
-  const extraHoursTotal  = Math.max(0, totalHours - config.threshold);
+  // ── NORMAL DAY HOURS (break deducted HERE only) ───────────────────
+  // The break is subtracted exclusively from the normal diurnal bucket.
+  const grossNormalHours = Math.min(grossHours, config.threshold);
+  const normalHoursTotal = Math.max(0, grossNormalHours - breakMinutes / 60);
+
+  // totalHours = what gets billed overall (used for display/guards only)
+  const workedMin  = grossMin - breakMinutes;
+  if (workedMin <= 0) { showToast(T('invalidTime'),'error'); return; }
+  const totalHours = normalHoursTotal + extraHoursTotal + nightHours;
+
+  // ── DAY HOURS ─────────────────────────────────────────────────────
 
   // Night hours are distributed first into the normal bucket, then extra
   const nightNormal = Math.min(nightHours, normalHoursTotal);
