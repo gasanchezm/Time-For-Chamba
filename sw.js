@@ -1,4 +1,4 @@
-const CACHE_NAME = 'time-for-chamba-v11.1';
+const CACHE_NAME = 'time-for-chamba-v11.2';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {

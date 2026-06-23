@@ -2269,42 +2269,38 @@ function calcAndPreview() {
   let   endDt   = new Date(`${date}T${end}`);
   if (endDt <= startDt) endDt.setDate(endDt.getDate()+1);
 
-  // Gross shift duration (no break deducted yet)
-  const grossMin   = (endDt - startDt) / 60000;
-  const grossHours = grossMin / 60;
+  // Total worked minutes (gross - break)
+  const workedMin  = (endDt - startDt) / 60000 - breakMinutes;
+  if (workedMin <= 0) { showToast(T('invalidTime'),'error'); return; }
+  const totalHours = workedMin / 60;
 
   // ── NIGHT HOURS ───────────────────────────────────────────────────
-  // Calculated on the raw shift window — the break does NOT affect
-  // which clock minutes fall inside 22:00–06:00.
+  // Calculated on the raw shift window — break does NOT affect which
+  // clock minutes fall inside 22:00–06:00.
   let nightHours = 0;
   if (config.nightEnabled) {
     const nightMinsGross = calcNightMinutes(startDt, endDt);
-    nightHours = Math.min(nightMinsGross / 60, grossHours);
+    nightHours = Math.min(nightMinsGross / 60, totalHours);
   }
 
   // ── OVERTIME ──────────────────────────────────────────────────────
-  // Extra hours are also based on gross time — the break does NOT reduce overtime.
-  const extraHoursTotal  = Math.max(0, grossHours - config.threshold);
+  // Extra hours come from worked hours AFTER night hours are separated.
+  // Break already reduced totalHours, so extras are also reduced — correct.
+  const dayWorkedHours   = totalHours - nightHours;
+  const extraHoursTotal  = Math.max(0, dayWorkedHours - config.threshold);
 
-  // ── NORMAL DAY HOURS (break deducted HERE only) ───────────────────
-  // The break is subtracted exclusively from the normal diurnal bucket.
-  const grossNormalHours = Math.min(grossHours, config.threshold);
-  const normalHoursTotal = Math.max(0, grossNormalHours - breakMinutes / 60);
-
-  // totalHours = what gets billed overall (used for display/guards only)
-  const workedMin  = grossMin - breakMinutes;
-  if (workedMin <= 0) { showToast(T('invalidTime'),'error'); return; }
-  const totalHours = normalHoursTotal + extraHoursTotal + nightHours;
+  // ── NORMAL DAY HOURS ──────────────────────────────────────────────
+  // Normal = day worked hours up to threshold (break already absorbed here
+  // because totalHours already had break deducted).
+  const normalHoursTotal = Math.min(dayWorkedHours, config.threshold);
 
   // ── DAY HOURS ─────────────────────────────────────────────────────
-
-  // Night hours are distributed first into the normal bucket, then extra
-  const nightNormal = Math.min(nightHours, normalHoursTotal);
-  const nightExtra  = nightHours - nightNormal;
-
-  // Day hours that are normal / extra
-  const dayNormal = normalHoursTotal - nightNormal;
-  const dayExtra  = extraHoursTotal  - nightExtra;
+  // Night hours are a separate bucket billed at rateNight.
+  // They do NOT reduce the normal or extra day buckets.
+  const dayNormal = normalHoursTotal;
+  const dayExtra  = extraHoursTotal;
+  const nightNormal = 0;   // kept for compatibility (nightPay = nightHours * rateNight)
+  const nightExtra  = 0;
 
   // ── RATES ─────────────────────────────────────────────────────────
   const selectedDow = new Date(date + 'T12:00:00').getDay();
@@ -2366,12 +2362,12 @@ function calcAndPreview() {
     extraDayPay  = billedDayExtra  * rateExtra;
   }
 
-  const nightNormalPay = billedNightNormal * rateNight;
-  const nightExtraPay  = billedNightExtra  * rateNight;
-  const nightPay       = nightNormalPay + nightExtraPay;
+  // Night hours are a standalone bucket — billed entirely at rateNight
+  const billedNight = config.onlyExtras ? 0 : nightHours;
+  const nightPay    = billedNight * rateNight;
 
-  const normalHours = billedDayNormal + billedNightNormal;
-  const extraHours  = billedDayExtra  + billedNightExtra;
+  const normalHours = billedDayNormal;
+  const extraHours  = billedDayExtra;
   const normalPay   = normalDayPay;
   const extraPay    = extraDayPay;
 
