@@ -2269,7 +2269,7 @@ function calcAndPreview() {
   let   endDt   = new Date(`${date}T${end}`);
   if (endDt <= startDt) endDt.setDate(endDt.getDate()+1);
 
-  // Break is unpaid — deducted from total worked hours
+  // Total worked minutes (gross - break)
   const workedMin  = (endDt - startDt) / 60000 - breakMinutes;
   if (workedMin <= 0) { showToast(T('invalidTime'),'error'); return; }
   const totalHours = workedMin / 60;
@@ -2280,15 +2280,19 @@ function calcAndPreview() {
   let nightHours = 0;
   if (config.nightEnabled) {
     const nightMinsGross = calcNightMinutes(startDt, endDt);
-    const grossHours = (endDt - startDt) / 60000 / 60;
-    nightHours = Math.min(nightMinsGross / 60, grossHours);
+    nightHours = Math.min(nightMinsGross / 60, totalHours);
   }
 
-  // ── NORMAL / EXTRA ───────────────────────────────────────────────
-  // Normal and extra are calculated on totalHours (break already deducted).
-  // Night hours are an ADDITIONAL bucket — they do not reduce this pool.
-  const extraHoursTotal  = Math.max(0, totalHours - config.threshold);
-  const normalHoursTotal = Math.min(totalHours, config.threshold);
+  // ── OVERTIME ──────────────────────────────────────────────────────
+  // Extra hours come from worked hours AFTER night hours are separated.
+  // Break already reduced totalHours, so extras are also reduced — correct.
+  const dayWorkedHours   = totalHours - nightHours;
+  const extraHoursTotal  = Math.max(0, dayWorkedHours - config.threshold);
+
+  // ── NORMAL DAY HOURS ──────────────────────────────────────────────
+  // Normal = day worked hours up to threshold (break already absorbed here
+  // because totalHours already had break deducted).
+  const normalHoursTotal = Math.min(dayWorkedHours, config.threshold);
 
   // ── DAY HOURS ─────────────────────────────────────────────────────
   // Night hours are a separate bucket billed at rateNight.
