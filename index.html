@@ -1083,7 +1083,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <div class="card">
       <div class="card-title"><span>ℹ</span> <span data-t="about"></span></div>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.9">
-        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v11.0</span></div>
+        <div><strong style="color:var(--text)">Time for Chamba</strong> <span style="color:var(--accent);font-size:11px">v11.1</span> <span style="font-size:11px;color:var(--muted)">· 12 Sep 2026</span></div>
         <div data-t="aboutDesc"></div>
         <br><div style="color:var(--accent)">Made by Guillermo Sanchez</div>
       </div>
@@ -2284,18 +2284,16 @@ function calcAndPreview() {
     nightHours = Math.min(nightMinsGross / 60, grossHours);
   }
 
-  // ── NORMAL / EXTRA ───────────────────────────────────────────────
-  // Normal and extra are calculated on totalHours (break already deducted).
-  // Night hours are an ADDITIONAL bucket — they do not reduce this pool.
-  const extraHoursTotal  = Math.max(0, totalHours - config.threshold);
-  const normalHoursTotal = Math.min(totalHours, config.threshold);
+  // ── NORMAL / EXTRA / NIGHT — mutually exclusive buckets ─────────
+  // Night hours (22:00–06:00) are billed ONLY at nightRate.
+  // They are removed from the worked pool before splitting normal/extra.
+  const dayWorkedHours   = Math.max(0, totalHours - nightHours);
+  const normalHoursTotal = Math.min(dayWorkedHours, config.threshold);
+  const extraHoursTotal  = Math.max(0, dayWorkedHours - config.threshold);
 
-  // ── DAY HOURS ─────────────────────────────────────────────────────
-  // Night hours are a separate bucket billed at rateNight.
-  // They do NOT reduce the normal or extra day buckets.
-  const dayNormal = normalHoursTotal;
-  const dayExtra  = extraHoursTotal;
-  const nightNormal = 0;   // kept for compatibility (nightPay = nightHours * rateNight)
+  const dayNormal   = normalHoursTotal;
+  const dayExtra    = extraHoursTotal;
+  const nightNormal = 0;
   const nightExtra  = 0;
 
   // ── RATES ─────────────────────────────────────────────────────────
@@ -2358,7 +2356,7 @@ function calcAndPreview() {
     extraDayPay  = billedDayExtra  * rateExtra;
   }
 
-  // Night hours are a standalone bucket — billed entirely at rateNight
+  // Night hours are fully billed at rateNight — no normal/extra pay for those hours.
   const billedNight = config.onlyExtras ? 0 : nightHours;
   const nightPay    = billedNight * rateNight;
 
@@ -3163,7 +3161,7 @@ async function exportPDF() {
 
   // ══ FOOTER ═══════════════════════════════════════════════════════════
   doc.setFontSize(6.5); doc.setTextColor(...pal.muted);
-  doc.text(`Time for Chamba v11.0  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
+  doc.text(`Time for Chamba v11.1  ·  Made by Guillermo Sanchez  ·  ${now.toLocaleDateString()}`, W/2, H-6, {align:'center'});
 
   const filename = `chamba_${periodLabel.replace(/[\s/]/g,'_')}_${now.getFullYear()}.pdf`;
   doc.save(filename);
