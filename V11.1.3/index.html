@@ -3167,30 +3167,10 @@ async function exportPDF() {
 
   cy += 24;
 
-  // ── Día que corresponde: count complete Mon–Sat weeks in filtered entries ──
-  // A complete week = all 6 days (Mon 1 … Sat 6) have at least one entry
-  let diaCorrespondePayPDF = 0;
-  if (config.diaCorrespondeEnabled && config.diaCorrespondeAmount > 0) {
-    const weekDowsPDF = {};
-    filtered.forEach(e => {
-      const d = new Date(e.date + 'T12:00:00');
-      const dow = d.getDay(); // 0=Sun,1=Mon…6=Sat
-      if (dow === 0) return;  // skip Sundays
-      const monday = new Date(d);
-      monday.setDate(d.getDate() - (dow - 1));
-      const wk = monday.toISOString().slice(0,10);
-      if (!weekDowsPDF[wk]) weekDowsPDF[wk] = new Set();
-      weekDowsPDF[wk].add(dow);
-    });
-    const completeWeeksPDF = Object.values(weekDowsPDF).filter(s => [1,2,3,4,5,6].every(d => s.has(d))).length;
-    diaCorrespondePayPDF = completeWeeksPDF * config.diaCorrespondeAmount;
-  }
-
   // ══ KPI BOXES ════════════════════════════════════════════════════════
   const totH   = filtered.reduce((s,e) => s+e.totalHours, 0);
   const totEx  = filtered.reduce((s,e) => s+e.extraHours, 0);
-  // "Ganado" (earned) must include the días que corresponden, same as the in-app summary
-  const totPay = filtered.reduce((s,e) => s+e.totalPay, 0) + diaCorrespondePayPDF;
+  const totPay = filtered.reduce((s,e) => s+e.totalPay, 0);
   const totKm  = filtered.reduce((s,e) => s+(e.kmCount||0), 0);
   const boxes  = [
     { label: T('shifts'), val: String(filtered.length)                  },
@@ -3215,19 +3195,13 @@ async function exportPDF() {
   doc.text(currentLang === 'en' ? 'BREAKDOWN' : 'DESGLOSE', 14, cy); cy += 5;
   drawRule(cy); cy += 4;
 
-  // Excluye festivo, día libre Y domingo, igual que en el resumen de la app
-  // (evita que esas horas se cuenten dos veces: una vez aquí y otra en su propio renglón)
-  const npBasePDF = filtered.reduce((s,e) => s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo ? e.normalPay  : 0), 0);
-  const ep  = filtered.reduce((s,e) => s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo ? e.extraPay   : 0), 0);
+  const np  = filtered.reduce((s,e) => s+(!e.isFestivo&&!e.isDiaLibre ? e.normalPay  : 0), 0);
+  const ep  = filtered.reduce((s,e) => s+(!e.isFestivo&&!e.isDiaLibre ? e.extraPay   : 0), 0);
   const fp  = filtered.reduce((s,e) => s+(e.isFestivo                 ? e.normalPay+e.extraPay : 0), 0);
-  const dopPDF = filtered.reduce((s,e) => s+(e.isDomingo&&!e.isFestivo ? e.normalPay+e.extraPay : 0), 0);
   const dpp = filtered.reduce((s,e) => s+(e.isDiaLibre&&!e.isFestivo  ? e.normalPay+e.extraPay : 0), 0);
   const ntp = filtered.reduce((s,e) => s+(e.nightPay||0), 0);
   const kp  = filtered.reduce((s,e) => s+(e.kmPay||0), 0);
   const pt  = filtered.reduce((s,e) => s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0), 0);
-
-  // "Días que corresponden" cuenta como pago normal, no como extra
-  const np = npBasePDF + diaCorrespondePayPDF;
 
   // adelanto for this period month
   let adelantoMonth2 = getCurrentMonth();
@@ -3238,12 +3212,11 @@ async function exportPDF() {
     { label: T('normalPay'),    val: fmt2(np),   col: pal.text   },
     { label: T('extraPay'),     val: fmt2(ep),   col: orange     },
     { label: T('festivoPay'),   val: fmt2(fp),   col: festivo    },
-    { label: T('domingoPay'),   val: fmt2(dopPDF), col: warn },
+    { label: T('domingoPay'),   val: fmt2(filtered.reduce((s,e)=>s+(e.isDomingo&&!e.isFestivo?e.normalPay+e.extraPay:0),0)), col: warn },
     { label: T('diaLibrePay'),  val: fmt2(dpp),  col: warn       },
     { label: T('nightPay'),     val: fmt2(ntp),  col: night      },
     { label: `${T('kmPay')} (${totKm} km)`, val: fmt2(kp), col: pal.muted },
     { label: T('pendingTickets'),val: fmt2(pt),  col: warn       },
-    ...(config.diaCorrespondeEnabled && diaCorrespondePayPDF > 0 ? [{ label: T('diaCorrespondePay'), val: fmt2(diaCorrespondePayPDF), col: [167,143,250] }] : []),
     ...(adelantoTotalPDF > 0 ? [{ label: T('adelantoTotal'), val: `— ${fmt2(adelantoTotalPDF)}`, col: danger }] : []),
     { label: T('total'),        val: fmt2(totPay - adelantoTotalPDF), col: pal.accent, bold: true },
   ];
