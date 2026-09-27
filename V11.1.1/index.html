@@ -616,13 +616,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
             </div>
             <button class="ticket-add-btn" onclick="addAdelanto()" data-t="adelantoAdd" style="background:var(--warn);color:#0a0a0a"></button>
           </div>
-          <div class="field" style="margin-top:8px;margin-bottom:0">
-            <label data-t="adelantoDeductFrom"></label>
-            <select id="adelantoDeductFromSelect" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;padding:10px 12px">
-              <option value="extra" data-t-opt="adelantoDeductExtra"></option>
-              <option value="normal" data-t-opt="adelantoDeductNormal"></option>
-            </select>
-          </div>
         </div>
         <div id="adelantoList"><div class="tickets-empty" data-t="noAdelantos"></div></div>
         <div id="adelantoSummaryRow" style="display:none">
@@ -694,10 +687,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <div class="summary-lbl" data-t="earned"></div>
           <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px"><span id="sumAvg">—</span> <span data-t="perDay"></span></div>
         </div>
-        <div class="summary-box" id="sumBoxTotalExtras" style="display:none;grid-column:1/-1;background:rgba(99,102,241,.08);border-color:var(--accent)">
-          <div class="summary-num" id="sumTotalExtras" style="font-size:20px;color:var(--accent)">$0</div>
-          <div class="summary-lbl" data-t="totalExtrasLabel"></div>
-        </div>
       </div>
       <div class="hours-progress" id="hoursProgressWrap" style="display:none">
         <div class="hours-progress-label">
@@ -713,7 +702,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <div class="breakdown-row" id="sumRowDomingo"><span class="breakdown-label" data-t="domingoPay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDomingoPay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowDiaLibre"><span class="breakdown-label" data-t="diaLibrePay"></span><span class="breakdown-value" style="color:var(--warn)" id="sumDiaLibrePay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowNight"><span class="breakdown-label" data-t="nightPay"></span><span class="breakdown-value" style="color:var(--nocturno,#6c9fff)" id="sumNightPay">$0.00</span></div>
-      <div class="breakdown-row" id="sumRowDiaCorresponde" style="display:none"><span class="breakdown-label" data-t="diaCorrespondePay"></span><span class="breakdown-value" style="color:#a78bfa" id="sumDiaCorrespondePay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowKm"><span class="breakdown-label" data-t="kmPay"></span><span class="breakdown-value" style="color:var(--muted)" id="sumKmPay">$0.00</span></div>
       <div class="breakdown-row" id="sumRowTickets"><span class="breakdown-label" data-t="pendingTickets"></span><span class="breakdown-value warn" id="sumPendingTickets">$0.00</span></div>
       <div class="breakdown-row" id="sumRowAdelanto"><span class="breakdown-label" data-t="adelantoTotal"></span><span class="breakdown-value" style="color:var(--warn)" id="sumAdelanto">— $0.00</span></div>
@@ -846,39 +834,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <div class="setting-row">
             <div><div class="setting-name" data-t="domingoRateAfter"></div><div class="setting-desc" data-t="domingoRateAfterDesc"></div></div>
             <input type="number" class="setting-input" id="cfgDomingoRateAfter" value="100" min="0" step="0.5">
-          </div>
-        </div>
-        <div class="setting-row" style="border-bottom:none;padding-bottom:0">
-          <button class="btn btn-primary" onclick="saveConfig()" data-t="saveConfig" style="padding:11px;font-size:15px;letter-spacing:2px"></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── ACCORDION: DÍA QUE CORRESPONDE ── -->
-    <div class="cfg-accordion">
-      <div class="cfg-acc-header" onclick="toggleAcc('accDiaCorresponde',this)">
-        <div class="cfg-acc-left">
-          <span class="cfg-acc-icon">⏱️</span>
-          <div><div class="cfg-acc-label" data-t="cfgCategoryDiaCorresponde"></div><div class="cfg-acc-sub" data-t="diaCorrespondeSub"></div></div>
-        </div>
-        <span class="cfg-acc-arrow">▼</span>
-      </div>
-      <div class="cfg-acc-body" id="accDiaCorresponde">
-        <div class="setting-row">
-          <div>
-            <div class="setting-name" data-t="diaCorrespondeEnabled"></div>
-            <div class="setting-desc" data-t="diaCorrespondeEnabledDesc"></div>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" id="cfgDiaCorrespondeEnabled" onchange="onDiaCorrespondeEnabledChange()">
-            <div class="toggle-track"></div>
-            <div class="toggle-thumb"></div>
-          </label>
-        </div>
-        <div id="cfgDiaCorrespondeDetails" style="display:none">
-          <div class="setting-row">
-            <div><div class="setting-name" data-t="diaCorrespondeAmount"></div><div class="setting-desc" data-t="diaCorrespondeAmountDesc"></div></div>
-            <input type="number" class="setting-input" id="cfgDiaCorrespondeAmount" value="50" min="0" step="0.5">
           </div>
         </div>
         <div class="setting-row" style="border-bottom:none;padding-bottom:0">
@@ -1399,24 +1354,16 @@ const STRINGS = {
     addPhoto:'+ Foto', exportPDF:'Exportar PDF del periodo',
     pdfTitle:'Resumen de Turnos', pdfGenerating:'Generando PDF…',
     addTicketPhoto:'Añadir foto al ticket',
-    adelantoLabel:'Adelanto / Vale', adelantoSub:'Descuento sobre horas del mes',
+    adelantoLabel:'Adelanto / Vale', adelantoSub:'Descuento sobre horas extras del mes',
     adelantoDesc:'Concepto del adelanto', adelantoDescPh:'Ej: Adelanto nómina, Vale…',
     adelantoAmt:'Importe', adelantoAdd:'+ AÑADIR', noAdelantos:'Sin adelantos registrados',
-    adelantoTotal:'Total adelantos del mes', adelantoWarning:'⚠ El total supera las horas disponibles',
-    adelantoDeductFrom:'Descontar de', adelantoDeductExtra:'Horas extras', adelantoDeductNormal:'Horas normales',
-    adelantoTagExtra:'EXTRAS', adelantoTagNormal:'NORMAL',
+    adelantoTotal:'Total adelantos del mes', adelantoWarning:'⚠ El total supera las horas extras disponibles',
     tabGallery:'Galería',
     galleryAll:'Todo', galleryEvents:'Eventos', galleryTickets:'Tickets', galleryBudgets:'Presupuestos', galleryOther:'Otros',
     galleryAdd:'Añadir foto', galleryDesc:'Descripción', galleryDescPh:'¿Qué es esta foto?',
     galleryCategory:'Categoría', galleryUpload:'📷 Subir',
     galleryEmpty:'No hay fotos en esta categoría', galleryEmptyAll:'La galería está vacía',
     domingoLabel:'Domingo', domingoSub:'Tarifa especial para domingos', domingoDay:'Domingo',
-    totalExtrasLabel:'Total Extras',
-    diaCorrespondeLabel:'Día Que Corresponde', diaCorrespondeSub:'Bono automático por semana completa (Lun–Sáb)', diaCorrespondeDay:'Día Corresponde',
-    cfgCategoryDiaCorresponde:'Día que Corresponde',
-    diaCorrespondeEnabled:'Activar', diaCorrespondeEnabledDesc:'Detecta semanas completas Lun–Sáb y suma el bono',
-    diaCorrespondeAmount:'Monto por semana completa', diaCorrespondeAmountDesc:'Pago fijo al completar Lun–Sáb sin faltar',
-    diaCorrespondePay:'Días que corresponden',
     domingoRates:'Tarifas Domingo', cfgCategoryDomingo:'Domingos',
     domingoNormalRate:'Tarifa domingo / hora', domingoNormalRateDesc:'Horas normales en domingo',
     domingoOvertimeRate:'Extra domingo / hora', domingoOvertimeRateDesc:'Horas extra en domingo',
@@ -1498,24 +1445,16 @@ const STRINGS = {
     addPhoto:'+ Photo', exportPDF:'Export period PDF',
     pdfTitle:'Shift Summary', pdfGenerating:'Generating PDF…',
     addTicketPhoto:'Add photo to ticket',
-    adelantoLabel:'Advance / Voucher', adelantoSub:'Deducted from monthly hours',
+    adelantoLabel:'Advance / Voucher', adelantoSub:'Deducted from monthly overtime',
     adelantoDesc:'Description', adelantoDescPh:'e.g. Salary advance, Voucher…',
     adelantoAmt:'Amount', adelantoAdd:'+ ADD', noAdelantos:'No advances registered',
-    adelantoTotal:'Total advances this month', adelantoWarning:'⚠ Total exceeds available hours',
-    adelantoDeductFrom:'Deduct from', adelantoDeductExtra:'Overtime hours', adelantoDeductNormal:'Normal hours',
-    adelantoTagExtra:'OT', adelantoTagNormal:'NORMAL',
+    adelantoTotal:'Total advances this month', adelantoWarning:'⚠ Total exceeds available overtime hours',
     tabGallery:'Gallery',
     galleryAll:'All', galleryEvents:'Events', galleryTickets:'Tickets', galleryBudgets:'Budgets', galleryOther:'Other',
     galleryAdd:'Add photo', galleryDesc:'Description', galleryDescPh:'What is this photo?',
     galleryCategory:'Category', galleryUpload:'📷 Upload',
     galleryEmpty:'No photos in this category', galleryEmptyAll:'Gallery is empty',
     domingoLabel:'Sunday', domingoSub:'Special rate for Sundays', domingoDay:'Sunday',
-    totalExtrasLabel:'Total Extras',
-    diaCorrespondeLabel:'Compensatory Day', diaCorrespondeSub:'Auto bonus for full Mon–Sat week', diaCorrespondeDay:'Comp Day',
-    cfgCategoryDiaCorresponde:'Compensatory Day',
-    diaCorrespondeEnabled:'Enable', diaCorrespondeEnabledDesc:'Detects full Mon–Sat weeks and adds the bonus',
-    diaCorrespondeAmount:'Amount per full week', diaCorrespondeAmountDesc:'Fixed pay when Mon–Sat is complete',
-    diaCorrespondePay:'Compensatory days',
     domingoRates:'Sunday Rates', cfgCategoryDomingo:'Sundays',
     domingoNormalRate:'Sunday rate / hour', domingoNormalRateDesc:'Regular hours on Sunday',
     domingoOvertimeRate:'Sunday overtime / hour', domingoOvertimeRateDesc:'Extra hours on Sunday',
@@ -1569,8 +1508,7 @@ function addAdelanto() {
   // Use the shift date to assign to the correct month, not today's month
   const shiftDate = document.getElementById('fieldDate').value;
   const month = shiftDate ? shiftDate.slice(0, 7) : getCurrentMonth(); // "YYYY-MM"
-  const deductFrom = document.getElementById('adelantoDeductFromSelect').value || 'extra';
-  adelantos.push({ id: Date.now()+Math.random(), month, label: label || T('adelantoLabel'), amount: amt, deductFrom, addedDate: shiftDate || new Date().toISOString().split('T')[0] });
+  adelantos.push({ id: Date.now()+Math.random(), month, label: label || T('adelantoLabel'), amount: amt, addedDate: shiftDate || new Date().toISOString().split('T')[0] });
   localStorage.setItem('tfc_adelantos', JSON.stringify(adelantos));
   document.getElementById('adelantoLabelInput').value = '';
   document.getElementById('adelantoAmtInput').value = '';
@@ -1603,34 +1541,23 @@ function renderAdelantoList() {
     if (sumRow) sumRow.style.display = 'none';
     return;
   }
-  list.innerHTML = monthItems.map(a => {
-    const isExtra = (a.deductFrom || 'extra') === 'extra';
-    const tagLabel = isExtra ? T('adelantoTagExtra') : T('adelantoTagNormal');
-    const tagColor = isExtra ? 'var(--orange,#f97316)' : 'var(--accent)';
-    return `<div class="ticket-item" style="border-color:var(--warn)">
+  list.innerHTML = monthItems.map(a => `
+    <div class="ticket-item" style="border-color:var(--warn)">
       <div class="ticket-main">
-        <div class="ticket-body">
-          <div class="ticket-label">${escHtml(a.label)}</div>
-          <span style="font-family:'DM Mono',monospace;font-size:9px;padding:1px 6px;border-radius:20px;border:1px solid ${tagColor};color:${tagColor};margin-top:3px;display:inline-block">${tagLabel}</span>
-        </div>
+        <div class="ticket-body"><div class="ticket-label">${escHtml(a.label)}</div></div>
         <div class="ticket-amount" style="color:var(--warn)">${config.currency}${a.amount.toFixed(2)}</div>
         <button class="ticket-del" onclick="removeAdelanto(${a.id})">✕</button>
       </div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
   const total = monthItems.reduce((s,a)=>s+a.amount,0);
   document.getElementById('adelantoTotalVal').textContent = `${config.currency}${total.toFixed(2)}`;
   if (sumRow) sumRow.style.display = 'block';
-  // Warning: check each bucket separately
+  // Warning if total exceeds monthly extra pay
   const thisMonth = getCurrentMonth();
   const monthEntries = entries.filter(e => e.date.startsWith(thisMonth));
-  const monthExtraPay  = monthEntries.reduce((s,e) => s+e.extraPay, 0);
-  const monthNormalPay = monthEntries.reduce((s,e) => s+e.normalPay, 0);
-  const totalExtra  = monthItems.filter(a=>(a.deductFrom||'extra')==='extra').reduce((s,a)=>s+a.amount,0);
-  const totalNormal = monthItems.filter(a=>(a.deductFrom||'extra')==='normal').reduce((s,a)=>s+a.amount,0);
+  const monthExtraPay = monthEntries.reduce((s,e) => s+e.extraPay, 0);
   const warnRow = document.getElementById('adelantoWarningRow');
-  const exceeds = (totalExtra > monthExtraPay && monthExtraPay > 0) || (totalNormal > monthNormalPay && monthNormalPay > 0);
-  if (warnRow) warnRow.style.display = exceeds ? 'block' : 'none';
+  if (warnRow) warnRow.style.display = (total > monthExtraPay && monthExtraPay > 0) ? 'block' : 'none';
 }
 
 
@@ -1948,8 +1875,7 @@ let config = {
   kmEnabled:false, kmRate:0.20,
   diaLibreEnabled:false, diaLibre:6, diaLibreRate:60, diaLibreOvertimeRate:90,
   onlyExtras:false,
-  nightEnabled:false, nightRate:12,
-  diaCorrespondeEnabled:false, diaCorrespondeAmount:50
+  nightEnabled:false, nightRate:12
 };
 let pdfConfig = { fullName:'', docNum:'', company:'', style:'app' };
 let adelantos = [];
@@ -2084,9 +2010,6 @@ function loadConfigUI() {
   document.getElementById('cfgNightEnabled').checked = config.nightEnabled;
   document.getElementById('cfgNightRate').value = config.nightRate;
   document.getElementById('cfgNightRateRow').style.display = config.nightEnabled ? 'flex' : 'none';
-  document.getElementById('cfgDiaCorrespondeEnabled').checked = !!config.diaCorrespondeEnabled;
-  document.getElementById('cfgDiaCorrespondeDetails').style.display = config.diaCorrespondeEnabled ? 'block' : 'none';
-  document.getElementById('cfgDiaCorrespondeAmount').value = config.diaCorrespondeAmount || 50;
   document.getElementById('cfgName').value = localStorage.getItem('tfc_name') || '';
   renderThemesGrid();
   loadPdfConfigUI();
@@ -2183,11 +2106,6 @@ function onDomingoChange() {
   } else {
     card.classList.remove('domingo-top');
   }
-}
-
-function onDiaCorrespondeEnabledChange() {
-  const en = document.getElementById('cfgDiaCorrespondeEnabled').checked;
-  document.getElementById('cfgDiaCorrespondeDetails').style.display = en ? 'block' : 'none';
 }
 
 function onDomingoReglaChange() {
@@ -2343,7 +2261,7 @@ function calcAndPreview() {
   const end     = document.getElementById('fieldEnd').value;
   const desc    = document.getElementById('fieldDesc').value.trim();
   const isFestivo = document.getElementById('festivoToggle').checked;
-  const isDomingo          = document.getElementById('domingoToggle').checked;
+  const isDomingo = document.getElementById('domingoToggle').checked;
   const kmOn    = document.getElementById('kmToggle').checked;
 
   if (!date||!start||!end) { showToast(T('fillFields'),'error'); return; }
@@ -2940,8 +2858,8 @@ function renderSummary(period) {
   // Apply onlyExtras filter
   const calcH = config.onlyExtras ? filtered.reduce((s,e)=>s+e.extraHours,0) : filtered.reduce((s,e)=>s+e.totalHours,0);
   const eh=filtered.reduce((s,e)=>s+e.extraHours,0);
-  const np=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo?e.normalPay:0),0);
-  const ep=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo?e.extraPay:0),0);
+  const np=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.normalPay:0),0);
+  const ep=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre?e.extraPay:0),0);
   const fp=filtered.reduce((s,e)=>s+(e.isFestivo?e.normalPay+e.extraPay:0),0);
   const dop=filtered.reduce((s,e)=>s+(e.isDomingo&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
   const dp=filtered.reduce((s,e)=>s+(e.isDiaLibre&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
@@ -2971,43 +2889,7 @@ function renderSummary(period) {
     progressWrap.style.display = 'none';
   }
   const np2 = filtered.reduce((s,e)=>s+(e.nightPay||0),0);
-
-  // ── Día que corresponde: count complete Mon–Sat weeks in filtered entries ──
-  // A complete week = all 6 days (Mon 1 … Sat 6) have at least one entry
-  let diaCorrespondePay = 0;
-  if (config.diaCorrespondeEnabled && config.diaCorrespondeAmount > 0) {
-    // Group entry dates by ISO week (Mon-based)
-    const weekDows = {};
-    filtered.forEach(e => {
-      // parse date safely: e.date is "YYYY-MM-DD"
-      const d = new Date(e.date + 'T12:00:00');
-      const dow = d.getDay(); // 0=Sun,1=Mon…6=Sat
-      if (dow === 0) return;  // skip Sundays
-      // ISO week key: Monday of that week
-      const monday = new Date(d);
-      monday.setDate(d.getDate() - (dow - 1));
-      const wk = monday.toISOString().slice(0,10);
-      if (!weekDows[wk]) weekDows[wk] = new Set();
-      weekDows[wk].add(dow);
-    });
-    // Each week where all 6 days (1–6) are present earns one bonus
-    const completeWeeks = Object.values(weekDows).filter(s => [1,2,3,4,5,6].every(d => s.has(d))).length;
-    diaCorrespondePay = completeWeeks * config.diaCorrespondeAmount;
-  }
-
-  const totalExtras = ep + np2 + dop + diaCorrespondePay;
   document.getElementById('sumNormalPay').textContent=`${config.currency}${np.toFixed(2)}`;
-  // Total Extras summary-box
-  const teEl = document.getElementById('sumTotalExtras');
-  const teBox = document.getElementById('sumBoxTotalExtras');
-  const hasExtras = totalExtras > 0;
-  if (teEl) teEl.textContent = `${config.currency}${Math.round(totalExtras)}`;
-  if (teBox) teBox.style.display = hasExtras ? 'block' : 'none';
-  // Día que corresponde breakdown line
-  const dcpEl = document.getElementById('sumDiaCorrespondePay');
-  const dcpRow = document.getElementById('sumRowDiaCorresponde');
-  if (dcpEl) dcpEl.textContent = `${config.currency}${diaCorrespondePay.toFixed(2)}`;
-  if (dcpRow) dcpRow.style.display = (config.diaCorrespondeEnabled && diaCorrespondePay > 0) ? 'flex' : 'none';
   document.getElementById('sumExtraPay').textContent=`${config.currency}${ep.toFixed(2)}`;
   document.getElementById('sumFestivoPay').textContent=`${config.currency}${fp.toFixed(2)}`;
   const sumDomEl=document.getElementById('sumDomingoPay'); if(sumDomEl) sumDomEl.textContent=`${config.currency}${dop.toFixed(2)}`;
@@ -3029,9 +2911,7 @@ function renderSummary(period) {
   } else if (period === 'mes_anterior') {
     adelantoMonth = `${pickerYear}-${String(pickerMonth+1).padStart(2,'0')}`;
   }
-  const isMonthPeriod = (period === 'mes' || period === 'mes_anterior');
-  const monthAdelantos = isMonthPeriod ? getMonthAdelantos(adelantoMonth) : [];
-  const adelantoTotal  = monthAdelantos.reduce((s,a)=>s+a.amount,0);
+  const adelantoTotal = (period === 'dia' || period === 'semana' || period === 'todo') ? 0 : getMonthAdelantoTotal(adelantoMonth);
   document.getElementById('sumAdelanto').textContent = `— ${config.currency}${adelantoTotal.toFixed(2)}`;
   const adelantoRow = document.getElementById('sumRowAdelanto');
   if (adelantoRow) adelantoRow.style.display = adelantoTotal > 0 ? 'flex' : 'none';
@@ -3244,12 +3124,12 @@ async function exportPDF() {
   doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); doc.setTextColor(...pal.muted);
   const hdrLang = currentLang === 'en';
   doc.text(hdrLang?'DATE':'FECHA',   18, cy+5.5);
-  doc.text(hdrLang?'IN':'ENTRADA',   50, cy+5.5);
-  doc.text(hdrLang?'OUT':'SALIDA',   66, cy+5.5);
-  doc.text(hdrLang?'HRS':'HORAS',    82, cy+5.5);
-  doc.text(hdrLang?'OT':'EXTRAS',    96, cy+5.5);
-  doc.text('TIPO',                   110, cy+5.5);
-  doc.text('DESC',                   122, cy+5.5);
+  doc.text(hdrLang?'IN':'ENTRADA',   56, cy+5.5);
+  doc.text(hdrLang?'OUT':'SALIDA',   75, cy+5.5);
+  doc.text(hdrLang?'HRS':'HORAS',    94, cy+5.5);
+  doc.text(hdrLang?'OT':'EXTRAS',   111, cy+5.5);
+  doc.text('TIPO',                   128, cy+5.5);
+  doc.text('KM',                     143, cy+5.5);
   doc.text('TOTAL',               W-16, cy+5.5, {align:'right'});
   cy += 10;
 
@@ -3265,17 +3145,14 @@ async function exportPDF() {
     const dayTCol  = e.isFestivo ? festivo : e.isDomingo ? warn : e.isDiaLibre ? warn : pal.muted;
     doc.setFontSize(7); doc.setTextColor(...pal.text);
     doc.text(formatDate(e.date), 18, cy);
-    doc.text(e.start, 50, cy);
-    doc.text(e.end,   66, cy);
-    doc.text(fmtHpdf(e.totalHours), 82, cy);
+    doc.text(e.start, 56, cy);
+    doc.text(e.end,   75, cy);
+    doc.text(fmtHpdf(e.totalHours), 94, cy);
     doc.setTextColor(...orange);
-    doc.text(e.extraHours>0 ? fmtHpdf(e.extraHours) : '—', 96, cy);
-    doc.setTextColor(...dayTCol); doc.text(dayType, 110, cy);
-    // Description — truncate to fit column width (~40pt)
-    doc.setTextColor(...pal.muted); doc.setFontSize(6);
-    const descText = e.desc ? String(e.desc).substring(0,18) : '—';
-    doc.text(descText, 122, cy);
-    doc.setFontSize(7);
+    doc.text(e.extraHours>0 ? fmtHpdf(e.extraHours) : '—', 111, cy);
+    doc.setTextColor(...dayTCol); doc.text(dayType, 128, cy);
+    doc.setTextColor(...pal.muted);
+    doc.text(e.kmCount>0 ? String(e.kmCount) : '—', 143, cy);
     doc.setFont('helvetica','bold'); doc.setTextColor(...pal.accent);
     doc.text(fmt2(e.totalPay), W-16, cy, {align:'right'});
     doc.setFont('helvetica','normal');
@@ -3343,10 +3220,8 @@ function saveConfig() {
   config.diaLibreRate     = parseFloat(document.getElementById('cfgDiaLibreRate').value) ?? 0; config.diaLibreRate = isNaN(config.diaLibreRate) ? 0 : config.diaLibreRate;
   config.diaLibreOvertimeRate = parseFloat(document.getElementById('cfgDiaLibreOvertimeRate').value) ?? 0; config.diaLibreOvertimeRate = isNaN(config.diaLibreOvertimeRate) ? 0 : config.diaLibreOvertimeRate;
   config.onlyExtras       = document.getElementById('cfgOnlyExtras').checked;
-  config.nightEnabled          = document.getElementById('cfgNightEnabled').checked;
-  config.nightRate             = parseFloat(document.getElementById('cfgNightRate').value) || 0;
-  config.diaCorrespondeEnabled = document.getElementById('cfgDiaCorrespondeEnabled').checked;
-  config.diaCorrespondeAmount  = parseFloat(document.getElementById('cfgDiaCorrespondeAmount').value) || 0;
+  config.nightEnabled     = document.getElementById('cfgNightEnabled').checked;
+  config.nightRate        = parseFloat(document.getElementById('cfgNightRate').value) || 0;
   localStorage.setItem('tfc_config', JSON.stringify(config));
 
   // Show/hide km toggle on registro page
