@@ -2940,13 +2940,36 @@ function renderSummary(period) {
   // Apply onlyExtras filter
   const calcH = config.onlyExtras ? filtered.reduce((s,e)=>s+e.extraHours,0) : filtered.reduce((s,e)=>s+e.totalHours,0);
   const eh=filtered.reduce((s,e)=>s+e.extraHours,0);
-  const npBase=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo?e.normalPay:0),0);
+  const np=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo?e.normalPay:0),0);
   const ep=filtered.reduce((s,e)=>s+(!e.isFestivo&&!e.isDiaLibre&&!e.isDomingo?e.extraPay:0),0);
   const fp=filtered.reduce((s,e)=>s+(e.isFestivo?e.normalPay+e.extraPay:0),0);
   const dop=filtered.reduce((s,e)=>s+(e.isDomingo&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
   const dp=filtered.reduce((s,e)=>s+(e.isDiaLibre&&!e.isFestivo?e.normalPay+e.extraPay:0),0);
   const kp=filtered.reduce((s,e)=>s+(e.kmPay||0),0);
   const pt=filtered.reduce((s,e)=>s+(e.tickets||[]).filter(t=>!t.paid).reduce((a,t)=>a+t.amount,0),0);
+  const tp=filtered.reduce((s,e)=>s+e.totalPay,0);
+
+  document.getElementById('sumDays').textContent=filtered.length;
+  document.getElementById('sumHours').textContent=fmtH(calcH);
+  document.getElementById('sumExtra').textContent=fmtH(eh);
+  document.getElementById('sumEarn').textContent=`${config.currency}${Math.round(tp)}`;
+  const avgEl = document.getElementById('sumAvg');
+  if (avgEl) avgEl.textContent = filtered.length > 0 ? `${config.currency}${(tp/filtered.length).toFixed(0)}` : '—';
+  // Progress bar: total hours vs threshold * shifts
+  const progressWrap = document.getElementById('hoursProgressWrap');
+  const progressFill = document.getElementById('hoursProgressFill');
+  const progressLabel = document.getElementById('hoursProgressLabel');
+  if (progressWrap && filtered.length > 0) {
+    progressWrap.style.display = 'block';
+    const thresholdTotal = config.threshold * filtered.length;
+    const pct = Math.min((calcH / thresholdTotal) * 100, 100);
+    const isOver = calcH > thresholdTotal;
+    progressFill.style.width = pct + '%';
+    progressFill.classList.toggle('over', isOver);
+    progressLabel.textContent = `${fmtH(calcH)} / ${fmtH(thresholdTotal)}`;
+  } else if (progressWrap) {
+    progressWrap.style.display = 'none';
+  }
   const np2 = filtered.reduce((s,e)=>s+(e.nightPay||0),0);
 
   // ── Día que corresponde: count complete Mon–Sat weeks in filtered entries ──
@@ -2972,34 +2995,7 @@ function renderSummary(period) {
     diaCorrespondePay = completeWeeks * config.diaCorrespondeAmount;
   }
 
-  // "Días que corresponden" cuenta como pago normal, no como extra
-  const np = npBase + diaCorrespondePay;
-  // El total "Ganado" también debe incluir los días que corresponden
-  const tp = filtered.reduce((s,e)=>s+e.totalPay,0) + diaCorrespondePay;
-
-  document.getElementById('sumDays').textContent=filtered.length;
-  document.getElementById('sumHours').textContent=fmtH(calcH);
-  document.getElementById('sumExtra').textContent=fmtH(eh);
-  document.getElementById('sumEarn').textContent=`${config.currency}${Math.round(tp)}`;
-  const avgEl = document.getElementById('sumAvg');
-  if (avgEl) avgEl.textContent = filtered.length > 0 ? `${config.currency}${(tp/filtered.length).toFixed(0)}` : '—';
-  // Progress bar: total hours vs threshold * shifts
-  const progressWrap = document.getElementById('hoursProgressWrap');
-  const progressFill = document.getElementById('hoursProgressFill');
-  const progressLabel = document.getElementById('hoursProgressLabel');
-  if (progressWrap && filtered.length > 0) {
-    progressWrap.style.display = 'block';
-    const thresholdTotal = config.threshold * filtered.length;
-    const pct = Math.min((calcH / thresholdTotal) * 100, 100);
-    const isOver = calcH > thresholdTotal;
-    progressFill.style.width = pct + '%';
-    progressFill.classList.toggle('over', isOver);
-    progressLabel.textContent = `${fmtH(calcH)} / ${fmtH(thresholdTotal)}`;
-  } else if (progressWrap) {
-    progressWrap.style.display = 'none';
-  }
-
-  const totalExtras = ep + np2 + dop;
+  const totalExtras = ep + np2 + dop + diaCorrespondePay;
   document.getElementById('sumNormalPay').textContent=`${config.currency}${np.toFixed(2)}`;
   // Total Extras summary-box
   const teEl = document.getElementById('sumTotalExtras');
@@ -3007,7 +3003,7 @@ function renderSummary(period) {
   const hasExtras = totalExtras > 0;
   if (teEl) teEl.textContent = `${config.currency}${Math.round(totalExtras)}`;
   if (teBox) teBox.style.display = hasExtras ? 'block' : 'none';
-  // Día que corresponde breakdown line (informativa — ya está sumada dentro de Pago Normal)
+  // Día que corresponde breakdown line
   const dcpEl = document.getElementById('sumDiaCorrespondePay');
   const dcpRow = document.getElementById('sumRowDiaCorresponde');
   if (dcpEl) dcpEl.textContent = `${config.currency}${diaCorrespondePay.toFixed(2)}`;
